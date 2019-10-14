@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'home.dart';
+import 'HomePage.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -19,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -80,5 +81,5 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 Future navigateTo(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
 }
