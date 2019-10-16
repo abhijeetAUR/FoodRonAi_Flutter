@@ -26,117 +26,73 @@ class _HomeScreenState extends State<HomeScreen> {
       // body: FoodItems(),
       body: Stack(
         children: <Widget>[
-          StreamBuilder<List<ImageMetaData>>(
-            stream: _imageDataBloc.imageListStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<ImageMetaData>> snapshot) {
-              return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      child: Hero(
-                        tag: snapshot.data[index].foodname,
-                        child: Material(
-                          child: InkWell(
-                            onTap: () {},
-                            child: GridTile(
-                              footer: Container(
-                                color: Colors.black26,
-                                child: ListTile(
-                                  leading: Text(
-                                    snapshot.data[index].foodname,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              child: Image.asset(
-                                'images/pizza.jpg'
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  });
-            },
-          )
+          new ImageGridBuilder(imageDataBloc: _imageDataBloc),
+          new Container(
+            padding: EdgeInsets.all(10),
+              child: Align(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton.extended(
+              onPressed: () {},
+              icon: Icon(Icons.camera),
+              label: Text("${Globals.cameraTxt}"),
+            ),
+          ))
         ],
       ),
     );
   }
 }
 
-// class FoodItems extends StatefulWidget {
-//   @override
-//   _FoodItemsState createState() => _FoodItemsState();
-// }
+class ImageGridBuilder extends StatelessWidget {
+  const ImageGridBuilder({
+    Key key,
+    @required ImageDataBloc imageDataBloc,
+  })  : _imageDataBloc = imageDataBloc,
+        super(key: key);
 
-// class _FoodItemsState extends State<FoodItems> {
-//   final imageList = [
-//     {"name": "pizza", "imageurl": "images/pizza.jpg"},
-//     {"name": "burger", "imageurl": "images/burger.jpg"},
-//     {"name": "icecream", "imageurl": "images/icecream.jpg"},
-//     {"name": "panipuri", "imageurl": "images/pizza.jpg"},
-//     {"name": "sabji", "imageurl": "images/pizza.jpg"},
-//     {"name": "roti", "imageurl": "images/burger.jpg"},
-//     {"name": "fries", "imageurl": "images/icecream.jpg"},
-//   ];
-//   @override
-//   Widget build(BuildContext context) {
-//     return GridView.builder(
-//       gridDelegate:
-//           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-//       itemCount: imageList.length,
-//       itemBuilder: (BuildContext context, int index) {
-//         return ImageItem(
-//           imageName: imageList[index]['name'],
-//           imageUrl: imageList[index]['imageurl'],
-//         );
-//       },
-//     );
-//   }
-// }
+  final ImageDataBloc _imageDataBloc;
 
-// class ImageItem extends StatelessWidget {
-//   final imageName;
-//   final imageUrl;
-
-//   ImageItem({this.imageName, this.imageUrl});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       child: Hero(
-//         tag: imageName,
-//         child: Material(
-//           child: InkWell(
-//             onTap: () {},
-//             child: GridTile(
-//               footer: Container(
-//                 color: Colors.black26,
-//                 child: ListTile(
-//                   leading: Text(
-//                     imageName,
-//                     style: TextStyle(
-//                         fontWeight: FontWeight.bold,
-//                         fontSize: 20,
-//                         color: Colors.white),
-//                   ),
-//                 ),
-//               ),
-//               child: Image.asset(
-//                 imageUrl,
-//                 fit: BoxFit.cover,
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<ImageMetaData>>(
+      stream: _imageDataBloc.imageListStream,
+      builder:
+          (BuildContext context, AsyncSnapshot<List<ImageMetaData>> snapshot) {
+        return GridView.builder(
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                child: Hero(
+                  tag: snapshot.data[index].foodname,
+                  child: Material(
+                    child: InkWell(
+                      onTap: () {},
+                      child: GridTile(
+                        footer: Container(
+                          color: Colors.black26,
+                          child: ListTile(
+                            leading: Text(
+                              snapshot.data[index].foodname,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        child: Image.asset(
+                          'images/pizza.jpg',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            });
+      },
+    );
+  }
+}
