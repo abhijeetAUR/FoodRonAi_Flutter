@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import '../Global.dart';
 
 
@@ -9,6 +9,16 @@ class ImageDetails extends StatefulWidget {
 }
 
 class _ImageDetailsState extends State<ImageDetails> {
+  final ImageDataBloc _imageDataBloc = ImageDataBloc();
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _imageDataBloc.dispose();
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,28 +29,32 @@ class _ImageDetailsState extends State<ImageDetails> {
 }
 
 class DetailView extends StatelessWidget {
-  String get imageName => null;
-
-  String get imageUrl => null;
-
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: <Widget>[
-        Expanded(flex: 1,
+        Expanded(flex: 2,
         child: Card(
-          child:GridTile(
-              footer: Container(
-                color: Colors.black26,
-                child: ListTile(
-                  leading: Text( imageName, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white), ),
-                ),
-              ) ,
-              child: Image.asset(imageUrl,fit: BoxFit.cover,),
+          child: Image.asset('images/pizza.jpg',
+          fit: BoxFit.cover,
+          ),
+        ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Container(
+            color: Colors.red,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2),
+            itemCount: 2,
+            itemBuilder: (BuildContext context, int index) {
+              
+            }
             ),
-
-        ),
-        ),
+          ),
+        )
       ],
       
     );

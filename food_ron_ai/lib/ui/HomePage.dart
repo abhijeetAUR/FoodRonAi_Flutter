@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
+import 'package:food_ron_ai/ui/ImageDetails.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,6 +14,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
+
+  File _image;
+
+  Future getImage(bool isCamera) async {
+    File image;
+    if (isCamera) {
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    } else {
+      print('camera error');
+    }
+    _image = image;
+  }
 
   @override
   void dispose() {
@@ -28,15 +43,19 @@ class _HomeScreenState extends State<HomeScreen> {
         children: <Widget>[
           new ImageGridBuilder(imageDataBloc: _imageDataBloc),
           new Container(
-            padding: EdgeInsets.all(10),
-              child: Align(
-            alignment: Alignment.bottomRight,
-            child: FloatingActionButton.extended(
-              onPressed: () {},
-              icon: Icon(Icons.camera),
-              label: Text("${Globals.cameraTxt}"),
+            padding: EdgeInsets.all(15),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  getImage(true);
+                  navigateTo(context);
+                },
+                icon: Icon(Icons.camera),
+                label: Text("${Globals.cameraTxt}"),
+              ),
             ),
-          ))
+          ),
         ],
       ),
     );
@@ -95,4 +114,9 @@ class ImageGridBuilder extends StatelessWidget {
       },
     );
   }
+}
+
+Future navigateTo(context) async {
+  Navigator.pushReplacement(context,
+      MaterialPageRoute(builder: (BuildContext context) => ImageDetails()));
 }
