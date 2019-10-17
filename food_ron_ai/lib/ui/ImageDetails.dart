@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
+import 'package:food_ron_ai/customwidgets/DetailCard.dart';
 import '../Global.dart';
 
 
@@ -45,11 +46,10 @@ class DetailView extends StatelessWidget {
           flex: 2,
           child: Container(
             color: Colors.red,
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
-            itemCount: 2,
+            child: ListView.builder(
+            itemCount: 1,
             itemBuilder: (BuildContext context, int index) {
+              return DetailsOfImageCardWidget();
               
             }
             ),
