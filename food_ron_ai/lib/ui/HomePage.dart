@@ -14,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
-
   File _image;
 
   Future getImage(bool isCamera) async {
@@ -24,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       print('camera error');
     }
-    _image = image;
+   _image = image;
   }
 
   @override

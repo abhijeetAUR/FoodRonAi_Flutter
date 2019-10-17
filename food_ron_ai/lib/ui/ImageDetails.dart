@@ -38,7 +38,7 @@ class DetailView extends StatelessWidget {
         Expanded(flex: 2,
         child: Card(
           child: Image.asset('images/pizza.jpg',
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
           ),
         ),
         ),
