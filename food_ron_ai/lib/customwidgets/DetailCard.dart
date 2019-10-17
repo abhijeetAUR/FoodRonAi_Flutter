@@ -5,7 +5,8 @@ import 'WaveSlider.dart';
 
 class DetailsOfImageCardWidget extends StatefulWidget {
   @override
-  _DetailsOfImageCardWidgetState createState() => _DetailsOfImageCardWidgetState();
+  _DetailsOfImageCardWidgetState createState() =>
+      _DetailsOfImageCardWidgetState();
 }
 
 class _DetailsOfImageCardWidgetState extends State<DetailsOfImageCardWidget>
@@ -34,10 +35,8 @@ class _DetailsOfImageCardWidgetState extends State<DetailsOfImageCardWidget>
         children: <Widget>[
           new ServeWidget(),
           new MetaInformationWidget(),
-
         ],
       ),
-      
     );
   }
 }
@@ -48,28 +47,37 @@ class ServeWidget extends StatefulWidget {
 }
 
 class _ServeWidgetState extends State<ServeWidget> {
-   int _serve = 0;
+  int _serve = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: <Widget>[
-          Text('${Globals.serve}'),
+          SizedBox(width: 20.0),
           WaveSlider(
-                onChanged: (double val) {
-                  setState(() {
-                    _serve = (val * 5).round();
-                  });
-                },
-              ),
-              SizedBox(width: 20.0),
-              Text(
-                    _serve.toString(),
-                    style: TextStyle(fontSize: 45.0),
+            onChanged: (double val) {
+              setState(() {
+                _serve = (val * 5).round();
+              });
+            },
+          ),
+          SizedBox(width: 30.0),
+          Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    '\t\t${Globals.serve} :\t',
+                    style: TextStyle(fontSize: 25.0),
                   ),
+                  Text(
+                    _serve.toString(),
+                    style: TextStyle(fontSize: 25.0),
+                  ),
+                ],
+              )),
         ],
       ),
-      
     );
   }
 }
@@ -82,8 +90,6 @@ class MetaInformationWidget extends StatefulWidget {
 class _MetaInformationWidgetState extends State<MetaInformationWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }
