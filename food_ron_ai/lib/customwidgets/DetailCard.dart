@@ -29,7 +29,7 @@ class _DetailsOfImageCardWidgetState extends State<DetailsOfImageCardWidget>
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 350,
+      height: 330,
       color: Colors.green,
       child: Column(
         children: <Widget>[
