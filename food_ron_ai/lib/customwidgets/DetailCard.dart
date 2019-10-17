@@ -48,15 +48,25 @@ class ServeWidget extends StatefulWidget {
 }
 
 class _ServeWidgetState extends State<ServeWidget> {
+   int _serve = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: <Widget>[
           Text('${Globals.serve}'),
-          WaveSlider(onChanged: (double value) {},),
-          MetaInformationWidget(),
-          
+          WaveSlider(
+                onChanged: (double val) {
+                  setState(() {
+                    _serve = (val * 5).round();
+                  });
+                },
+              ),
+              SizedBox(width: 20.0),
+              Text(
+                    _serve.toString(),
+                    style: TextStyle(fontSize: 45.0),
+                  ),
         ],
       ),
       
