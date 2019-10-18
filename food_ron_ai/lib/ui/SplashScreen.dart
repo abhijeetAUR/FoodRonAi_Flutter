@@ -19,13 +19,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(color: Colors.redAccent),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: new BoxDecoration(
+              image: DecorationImage(
+                image: new AssetImage('images/splash.jpg'),
+                fit: BoxFit.fill,
+              ),
+            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -37,7 +43,6 @@ class _SplashScreenState extends State<SplashScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircleAvatar(
-                        backgroundColor: Colors.white,
                         radius: 50.0,
                         child: Icon(
                           Icons.cake,
@@ -68,7 +73,6 @@ class _SplashScreenState extends State<SplashScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 20.0),
                     ),
-                    
                   ],
                 ),
               )
@@ -81,5 +85,6 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 Future navigateTo(context) async {
-  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+  Navigator.pushReplacement(context,
+      MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
 }

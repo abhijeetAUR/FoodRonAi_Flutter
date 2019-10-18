@@ -61,6 +61,6 @@ class ImageMetaData{
   double get fat => this._fat;
 
   double get serve => this._serve;
-  
+     
   double get suger => this._suger;
 }
