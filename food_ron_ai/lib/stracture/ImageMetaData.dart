@@ -9,8 +9,9 @@ class ImageMetaData{
   double _fat;
   double _protin;
   double _fiber;
+  double _suger;
 
-  ImageMetaData(this._foodname,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve);
+  ImageMetaData(this._foodname,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve,this._suger);
 
   //setters
 
@@ -41,6 +42,9 @@ class ImageMetaData{
   set card(double card){
     this._card=card;
   }
+  set suger(double suger){
+    this._suger=suger;
+  }
 
   //getters
 
@@ -57,4 +61,6 @@ class ImageMetaData{
   double get fat => this._fat;
 
   double get serve => this._serve;
+  
+  double get suger => this._suger;
 }
