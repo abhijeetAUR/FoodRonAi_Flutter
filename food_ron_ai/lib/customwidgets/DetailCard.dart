@@ -29,7 +29,7 @@ class _DetailsOfImageCardWidgetState extends State<DetailsOfImageCardWidget>
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 330,
+      height: 380,
       color: Colors.green,
       child: Column(
         children: <Widget>[
@@ -53,6 +53,13 @@ class _ServeWidgetState extends State<ServeWidget> {
     return Container(
       child: Column(
         children: <Widget>[
+          new Container(
+            padding: EdgeInsets.only(left: 30),
+            child: Text(
+              'Pizza',
+              style: TextStyle(fontSize: 30.0),
+            ),
+          ),
           SizedBox(width: 20.0),
           WaveSlider(
             onChanged: (double val) {
@@ -99,7 +106,6 @@ class _MetaInformationWidgetState extends State<MetaInformationWidget> {
             new Col2Info(),
           ],
         ),
-
         Row(
           children: <Widget>[
             Col3Info(),
