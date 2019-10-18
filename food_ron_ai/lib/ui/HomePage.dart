@@ -86,7 +86,9 @@ class ImageGridBuilder extends StatelessWidget {
                   tag: snapshot.data[index].foodname,
                   child: Material(
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        navigateTo(context);
+                      },
                       child: GridTile(
                         footer: Container(
                           color: Colors.black26,
@@ -119,3 +121,4 @@ Future navigateTo(context) async {
   Navigator.pushReplacement(context,
       MaterialPageRoute(builder: (BuildContext context) => ImageDetails()));
 }
+

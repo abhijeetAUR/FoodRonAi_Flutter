@@ -12,7 +12,7 @@ class WaveSlider extends StatefulWidget {
   WaveSlider({
     this.sliderWidth = 350.0,
     this.sliderHeight = 50.0,
-    this.color = Colors.black,
+    this.color = Colors.orangeAccent,
     this.onChangeEnd,
     this.onChangeStart,
     @required this.onChanged,

@@ -5,8 +5,8 @@ import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 class ImageDataBloc{
 
   List<ImageMetaData> _imagelist = [
-    ImageMetaData("Pizza", 160, 23, 6.6, 4.3, 4.9, 1),
-    ImageMetaData("Roti", 116, 21, 2.4, 2.9, 4.6, 2)
+    ImageMetaData("Pizza", 160, 23, 6.6, 4.3, 4.9, 1,6),
+    ImageMetaData("Roti", 116, 21, 2.4, 2.9, 4.6, 5,6)
   ];
 
   final _imageListStreamController = StreamController<List<ImageMetaData>>();

@@ -28,9 +28,10 @@ class _DetailsOfImageCardWidgetState extends State<DetailsOfImageCardWidget>
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top:30),
       width: MediaQuery.of(context).size.width,
       height: 380,
-      color: Colors.green,
+      color: Colors.white,
       child: Column(
         children: <Widget>[
           new ServeWidget(),
@@ -51,13 +52,18 @@ class _ServeWidgetState extends State<ServeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
       child: Column(
         children: <Widget>[
           new Container(
-            padding: EdgeInsets.only(left: 30),
-            child: Text(
-              'Pizza',
-              style: TextStyle(fontSize: 30.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Pizza',
+                  style: TextStyle(fontSize: 30.0),
+                ),
+              ],
             ),
           ),
           SizedBox(width: 20.0),
@@ -70,11 +76,11 @@ class _ServeWidgetState extends State<ServeWidget> {
           ),
           SizedBox(width: 30.0),
           Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(top:20,left: 30),
               child: Row(
                 children: <Widget>[
                   Text(
-                    '\t\t${Globals.serve} :\t',
+                    '${Globals.serve} :\t',
                     style: TextStyle(fontSize: 25.0),
                   ),
                   Text(
@@ -125,14 +131,14 @@ class _Col3InfoState extends State<Col3Info> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: Colors.white,
       width: MediaQuery.of(context).size.width,
       padding: new EdgeInsets.only(left: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '${Globals.protein} :\t \n',
+            '${Globals.protein} :\t 3 g \n',
             style: TextStyle(fontSize: 20.0),
           ),
         ],
@@ -149,7 +155,7 @@ class Col2Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-        color: Colors.blue,
+        color: Colors.white,
         width: MediaQuery.of(context).size.width / 2,
         padding: new EdgeInsets.only(left: 30),
         child: Column(
@@ -157,17 +163,17 @@ class Col2Info extends StatelessWidget {
           children: <Widget>[
             SizedBox(width: 30.0),
             Text(
-              '\n${Globals.fat} :\t \n',
+              '\n${Globals.fat} :\t46 g \n',
               style: TextStyle(fontSize: 20.0),
             ),
             SizedBox(width: 30.0),
             Text(
-              '${Globals.fiber} :\t \n',
+              '${Globals.fiber} :\t57 g \n',
               style: TextStyle(fontSize: 20.0),
             ),
             SizedBox(width: 30.0),
             Text(
-              '${Globals.sugar} :\t \n',
+              '${Globals.sugar} :\t10 g \n',
               style: TextStyle(fontSize: 20.0),
             ),
           ],
@@ -183,27 +189,27 @@ class Col1Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-        color: Colors.blue,
+        color: Colors.white,
         width: MediaQuery.of(context).size.width / 2,
-        padding: new EdgeInsets.only(left: 30),
+       padding: new EdgeInsets.only(left: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(width: 30.0),
             Text(
-              '\n${Globals.weight} :\t \n',
+              '\n${Globals.weight} :\t140 g \n',
               style: TextStyle(
                 fontSize: 20.0,
               ),
             ),
             SizedBox(width: 30.0),
             Text(
-              '${Globals.calorie} :\t \n',
+              '${Globals.calorie} :\t156 \n',
               style: TextStyle(fontSize: 20.0),
             ),
             SizedBox(width: 30.0),
             Text(
-              '${Globals.carbohydrates} :\t \n',
+              '${Globals.carbohydrates} :\t4.5 g \n',
               style: TextStyle(fontSize: 20.0),
             ),
           ],
