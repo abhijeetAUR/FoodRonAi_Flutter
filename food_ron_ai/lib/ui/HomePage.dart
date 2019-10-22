@@ -25,17 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       FormData formData = new FormData.fromMap({
-        "async": true,
-  "crossDomain": true,
-  "url": "http://api.foodron.ai/v1.0/uploadimg",
-  "method": "POST",
-  "headers": {
-    "authorization": "96331CA0-7959-402E-8016-B7ABB3287A16",
-  },
-  "processData": false,
-  "contentType": false,
-  "mimeType": "multipart/form-data",
-  "data": "form"
+        "headers": {
+          "authorization": "96331CA0-7959-402E-8016-B7ABB3287A16",
+          "Form": "multipart/formdata",
+          
+        },
+        
       });
 
       Response response =

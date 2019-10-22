@@ -1,8 +1,9 @@
 import 'dart:ffi';
 
 class ImageMetaData{
-
+  int _id;
   String _foodname;
+  double _weight;
   double _serve;
   double _cal;
   double _card;
@@ -11,14 +12,23 @@ class ImageMetaData{
   double _fiber;
   double _suger;
 
-  ImageMetaData(this._foodname,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve,this._suger);
+  ImageMetaData(this._id,this._foodname,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve,this._suger);
 
   //setters
-
+  set id(int id){
+    this._id=id;
+  }
   set foodname(String foodname){
     this._foodname=foodname;
   }
 
+  set weight(double weight){
+    this._serve=serve;
+  }
+  // set weight(double weight){
+  //   this._weight=weight;
+  // }
+  
   set serve(double serve){
     this._serve=serve;
   }
@@ -47,8 +57,11 @@ class ImageMetaData{
   }
 
   //getters
+  int get id => this._id;
 
   String get foodname => this._foodname;
+
+ // double get weight => this.weight;
 
   double get cal => this._cal;
 

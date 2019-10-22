@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 final appName = "Foodron.ai";
 final img_url = "api.foodron.ai/img-url";
 final serve = "Serve";
+double servecount = 1;
 final weight = "Weight";
 final calorie = "Calorie";
 final carbohydrates = "Carb's";

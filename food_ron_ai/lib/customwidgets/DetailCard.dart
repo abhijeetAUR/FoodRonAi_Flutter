@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
+import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
+import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 
 import 'WaveSlider.dart';
+
 
 class DetailsOfImageCardWidget extends StatefulWidget {
   @override
@@ -12,7 +15,7 @@ class DetailsOfImageCardWidget extends StatefulWidget {
 class _DetailsOfImageCardWidgetState extends State<DetailsOfImageCardWidget>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
-
+  
   @override
   void initState() {
     super.initState();
@@ -48,7 +51,6 @@ class ServeWidget extends StatefulWidget {
 }
 
 class _ServeWidgetState extends State<ServeWidget> {
-  int _serve = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,7 +72,7 @@ class _ServeWidgetState extends State<ServeWidget> {
           WaveSlider(
             onChanged: (double val) {
               setState(() {
-                _serve = (val * 10).round();
+                Globals.servecount = (val * 10).round() as double;
               });
             },
           ),
@@ -84,7 +86,7 @@ class _ServeWidgetState extends State<ServeWidget> {
                     style: TextStyle(fontSize: 25.0),
                   ),
                   Text(
-                    _serve.toString(),
+                    Globals.servecount.toString(),
                     style: TextStyle(fontSize: 25.0),
                   ),
                 ],
@@ -180,6 +182,8 @@ class Col2Info extends StatelessWidget {
         ));
   }
 }
+
+
 
 class Col1Info extends StatelessWidget {
   const Col1Info({
