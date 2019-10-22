@@ -150,6 +150,6 @@ class ImageGridBuilder extends StatelessWidget {
 }
 
 Future navigateTo(context) async {
-  Navigator.pushReplacement(context,
+  Navigator.push(context,
       MaterialPageRoute(builder: (BuildContext context) => ImageDetails()));
 }
