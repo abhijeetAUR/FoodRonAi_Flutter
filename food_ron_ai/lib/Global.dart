@@ -14,7 +14,7 @@ final fiber = "Fiber";
 final fat = "Fat";
 final protein = "Protein";
 final sugar = "Suger";
-
+final imguploadurl = "http://api.foodron.ai/v1.0/uploadimg";
 final inf_img_url = "api.foodron.ai/inf-img-url";
 final cameraTxt = "camera";
 final topAppBar = AppBar(
