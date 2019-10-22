@@ -51,6 +51,8 @@ class ServeWidget extends StatefulWidget {
 }
 
 class _ServeWidgetState extends State<ServeWidget> {
+
+  int _serve = 1;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,7 +74,8 @@ class _ServeWidgetState extends State<ServeWidget> {
           WaveSlider(
             onChanged: (double val) {
               setState(() {
-                Globals.servecount = (val * 10).round() as double;
+
+                _serve = (val * 10).round();
               });
             },
           ),
@@ -86,7 +89,7 @@ class _ServeWidgetState extends State<ServeWidget> {
                     style: TextStyle(fontSize: 25.0),
                   ),
                   Text(
-                    Globals.servecount.toString(),
+                    _serve.toString(),
                     style: TextStyle(fontSize: 25.0),
                   ),
                 ],
