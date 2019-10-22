@@ -12,7 +12,7 @@ class ImageMetaData{
   double _fiber;
   double _suger;
 
-  ImageMetaData(this._id,this._foodname,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve,this._suger);
+  ImageMetaData(this._id,this._foodname,this._weight,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve,this._suger);
 
   //setters
   set id(int id){
@@ -23,11 +23,8 @@ class ImageMetaData{
   }
 
   set weight(double weight){
-    this._serve=serve;
+    this._weight=weight;
   }
-  // set weight(double weight){
-  //   this._weight=weight;
-  // }
   
   set serve(double serve){
     this._serve=serve;
@@ -61,7 +58,7 @@ class ImageMetaData{
 
   String get foodname => this._foodname;
 
- // double get weight => this.weight;
+  double get weight => this._weight;
 
   double get cal => this._cal;
 
