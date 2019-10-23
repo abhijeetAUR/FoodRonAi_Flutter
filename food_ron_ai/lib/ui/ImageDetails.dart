@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
-import 'package:food_ron_ai/customwidgets/DetailCard.dart';
+import 'package:food_ron_ai/customwidgets/CardDetailsView.dart';
 import '../Global.dart';
 
 
@@ -45,14 +45,7 @@ class DetailView extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Container(
-            color: Colors.red,
-            child: ListView.builder(
-            itemCount: 1,
-            itemBuilder: (BuildContext context, int index) {
-              return DetailsOfImageCardWidget();
-              
-            }
-            ),
+            child: CardDetailsView(),
           ),
         )
       ],
