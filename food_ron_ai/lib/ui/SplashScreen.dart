@@ -24,14 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: new BoxDecoration(
-              image: DecorationImage(
-                image: new AssetImage('images/splash.jpg'),
-                fit: BoxFit.fill,
-              ),
-            ),
+            decoration: BoxDecoration(color: Colors.redAccent),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
