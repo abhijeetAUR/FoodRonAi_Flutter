@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // Show the incoming message in snakbar
       print(response.data['message']);
+      
     } catch (e) {
       print("Exception Caught: $e");
     }
@@ -53,8 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
       var length = await imageFile.length();
 
       var uri = Uri.parse(Globals.imguploadurl);
-
+      Map<String, String> headers = { "authorization": "96331CA0-7959-402E-8016-B7ABB3287A16"};
      var request = new http.MultipartRequest("POST", uri);
+     request.headers.addAll(headers);
       var multipartFile = new http.MultipartFile('file', stream, length,
           filename: basename(imageFile.path));
           //contentType: new MediaType('image', 'png'));
@@ -64,6 +66,10 @@ class _HomeScreenState extends State<HomeScreen> {
       print(response.statusCode);
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
+        
+        navigateTo(context);
+
+
       });
     }
 
@@ -75,8 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
     File image;
     if (isCamera) {
       image = await ImagePicker.pickImage(source: ImageSource.camera);
-      cimage= compressImage(image) as File;
-      uploadFile(cimage);
+      //cimage= compressImage(image) as File;
+      uploadImage(image);
     } else {
       print('camera error');
     }
@@ -105,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: FloatingActionButton.extended(
                 onPressed: () {
                   getImage(true);
-                  navigateTo(context);
                 },
                 icon: Icon(Icons.camera),
                 label: Text("${Globals.cameraTxt}"),
