@@ -39,11 +39,17 @@ class _HomeScreenState extends State<HomeScreen> {
       var response = await request.send();
       print(response.statusCode);
       response.stream.transform(utf8.decoder).listen((value) {
+        // var res = json.decode(value);
+        // print(res['data']);
         print(value);
-        
+       Globals.apiResponse = json.decode(value);
+       print(Globals.apiResponse['data']);
+       var dataObjRes = Globals.apiResponse['data'];
+       print(dataObjRes);
+       var dataImg = dataObjRes['imgurl'];
+
+       var items= dataObjRes['items'];
         navigateTo(context);
-
-
       });
     }
 

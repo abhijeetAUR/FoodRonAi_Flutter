@@ -87,7 +87,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                   Container(
                                     width:
                                         MediaQuery.of(context).size.width / 2.2,
-                                    padding: new EdgeInsets.only(left: 25),
+                                    padding: new EdgeInsets.only(left: 30),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,

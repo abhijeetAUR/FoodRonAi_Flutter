@@ -11,7 +11,8 @@ class DatabaseHelper {
   static final _databaseVersion = 1;
 
   static final table = 'ImageMeta';
-  
+  static final colFoodId = '_foodidt';
+  static final colFoodWeight = '_foodweight';
   static final colFoodName = '_foodname';
   static final colFoodCal = '_foodcal';
   static final colFoodFat = '_foodfat';
@@ -48,7 +49,9 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute('''
           CREATE TABLE $table (
-            $colFoodName TEXT PRIMARY KEY,
+            $colFoodId TEXT PRIMARY KEY,
+            $colFoodName TEXT NOT NULL,
+            $colFoodWeight TEXT NOT NULL,
             $colFoodCal TEXT NOT NULL,
             $colFoodFat TEXT NOT NULL,
             $colFoodSuger TEXT NOT NULL,
