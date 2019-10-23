@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
@@ -27,8 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       FormData formData = new FormData.fromMap({
         "headers": {
           "authorization": "96331CA0-7959-402E-8016-B7ABB3287A16",
-          "Form": "multipart/formdata",
-          
+          "Form": "multipart/formdata",        
         },
         
       });
@@ -46,12 +48,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   File _image;
+  File cimage;
 
   Future getImage(bool isCamera) async {
     File image;
     if (isCamera) {
       image = await ImagePicker.pickImage(source: ImageSource.camera);
-      uploadFile(image);
+      cimage= compressImage(image) as File;
+      uploadFile(cimage);
     } else {
       print('camera error');
     }
@@ -152,4 +156,30 @@ class ImageGridBuilder extends StatelessWidget {
 Future navigateTo(context) async {
   Navigator.push(context,
       MaterialPageRoute(builder: (BuildContext context) => ImageDetails()));
+}
+
+Future compressImage(File) async{
+Uint8List m = File.path.readAsBytesSync();
+        ui.Image x = await decodeImageFromList(m);
+        ByteData bytes = await x.toByteData();
+        print('height is ${x.height}'); //height of original image
+        print('width is ${x.width}'); //width of oroginal image
+
+        print('array is $m');
+        print('original image size is ${bytes.lengthInBytes}');
+
+            ui.instantiateImageCodec(m, targetHeight: 2160, targetWidth: 2160)
+            .then((codec) {
+          codec.getNextFrame().then((frameInfo) async {
+            ui.Image i = frameInfo.image;
+            print('image width is ${i.width}');//height of resized image
+            print('image height is ${i.height}');//width of resized image
+            ByteData bytes = await i.toByteData();
+            File.writeAsBytes(bytes.buffer.asUint32List());
+            print('resized image size is ${bytes.lengthInBytes}');
+            return i;
+          });
+        });
+
+  
 }
