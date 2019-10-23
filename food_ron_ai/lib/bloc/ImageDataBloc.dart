@@ -6,12 +6,11 @@ import 'package:food_ron_ai/Global.dart' as Globals;
 class ImageDataBloc{
 
   List<ImageMetaData> _imagelist = [
-    ImageMetaData(1,"Pizza",10, 160, 23, 6.6, 4.3, 4.9, 1,6),
-    ImageMetaData(2,"Roti",14,116, 21, 2.4, 2.9, 4.6, 5,6)
+    ImageMetaData(1,"roti",10, 100, 5, 12, 2, 13, 1,3),
+    ImageMetaData(2,"daal",12, 80, 15, 7, 7, 19, 1,7)
   ];
 
   final _imageListStreamController = StreamController<List<ImageMetaData>>();
-
   final _imageServeIncrementStreamController = StreamController<ImageMetaData>();
   final _imageServeDecrementStreamController = StreamController<ImageMetaData>();
 
