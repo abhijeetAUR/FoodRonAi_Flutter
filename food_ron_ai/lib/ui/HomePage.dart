@@ -23,32 +23,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   //TODO: file upload image funtion.
 
-  void uploadFile(filePath) async {
-    // Get base file name
-    String fileName = basename(filePath.path);
-    print("File base name: $fileName");
-
-    try {
-      FormData formData = new FormData.fromMap({
-        "headers": {
-          "authorization": "96331CA0-7959-402E-8016-B7ABB3287A16",
-          "Form": "multipart/formdata",        
-        },
-        
-      });
-
-      Response response =
-          await Dio().post("${Globals.imguploadurl}", data: formData);
-      print("File upload response: $response");
-
-      // Show the incoming message in snakbar
-      print(response.data['message']);
-      
-    } catch (e) {
-      print("Exception Caught: $e");
-    }
-  }
-
   uploadImage(File imageFile) async {        
     var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
       var length = await imageFile.length();
