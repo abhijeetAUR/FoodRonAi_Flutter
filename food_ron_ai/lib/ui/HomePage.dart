@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
+import 'package:food_ron_ai/database/SqlConnection.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import 'package:food_ron_ai/ui/ImageDetails.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  
   //TODO: file upload image funtion.
 
   uploadImage(File imageFile) async {        
@@ -42,13 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
         // var res = json.decode(value);
         // print(res['data']);
         print(value);
-       Globals.apiResponse = json.decode(value);
-       print(Globals.apiResponse['data']);
-       var dataObjRes = Globals.apiResponse['data'];
-       print(dataObjRes);
-       var dataImg = dataObjRes['imgurl'];
-
-       var items= dataObjRes['items'];
+        Globals.apiResponse = json.decode(value);
+        processJsonResponse();
         navigateTo(context);
       });
     }
@@ -162,6 +159,20 @@ class ImageGridBuilder extends StatelessWidget {
 Future navigateTo(context) async {
   Navigator.push(context,
       MaterialPageRoute(builder: (BuildContext context) => ImageDetails()));
+}
+
+void processJsonResponse() {
+  print(Globals.apiResponse);
+  Globals.apiData = Globals.apiResponse['data'];
+  print(Globals.apiData);
+  Globals.apiImgUrl = Globals.apiData['imgurl'];
+  print(Globals.apiImgUrl);
+  Globals.apiitems = Globals.apiData['items'];
+  print(Globals.apiitems[0]['name']);
+  Globals.apiitemclass = Globals.apiData['item_class'];
+  print(Globals.apiitemclass);
+  Globals.apiitemCount = Globals.apiData['item_count'];
+  print(Globals.apiitemCount);
 }
 
 Future compressImage(File) async{

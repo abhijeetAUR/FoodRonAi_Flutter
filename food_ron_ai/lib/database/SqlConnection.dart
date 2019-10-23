@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -11,7 +11,7 @@ class DatabaseHelper {
   static final _databaseVersion = 1;
 
   static final table = 'ImageMeta';
-  static final colFoodId = '_foodidt';
+  static final colFoodId = '_foodid';
   static final colFoodWeight = '_foodweight';
   static final colFoodName = '_foodname';
   static final colFoodCal = '_foodcal';
@@ -21,6 +21,7 @@ class DatabaseHelper {
   static final colFoodCarb = 'foodcarb';
   static final colFoodServe = 'foodserve';
   static final colFoodFiber = 'foodfiber';
+  static final success = 'success';
   
 
   // make this a singleton class
@@ -53,12 +54,12 @@ class DatabaseHelper {
             $colFoodName TEXT NOT NULL,
             $colFoodWeight TEXT NOT NULL,
             $colFoodCal TEXT NOT NULL,
-            $colFoodFat TEXT NOT NULL,
-            $colFoodSuger TEXT NOT NULL,
             $colFoodCarb TEXT NOT NULL,
-            $colFoodPro TEXT NOT NULL,
+            $colFoodFat TEXT NOT NULL,
             $colFoodFiber TEXT NOT NULL,
+            $colFoodPro TEXT NOT NULL,
             $colFoodServe TEXT NOT NULL,
+            $colFoodSuger TEXT NOT NULL,
             
           )
           ''');
@@ -71,7 +72,23 @@ class DatabaseHelper {
   // inserted row.
   Future<int> insert(Map<String, dynamic> row) async {
     Database db = await instance.database;
-    return await db.insert(table, row);
+    for (var i = 1; i < Globals.apiitemCount; i++) {
+        Map<String, dynamic> row = {
+      DatabaseHelper.colFoodId : Globals.apiitems[i-1][i],
+      DatabaseHelper.colFoodName : Globals.apiitems[i-1]['name'],
+      DatabaseHelper.colFoodWeight : Globals.apiitems[i-1]['weight'],
+      DatabaseHelper.colFoodCal : Globals.apiitems[i-1]['calorie'],
+      DatabaseHelper.colFoodCarb : Globals.apiitems[i-1]['carbohydrates'],
+      DatabaseHelper.colFoodFat : Globals.apiitems[i-1]['fat'],
+      DatabaseHelper.colFoodFiber : Globals.apiitems[i-1]['fiber'],
+      DatabaseHelper.colFoodPro : Globals.apiitems[i-1]['protein'],
+      DatabaseHelper.colFoodServe : Globals.apiitems[i-1]['serve'],
+      DatabaseHelper.colFoodSuger : Globals.apiitems[i-1]['sugar'],
+    };
+      await db.insert(table, row);  
+    } 
+
+    return 1;
   }
 
   // All of the rows are returned as a list of maps, where each map is 

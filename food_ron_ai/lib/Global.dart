@@ -19,6 +19,11 @@ final imguploadurl = "http://api.foodron.ai/v1.0/uploadimg";
 final inf_img_url = "api.foodron.ai/inf-img-url";
 final cameraTxt = "camera";
 var apiResponse ;
+var apiData;
+var apiImgUrl;
+var apiitems;
+var apiitemclass;
+var apiitemCount;
 final topAppBar = AppBar(
   title: Center(
     child: Text("$appName"),
