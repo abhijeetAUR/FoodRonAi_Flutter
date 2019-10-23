@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
-
 import 'WaveSlider.dart';
 
 
@@ -15,6 +14,8 @@ class DetailsOfImageCardWidget extends StatefulWidget {
 class _DetailsOfImageCardWidgetState extends State<DetailsOfImageCardWidget>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
+
+  ImageDataBloc _imageDataBloc = ImageDataBloc();
   
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _DetailsOfImageCardWidgetState extends State<DetailsOfImageCardWidget>
   @override
   void dispose() {
     super.dispose();
+    _imageDataBloc.dispose();
     _controller.dispose();
   }
 
@@ -71,14 +73,18 @@ class _ServeWidgetState extends State<ServeWidget> {
             ),
           ),
           SizedBox(width: 20.0),
-          WaveSlider(
+          Padding(
+            padding: const EdgeInsets.only(left: 30,right: 30),
+            child: WaveSlider(
             onChanged: (double val) {
               setState(() {
-
                 _serve = (val * 10).round();
               });
             },
           ),
+          ),
+
+         
           SizedBox(width: 30.0),
           Padding(
               padding: const EdgeInsets.only(top:20,left: 30),
