@@ -41,6 +41,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                           child: Column(
                             children: <Widget>[
                               new Container(
+                                padding: new EdgeInsets.only(top: 13),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -146,7 +147,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                 padding: new EdgeInsets.only(
                                         right: 5),
                                 child: Text(
-                                          '${Globals.sugar} :\t${snapshot.data[index].suger} \n',
+                                          '${Globals.protein} :\t${snapshot.data[index].protin} \n',
                                           style: TextStyle(fontSize: 20.0),
                                         ),
                               )
