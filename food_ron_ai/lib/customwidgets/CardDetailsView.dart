@@ -11,7 +11,7 @@ class CardDetailsView extends StatefulWidget {
 
 class _CardDetailsViewState extends State<CardDetailsView> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
-  int _serve = 1;
+  int serve = 1;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -59,8 +59,11 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                 child: WaveSlider(
                                   onChanged: (double val) {
                                     setState(() {
-                                      _serve = (val * 10).round();
+                                      serve = (val * 10).round();
+                                     
                                     });
+                                    Globals.servecount=serve;
+                                     _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
                                   },
                                 ),
                               ),
@@ -75,7 +78,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                         style: TextStyle(fontSize: 25.0),
                                       ),
                                       Text(
-                                        _serve.toString(),
+                                        serve.toString(),
                                         style: TextStyle(fontSize: 25.0),
                                       ),
                                     ],

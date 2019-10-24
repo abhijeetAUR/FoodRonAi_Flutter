@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  
+
   //TODO: file upload image funtion.
 
   uploadImage(File imageFile) async {        
@@ -168,7 +168,7 @@ void processJsonResponse() {
   Globals.apiImgUrl = Globals.apiData['imgurl'];
   print(Globals.apiImgUrl);
   Globals.apiitems = Globals.apiData['items'];
-  print(Globals.apiitems[0]['name']);
+  print(Globals.apiitems);
   Globals.apiitemclass = Globals.apiData['item_class'];
   print(Globals.apiitemclass);
   Globals.apiitemCount = Globals.apiData['item_count'];

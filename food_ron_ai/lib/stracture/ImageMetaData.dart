@@ -3,14 +3,14 @@ import 'dart:ffi';
 class ImageMetaData{
   int _id;
   String _foodname;
-  double _weight;
-  double _serve;
-  double _cal;
-  double _card;
-  double _fat;
-  double _protin;
-  double _fiber;
-  double _suger;
+  int _weight;
+  int _serve;
+  int _cal;
+  int _card;
+  int _fat;
+  int _protin;
+  int _fiber;
+  int _suger;
 
   ImageMetaData(this._id,this._foodname,this._weight,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve,this._suger);
 
@@ -22,34 +22,34 @@ class ImageMetaData{
     this._foodname=foodname;
   }
 
-  set weight(double weight){
+  set weight(int weight){
     this._weight=weight;
   }
   
-  set serve(double serve){
+  set serve(int serve){
     this._serve=serve;
   }
 
-  set fat(double fat){
+  set fat(int fat){
     this._fat=fat;
   }
 
-  set protin(double protin){
+  set protin(int protin){
     this._protin=protin;
   }
 
-  set fiber(double fiber){
+  set fiber(int fiber){
     this._fiber=fiber;
   }
 
-  set cal(double cal){
+  set cal(int cal){
     this._cal=cal;
   }
 
-  set card(double card){
+  set card(int card){
     this._card=card;
   }
-  set suger(double suger){
+  set suger(int suger){
     this._suger=suger;
   }
 
@@ -58,19 +58,19 @@ class ImageMetaData{
 
   String get foodname => this._foodname;
 
-  double get weight => this._weight;
+  int get weight => this._weight;
 
-  double get cal => this._cal;
+  int get cal => this._cal;
 
-  double get card => this._card;
+  int get card => this._card;
 
-  double get protin => this._protin;
+  int get protin => this._protin;
 
-  double get fiber => this._fiber;
+  int get fiber => this._fiber;
 
-  double get fat => this._fat;
+  int get fat => this._fat;
 
-  double get serve => this._serve;
+  int get serve => this._serve;
      
-  double get suger => this._suger;
+  int get suger => this._suger;
 }
