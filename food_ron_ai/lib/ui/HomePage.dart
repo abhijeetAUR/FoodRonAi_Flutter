@@ -41,8 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
       var response = await request.send();
       print(response.statusCode);
       response.stream.transform(utf8.decoder).listen((value) {
-        // var res = json.decode(value);
-        // print(res['data']);
         print(value);
         Globals.apiResponse = json.decode(value);
         processJsonResponse();
@@ -164,15 +162,15 @@ Future navigateTo(context) async {
 void processJsonResponse() {
   print(Globals.apiResponse);
   Globals.apiData = Globals.apiResponse['data'];
-  print(Globals.apiData);
+  //print(Globals.apiData);
   Globals.apiImgUrl = Globals.apiData['imgurl'];
-  print(Globals.apiImgUrl);
+ // print(Globals.apiImgUrl);
   Globals.apiitems = Globals.apiData['items'];
-  print(Globals.apiitems);
+ // print(Globals.apiitems);
   Globals.apiitemclass = Globals.apiData['item_class'];
-  print(Globals.apiitemclass);
+//print(Globals.apiitemclass);
   Globals.apiitemCount = Globals.apiData['item_count'];
-  print(Globals.apiitemCount);
+  //print(Globals.apiitemCount);
 }
 
 Future compressImage(File) async{

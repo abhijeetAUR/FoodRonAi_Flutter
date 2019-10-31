@@ -10,5 +10,7 @@ class DataModelImageMeta{
   double fiber;
   double suger;
 
-  DataModelImageMeta(this.id,this.foodname,this.weight,this.cal,this.carb,this.fat,this.fiber,this.protin,this.serve,this.suger);
+  DataModelImageMeta(this.id,this.foodname,this.weight,this.cal,this.carb,this.fat,this.fiber,this.protin,this.serve,this.suger, );
+
+
 }

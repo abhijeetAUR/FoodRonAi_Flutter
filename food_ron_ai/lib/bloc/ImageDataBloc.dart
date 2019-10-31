@@ -8,12 +8,12 @@ import 'package:sqflite/sqflite.dart';
 class ImageDataBloc{
   
   List<ImageMetaData> _imagelist = [
-    ImageMetaData(1,"roti",10, 100, 5, 12, 2, 13, 1,3),
-    ImageMetaData(2,"daal",12, 80, 15, 7, 7, 19, 1,7)
+    ImageMetaData(1,"roti",10, 100, 5, 12, 2, 13, 1,3,"images/pizza.jpg"),
+    ImageMetaData(2,"daal",12, 80, 15, 7, 7, 19, 1,7,"images/pizza.jpg")
   ];
    List<ImageMetaData> _imagelist2 = [
-    ImageMetaData(1,"roti",10, 100, 5, 12, 2, 13, 1,3),
-    ImageMetaData(2,"daal",12, 80, 15, 7, 7, 19, 1,7)
+    ImageMetaData(1,"roti",10, 100, 5, 12, 2, 13, 1,3,"images/pizza.jpg"),
+    ImageMetaData(2,"daal",12, 80, 15, 7, 7, 19, 1,7,"images/pizza.jpg")
   ];
 
   final _imageListStreamController = StreamController<List<ImageMetaData>>();
