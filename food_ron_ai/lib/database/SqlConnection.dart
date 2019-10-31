@@ -18,9 +18,10 @@ class DatabaseHelper {
   static final colFoodFat = '_foodfat';
   static final colFoodSuger = '_foodsuger';
   static final colFoodPro = '_foodpro';
-  static final colFoodCarb = 'foodcarb';
-  static final colFoodServe = 'foodserve';
-  static final colFoodFiber = 'foodfiber';
+ static final colFoodCarb = '_foodcarb';
+  static final colFoodServe = '_foodserve';
+  static final colFoodFiber = '_foodfiber';
+  static final colFoodImgUrl = '_foodimgurl';
   static final success = 'success';
   
 
@@ -60,6 +61,7 @@ class DatabaseHelper {
             $colFoodPro TEXT NOT NULL,
             $colFoodServe TEXT NOT NULL,
             $colFoodSuger TEXT NOT NULL,
+            $colFoodImgUrl TEXT NOT NULL,
             
           )
           ''');
