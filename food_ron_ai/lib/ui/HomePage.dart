@@ -15,6 +15,8 @@ import 'package:dio/dio.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
+import 'package:sqflite/sqflite.dart';
+//import 'package:sqflite/sqlite_api.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -44,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         print(value);
         Globals.apiResponse = json.decode(value);
         processJsonResponse();
+        dbHelper.insert(Globals.apiitems);
         navigateTo(context);
       });
     }
@@ -70,6 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _imageDataBloc.dispose();
     super.dispose();
   }
+
+  final dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +177,7 @@ void processJsonResponse() {
   Globals.apiitemCount = Globals.apiData['item_count'];
   //print(Globals.apiitemCount);
 }
+
 
 Future compressImage(File) async{
 Uint8List m = File.path.readAsBytesSync();
