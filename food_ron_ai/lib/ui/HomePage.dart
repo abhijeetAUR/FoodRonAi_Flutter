@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future getImage(bool isCamera) async {
     File image;
     if (isCamera) {
-      image = await ImagePicker.pickImage(source: ImageSource.camera);
+      image = await ImagePicker.pickImage(source: ImageSource.camera, imageQuality: 70);
       //cimage= compressImage(image) as File;
       uploadImage(image);
     } else {
@@ -154,7 +154,7 @@ class ImageGridBuilder extends StatelessWidget {
   }
 }
 
-Future navigateTo(context) async {
+ Future navigateTo(context) async {
   Navigator.push(context,
       MaterialPageRoute(builder: (BuildContext context) => ImageDetails()));
 }
