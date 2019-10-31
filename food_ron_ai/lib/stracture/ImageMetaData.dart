@@ -11,8 +11,9 @@ class ImageMetaData{
   int _protin;
   int _fiber;
   int _suger;
+  String _imgurl;
 
-  ImageMetaData(this._id,this._foodname,this._weight,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve,this._suger);
+  ImageMetaData(this._id,this._foodname,this._weight,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve,this._suger,this._imgurl);
 
   //setters
   set id(int id){
@@ -52,6 +53,10 @@ class ImageMetaData{
   set suger(int suger){
     this._suger=suger;
   }
+  set imgurl(String imgurl){
+    this._imgurl=imgurl;
+  }
+
 
   //getters
   int get id => this._id;
@@ -73,4 +78,6 @@ class ImageMetaData{
   int get serve => this._serve;
      
   int get suger => this._suger;
+
+  String get imgurl => this._imgurl;
 }
