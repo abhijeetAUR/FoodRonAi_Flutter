@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
-import 'package:food_ron_ai/database/SqlConnection.dart';
+//import 'package:food_ron_ai/database/SqlConnection.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ImageDataBloc{

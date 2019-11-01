@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
-import 'package:food_ron_ai/database/SqlConnection.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import 'package:food_ron_ai/ui/ImageDetails.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,7 +15,7 @@ import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
 import 'package:sqflite/sqflite.dart';
-//import 'package:sqflite/sqlite_api.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -48,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print(value);
       Globals.apiResponse = json.decode(value);
       processJsonResponse();
-      dbHelper.insert(Globals.apiitems);
+     // dbHelper.insert(Globals.apiitems);
       navigateTo(context);
     });
   }
@@ -64,9 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
           source: ImageSource.camera, imageQuality: 70);
       //cimage= compressImage(image) as File;
       uploadImage(image);
-      Timer(Duration(seconds: 15), () {
-        navigateTo(context);
-      });
     } else {
       print('camera error');
     }
@@ -80,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  final dbHelper = DatabaseHelper.instance;
+ // final dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -183,6 +179,7 @@ void processJsonResponse() {
   Globals.apiitemCount = Globals.apiData['item_count'];
   //print(Globals.apiitemCount);
 }
+
 
 Future compressImage(File) async {
   Uint8List m = File.path.readAsBytesSync();
