@@ -14,8 +14,10 @@ import 'package:dio/dio.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-
+import 'package:food_ron_ai/database/DatabaseHelper.dart';
+import 'package:food_ron_ai/database/DataModelImageMeta.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -24,6 +26,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //TODO: file upload image funtion.
+  DatabaseHelper databaseHelper =  DatabaseHelper();
+	List<DataModelImageMeta> imageList;
+	int count = 0;
 
   uploadImage(File imageFile) async {
     var stream =
@@ -39,15 +44,16 @@ class _HomeScreenState extends State<HomeScreen> {
     var multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(imageFile.path));
     //contentType: new MediaType('image', 'png'));
-
     request.files.add(multipartFile);
+    CircularProgressIndicator();
+    await new Future.delayed(const Duration(seconds: 13), () {});
     var response = await request.send();
     print(response.statusCode);
     response.stream.transform(utf8.decoder).listen((value) {
       print(value);
       Globals.apiResponse = json.decode(value);
       processJsonResponse();
-     // dbHelper.insert(Globals.apiitems);
+
       navigateTo(context);
     });
   }
@@ -76,10 +82,14 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
- // final dbHelper = DatabaseHelper.instance;
+  // final dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
+
+    if (imageList == null){
+      imageList = List<DataModelImageMeta>();
+    }
     return Scaffold(
       appBar: Globals.topAppBar,
       // body: FoodItems(),
@@ -92,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.bottomRight,
               child: FloatingActionButton.extended(
                 onPressed: () {
+                  _incrementCounter();
                   getImage(true);
                 },
                 icon: Icon(Icons.camera),
@@ -159,6 +170,7 @@ class ImageGridBuilder extends StatelessWidget {
       },
     );
   }
+
 }
 
 Future navigateTo(context) async {
@@ -179,7 +191,6 @@ void processJsonResponse() {
   Globals.apiitemCount = Globals.apiData['item_count'];
   //print(Globals.apiitemCount);
 }
-
 
 Future compressImage(File) async {
   Uint8List m = File.path.readAsBytesSync();
@@ -204,4 +215,11 @@ Future compressImage(File) async {
       return i;
     });
   });
+}
+
+_incrementCounter() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  Globals.counter = (prefs.getInt('counter') ?? 0) + 1;
+  print('${Globals.counter} times.');
+  await prefs.setInt('counter', Globals.counter);
 }

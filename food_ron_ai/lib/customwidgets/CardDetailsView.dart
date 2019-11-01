@@ -1,5 +1,8 @@
 import 'dart:math';
-
+import 'dart:async';
+import 'package:sqflite/sqflite.dart';
+import 'package:food_ron_ai/database/DatabaseHelper.dart';
+import 'package:food_ron_ai/database/DataModelImageMeta.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
@@ -57,7 +60,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                               Padding(
                                 padding:
                                     const EdgeInsets.only(left: 2, right: 2, top: 10),
-                                    child: Slider(
+                                    child: Slider.adaptive(
                                       activeColor: Colors.orangeAccent,
                                       value: serve.toDouble(),
                                       min: 1,
@@ -73,16 +76,6 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                       },
                                       
                                     ),
-                                // child: WaveSlider(
-                                //   onChanged: (double val) {
-                                //     setState(() {
-                                //       serve = (val * 10).round();
-                                     
-                                //     });
-                                //     Globals.servecount=serve;
-                                //      _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
-                                //   },
-                                // ),
                               ),
                               SizedBox(width: 20.0),
                               Padding(
@@ -95,7 +88,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                         style: TextStyle(fontSize: 25.0),
                                       ),
                                       Text(
-                                        '$serve',
+                                        '${snapshot.data[index].serve}',
                                         style: TextStyle(fontSize: 25.0),
                                       ),
                                     ],

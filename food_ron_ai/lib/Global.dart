@@ -8,6 +8,7 @@ final appName = "Foodron.ai";
 final img_url = "api.foodron.ai/img-url";
 final serve = "Serve";
 int servecount ;
+int counter = 1;
 final weight = "Weight";
 final calorie = "Calorie";
 final carbohydrates = "Carb's";

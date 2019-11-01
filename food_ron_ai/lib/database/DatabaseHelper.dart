@@ -88,7 +88,7 @@ class DatabaseHelper{
 		return result;
 	}
 
-  // Get number of Note objects in database
+  // Get number of image objects in database
 	Future<int> getCount() async {
 		Database db = await this.database;
 		List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $imageTable');
@@ -96,18 +96,18 @@ class DatabaseHelper{
 		return result;
 	}
 
-  // Get the 'Map List' [ List<Map> ] and convert it to 'Note List' [ List<Note> ]
+  // Get the 'Map List' [ List<Map> ] and convert it to 'image List' [ List<image> ]
 	Future<List<DataModelImageMeta>> getImageList() async {
 
 		var imageMapList = await getImageMapList(); // Get 'Map List' from database
 		int count = imageMapList.length;         // Count the number of map entries in db table
 
-		List<DataModelImageMeta> noteList = List<DataModelImageMeta>();
-		// For loop to create a 'Note List' from a 'Map List'
+		List<DataModelImageMeta> imageList = List<DataModelImageMeta>();
+		// For loop to create a 'image List' from a 'Map List'
 		for (int i = 0; i < count; i++) {
-			noteList.add(DataModelImageMeta.fromMapObject(imageMapList[i]));
+			imageList.add(DataModelImageMeta.fromMapObject(imageMapList[i]));
 		}
 
-		return noteList;
+		return imageList;
 	}
 }
