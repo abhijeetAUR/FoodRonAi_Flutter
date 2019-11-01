@@ -18,7 +18,7 @@ class DatabaseHelper {
   static final colFoodFat = '_foodfat';
   static final colFoodSuger = '_foodsuger';
   static final colFoodPro = '_foodpro';
- static final colFoodCarb = '_foodcarb';
+  static final colFoodCarb = '_foodcarb';
   static final colFoodServe = '_foodserve';
   static final colFoodFiber = '_foodfiber';
   static final colFoodImgUrl = '_foodimgurl';

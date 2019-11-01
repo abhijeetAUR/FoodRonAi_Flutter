@@ -12,7 +12,7 @@ class CardDetailsView extends StatefulWidget {
 
 class _CardDetailsViewState extends State<CardDetailsView> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
-  double serve = 1;
+  int serve = 1;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -59,11 +59,13 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                     const EdgeInsets.only(left: 2, right: 2, top: 10),
                                     child: Slider(
                                       activeColor: Colors.orangeAccent,
-                                      value: serve,
-                                      onChanged: (newServe){
+                                      value: serve.toDouble(),
+                                      onChanged: (double newServe){
                                         setState(() {
-                                         serve= newServe ; 
-                                        });  
+                                        serve= newServe.round(); 
+                                        }); 
+                                        Globals.servecount= serve;
+                                       _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
                                       },
                                       min: 1,
                                       max: 10,
@@ -92,7 +94,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                         style: TextStyle(fontSize: 25.0),
                                       ),
                                       Text(
-                                        serve.toString(),
+                                        '$serve',
                                         style: TextStyle(fontSize: 25.0),
                                       ),
                                     ],
