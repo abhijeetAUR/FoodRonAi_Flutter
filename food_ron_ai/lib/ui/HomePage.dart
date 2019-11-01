@@ -24,32 +24,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   //TODO: file upload image funtion.
 
-  uploadImage(File imageFile) async {        
-    var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-      var length = await imageFile.length();
+  uploadImage(File imageFile) async {
+    var stream =
+        new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+    var length = await imageFile.length();
 
-      var uri = Uri.parse(Globals.imguploadurl);
-      Map<String, String> headers = { "authorization": "96331CA0-7959-402E-8016-B7ABB3287A16"};
-     var request = new http.MultipartRequest("POST", uri);
-     request.headers.addAll(headers);
-      var multipartFile = new http.MultipartFile('file', stream, length,
-          filename: basename(imageFile.path));
-          //contentType: new MediaType('image', 'png'));
+    var uri = Uri.parse(Globals.imguploadurl);
+    Map<String, String> headers = {
+      "authorization": "96331CA0-7959-402E-8016-B7ABB3287A16"
+    };
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers.addAll(headers);
+    var multipartFile = new http.MultipartFile('file', stream, length,
+        filename: basename(imageFile.path));
+    //contentType: new MediaType('image', 'png'));
 
-      request.files.add(multipartFile);
-      var response = await request.send();
-      print(response.statusCode);
-      response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-        Globals.apiResponse = json.decode(value);
-        processJsonResponse();
-        dbHelper.insert(Globals.apiitems);
-        navigateTo(context);
-      });
-    }
+    request.files.add(multipartFile);
+    var response = await request.send();
+    print(response.statusCode);
+    response.stream.transform(utf8.decoder).listen((value) {
+      print(value);
+      Globals.apiResponse = json.decode(value);
+      processJsonResponse();
+      dbHelper.insert(Globals.apiitems);
+      navigateTo(context);
+    });
+  }
 
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   File _image;
@@ -58,9 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Future getImage(bool isCamera) async {
     File image;
     if (isCamera) {
-      image = await ImagePicker.pickImage(source: ImageSource.camera, imageQuality: 70);
+      image = await ImagePicker.pickImage(
+          source: ImageSource.camera, imageQuality: 70);
       //cimage= compressImage(image) as File;
       uploadImage(image);
+      Timer(Duration(seconds: 15), () {
+        navigateTo(context);
+      });
     } else {
       print('camera error');
     }
@@ -159,7 +165,7 @@ class ImageGridBuilder extends StatelessWidget {
   }
 }
 
- Future navigateTo(context) async {
+Future navigateTo(context) async {
   Navigator.push(context,
       MaterialPageRoute(builder: (BuildContext context) => ImageDetails()));
 }
@@ -169,38 +175,36 @@ void processJsonResponse() {
   Globals.apiData = Globals.apiResponse['data'];
   //print(Globals.apiData);
   Globals.apiImgUrl = Globals.apiData['imgurl'];
- // print(Globals.apiImgUrl);
+  // print(Globals.apiImgUrl);
   Globals.apiitems = Globals.apiData['items'];
- // print(Globals.apiitems);
+  // print(Globals.apiitems);
   Globals.apiitemclass = Globals.apiData['item_class'];
 //print(Globals.apiitemclass);
   Globals.apiitemCount = Globals.apiData['item_count'];
   //print(Globals.apiitemCount);
 }
 
+Future compressImage(File) async {
+  Uint8List m = File.path.readAsBytesSync();
+  ui.Image x = await decodeImageFromList(m);
+  ByteData bytes = await x.toByteData();
+  print('height is ${x.height}'); //height of original image
+  print('width is ${x.width}'); //width of oroginal image
 
-Future compressImage(File) async{
-Uint8List m = File.path.readAsBytesSync();
-        ui.Image x = await decodeImageFromList(m);
-        ByteData bytes = await x.toByteData();
-        print('height is ${x.height}'); //height of original image
-        print('width is ${x.width}'); //width of oroginal image
+  print('array is $m');
+  print('original image size is ${bytes.lengthInBytes}');
 
-        print('array is $m');
-        print('original image size is ${bytes.lengthInBytes}');
-
-            ui.instantiateImageCodec(m, targetHeight: 2160, targetWidth: 2160)
-            .then((codec) {
-          codec.getNextFrame().then((frameInfo) async {
-            ui.Image i = frameInfo.image;
-            print('image width is ${i.width}');//height of resized image
-            print('image height is ${i.height}');//width of resized image
-            ByteData bytes = await i.toByteData();
-            File.writeAsBytes(bytes.buffer.asUint32List());
-            print('resized image size is ${bytes.lengthInBytes}');
-            return i;
-          });
-        });
-
-  
+  ui
+      .instantiateImageCodec(m, targetHeight: 2160, targetWidth: 2160)
+      .then((codec) {
+    codec.getNextFrame().then((frameInfo) async {
+      ui.Image i = frameInfo.image;
+      print('image width is ${i.width}'); //height of resized image
+      print('image height is ${i.height}'); //width of resized image
+      ByteData bytes = await i.toByteData();
+      File.writeAsBytes(bytes.buffer.asUint32List());
+      print('resized image size is ${bytes.lengthInBytes}');
+      return i;
+    });
+  });
 }
