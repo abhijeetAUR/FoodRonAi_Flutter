@@ -1,8 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
-import 'WaveSlider.dart';
 
 class CardDetailsView extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class CardDetailsView extends StatefulWidget {
 
 class _CardDetailsViewState extends State<CardDetailsView> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
-  int serve = 1;
+  double serve = 1;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -55,22 +56,35 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                               SizedBox(width: 20.0),
                               Padding(
                                 padding:
-                                    const EdgeInsets.only(left: 30, right: 30),
-                                child: WaveSlider(
-                                  onChanged: (double val) {
-                                    setState(() {
-                                      serve = (val * 10).round();
+                                    const EdgeInsets.only(left: 2, right: 2, top: 10),
+                                    child: Slider(
+                                      activeColor: Colors.orangeAccent,
+                                      value: serve,
+                                      onChanged: (newServe){
+                                        setState(() {
+                                         serve= newServe ; 
+                                        });  
+                                      },
+                                      min: 1,
+                                      max: 10,
+                                      divisions: 10,
+                                      label: "$serve",
+                                    ),
+                                // child: WaveSlider(
+                                //   onChanged: (double val) {
+                                //     setState(() {
+                                //       serve = (val * 10).round();
                                      
-                                    });
-                                    Globals.servecount=serve;
-                                     _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
-                                  },
-                                ),
+                                //     });
+                                //     Globals.servecount=serve;
+                                //      _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
+                                //   },
+                                // ),
                               ),
                               SizedBox(width: 20.0),
                               Padding(
                                   padding:
-                                      const EdgeInsets.only(top: 20, left: 30),
+                                      const EdgeInsets.only(top: 10, left: 30),
                                   child: Row(
                                     children: <Widget>[
                                       Text(
