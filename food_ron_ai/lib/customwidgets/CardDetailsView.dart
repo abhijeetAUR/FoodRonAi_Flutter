@@ -60,6 +60,10 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                     child: Slider(
                                       activeColor: Colors.orangeAccent,
                                       value: serve.toDouble(),
+                                      min: 1,
+                                      max: 10,
+                                      divisions: 9,
+                                      label: "$serve",
                                       onChanged: (double newServe){
                                         setState(() {
                                         serve= newServe.round(); 
@@ -67,10 +71,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                         Globals.servecount= serve;
                                        _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
                                       },
-                                      min: 1,
-                                      max: 10,
-                                      divisions: 10,
-                                      label: "$serve",
+                                      
                                     ),
                                 // child: WaveSlider(
                                 //   onChanged: (double val) {
