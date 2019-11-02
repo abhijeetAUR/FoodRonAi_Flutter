@@ -15,7 +15,12 @@ class CardDetailsView extends StatefulWidget {
 
 class _CardDetailsViewState extends State<CardDetailsView> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
-  int serve = 1;
+  int serve ;
+  @override
+  void initState() {
+    super.initState();
+    serve = 1;
+  }
   @override
   void dispose() {
     // TODO: implement dispose
@@ -60,9 +65,10 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                               Padding(
                                 padding:
                                     const EdgeInsets.only(left: 2, right: 2, top: 10),
-                                    child: Slider.adaptive(
+                                    child: Slider.adaptive(                                   
+                                      key: UniqueKey(),
                                       activeColor: Colors.orangeAccent,
-                                      value: serve.toDouble(),
+                                      value: snapshot.data[index].serve.truncateToDouble(),
                                       min: 1,
                                       max: 10,
                                       divisions: 9,
@@ -164,14 +170,6 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                           style: TextStyle(fontSize: 20.0),
                                         ),
                               )
-                              // Row(
-                              //   children: <Widget>[
-                              //     Text(
-                              //               '\n${Globals.protein} :\t${snapshot.data[index].protin} \n',
-                              //               style: TextStyle(fontSize: 20.0),
-                              //             ),
-                              //   ],
-                              // )
                             ],
                           ),
                         ),
