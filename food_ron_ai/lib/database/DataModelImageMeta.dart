@@ -1,106 +1,69 @@
-import 'package:food_ron_ai/stracture/ImageMetaData.dart';
+import 'dart:core';
 
-class DataModelImageMeta{
+class ImgItemDataMapper {
+  String name;
+  double serve;
+  double weight;
+  double calories;
+  double carbohydrates;
+  double fiber;
+  double fat;
+  double protin;
+  double suger;
+}
+
+//---------------------------------
+class DataModelImageMeta {
   int _id;
-  int _indexno;
-  String _foodname;
-  double _weight;
-  double _serve;
-  double _cal;
-  double _carb;
-  double _fat;
-  double _protin;
-  double _fiber;
-  double _suger;
-  String _imgurl;
-
-  DataModelImageMeta(this._id,this._indexno,this._foodname,this._weight,this._cal,this._carb,this._fat,this._fiber,this._protin,this._serve,this._suger,this._imgurl);
+  String _imgUrl;
+  String _infImgUrl;
+  List<String> _itemClass;
+  List<ImgItemDataMapper> _items;
+  
+  DataModelImageMeta(
+      // this._id,
+      this._imgUrl,
+      this._infImgUrl,
+      this._itemClass,
+      this._items
+      );
 
   int get id => _id;
 
-  int get indexno => _indexno;
+  String get imgurl => _imgUrl;
 
-  String get foodname => _foodname;
+  String get infimgurl => _infImgUrl;
 
-  double get weight => _weight;
+  List<String> get itemclass => _itemClass;
 
-  double get cal => _cal;
+  List<ImgItemDataMapper> get items => _items;
 
-  double get carb => _carb;
-
-  double get fat => _fat;
-
-  double get fiber => _fiber;
-
-  double get protin => _protin;
-
-  double get serve => _serve;
-
-  double get suger => _suger;
-
-  String get imgurl => _imgurl;
-
-  set indexno(int newIndexno){
-    this._indexno = newIndexno;
+  set imgurl(String newImgUrl){
+    this._imgUrl = newImgUrl;
   }
 
-  set foodname(String newFoodname){
-    //validation check if any
-    this._foodname = newFoodname;
+  set infimgurl(String newImfImgUrl){
+    this._infImgUrl = newImfImgUrl;
   }
-  
-  set weight(double newWeight){
-    this._weight = newWeight;
+
+  set itemclass(List<String> newItemClass){
+    this._itemClass = newItemClass;
   }
-  
-  set cal(double newCal){
-    this._cal = newCal;
-  }
-  
-  set carb(double newCarb){
-    this._carb = newCarb;
-  }
-  
-  set fat(double newFat){
-    this._fat = newFat;
-  }
-  
-  set fiber(double newFiber){
-    this._fiber = newFiber;
-  }
-  
-  set protin(double newProtin){
-    this._protin = newProtin;
-  }
-  
-  set serve(double newServe){
-    this._serve = newServe;
-  }
-  
-  set suger(double newSuger){
-    this._suger = newSuger;
-  }
-  
-  set imgurl(String newImgurl){
-    this._imgurl= newImgurl;
-  }
+
+  set items(List<ImgItemDataMapper> newItems){
+    this._items = newItems;
+  } 
+
 //convert image meta object into map
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
-    if(id != null){
+    if (id != null) {
       map['id'] = _id;
     }
-    map['indexno'] = _indexno;
-    map['foodname'] = _foodname;
-    map['weight'] = _weight;
-    map['serve'] = _serve;
-    map['cal'] = _cal;
-    map['carb'] = _carb;
-    map['fat'] = _fat;
-    map['protin'] = _protin;
-    map['fiber'] = _fiber;
-    map['suger'] = _suger;
-    map['imgurl'] = _imgurl;
+    map['imgurl'] = _imgUrl;
+    map['infimgurl'] = _infImgUrl;
+    map['itemclass'] = _itemClass;
+    map['items'] = _items;
 
     return map;
   }
@@ -108,18 +71,9 @@ class DataModelImageMeta{
 //extract imaget object from map object
   DataModelImageMeta.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
-    this._indexno = map['indexno'];
-    this._foodname = map['foodname'];
-    this._weight = map['weight'];
-    this._serve = map['serve'];
-    this._cal = map['cal'];
-    this._carb = map['carb'];
-    this._fat = map['fat'];
-    this._protin = map['protin'];
-    this._fiber = map['fiber'];
-    this._suger = map['suger'];
-    this._imgurl = map['imgurl'];
-
+    this._imgUrl = map['imgurl'];
+    this._infImgUrl = map['infimgurl'];
+    this._itemClass = map['itemclass'];
+    this._items = map['items'];
   }
-  
 }

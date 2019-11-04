@@ -13,7 +13,7 @@ class ImageMetaData{
   int _suger;
   String _imgurl;
 
-  ImageMetaData(this._id,this._foodname,this._weight,this._cal,this._card,this._fat,this._fiber,this._protin,this._serve,this._suger,this._imgurl);
+  ImageMetaData(this._id,this._foodname,this._serve,this._weight,this._cal,this._card,this._fiber,this._fat,this._protin,this._suger,this._imgurl);
 
   //setters
   set id(int id){

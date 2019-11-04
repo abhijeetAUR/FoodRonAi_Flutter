@@ -20,15 +20,16 @@ import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/database/DataModelImageMeta.dart';
 
 class HomeScreen extends StatefulWidget {
+  
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //TODO: file upload image funtion.
-  DatabaseHelper databaseHelper =  DatabaseHelper();
-	List<DataModelImageMeta> imageList;
-	int count = 0;
+  
+
+  //file upload image funtion.
+  DataModelImageMeta dataModelImageMeta;  
 
   uploadImage(File imageFile) async {
     var stream =
@@ -45,16 +46,19 @@ class _HomeScreenState extends State<HomeScreen> {
         filename: basename(imageFile.path));
     //contentType: new MediaType('image', 'png'));
     request.files.add(multipartFile);
-    CircularProgressIndicator();
-    await new Future.delayed(const Duration(seconds: 13), () {});
+    
     var response = await request.send();
     print(response.statusCode);
     response.stream.transform(utf8.decoder).listen((value) {
       print(value);
       Globals.apiResponse = json.decode(value);
       processJsonResponse();
-
-      navigateTo(context);
+      updateBlocList(Globals.apiitems,Globals.apiImgUrl);
+      dataModelImageMeta = DataModelImageMeta(Globals.apiImgUrl, Globals.apiImgUrl, Globals.apiitemclass, Globals.apiitems);
+      _save();
+      updateListView();
+      _incrementCounter();
+      // navigateTo(context);
     });
   }
 
@@ -67,8 +71,12 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isCamera) {
       image = await ImagePicker.pickImage(
           source: ImageSource.camera, imageQuality: 70);
-      //cimage= compressImage(image) as File;
-      uploadImage(image);
+          await new Future.delayed(const Duration(seconds: 13), () {
+            uploadImage(image);
+      CircularProgressIndicator();
+      
+    });
+      
     } else {
       print('camera error');
     }
@@ -82,52 +90,69 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  // final dbHelper = DatabaseHelper.instance;
+  // databasehelper instance created
+  DatabaseHelper databaseHelper =  DatabaseHelper();
+	List<DataModelImageMeta> imageList;
+	int count = 0;
+
+  
+  //save row to database
+
+  //update list view for image
+  void updateListView() {
+
+		final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+		dbFuture.then((database) {
+
+			Future<List<DataModelImageMeta>> imageListFuture = databaseHelper.getImageList();
+			imageListFuture.then((imageList) {
+				setState(() {
+				  this.imageList = imageList;
+				  this.count = imageList.length;
+				});
+			});
+		});
+  }
+
+  void _save() async {
+
+		//dataModelImageMeta.date = DateFormat.yMMMd().format(DateTime.now());
+		int result;
+		if (dataModelImageMeta.id != null) {  // Case 1: Update operation
+      result = await databaseHelper.insertImage(dataModelImageMeta);
+      print(result);
+		} else { // Case 2: Insert Operation
+			result = await databaseHelper.updateImage(dataModelImageMeta);
+      print(result);
+		}
+
+		if (result != 0) {  // Success
+		debugPrint('saved successful image data');
+		} else {  // Failure
+    debugPrint('Problem Saving saved successful image data');
+		}
+	}
+
+  void _showSnackBar(BuildContext context, String message) {
+
+		final snackBar = SnackBar(content: Text(message));
+		Scaffold.of(context).showSnackBar(snackBar);
+	}
 
   @override
   Widget build(BuildContext context) {
 
     if (imageList == null){
       imageList = List<DataModelImageMeta>();
+      updateListView();
     }
+
     return Scaffold(
       appBar: Globals.topAppBar,
       // body: FoodItems(),
       body: Stack(
         children: <Widget>[
-          new ImageGridBuilder(imageDataBloc: _imageDataBloc),
-          new Container(
-            padding: EdgeInsets.all(15),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: FloatingActionButton.extended(
-                onPressed: () {
-                  _incrementCounter();
-                  getImage(true);
-                },
-                icon: Icon(Icons.camera),
-                label: Text("${Globals.cameraTxt}"),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ImageGridBuilder extends StatelessWidget {
-  const ImageGridBuilder({
-    Key key,
-    @required ImageDataBloc imageDataBloc,
-  })  : _imageDataBloc = imageDataBloc,
-        super(key: key);
-
-  final ImageDataBloc _imageDataBloc;
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<List<ImageMetaData>>(
+          new StreamBuilder<List<ImageMetaData>>(
       stream: _imageDataBloc.imageListStream,
       builder:
           (BuildContext context, AsyncSnapshot<List<ImageMetaData>> snapshot) {
@@ -142,6 +167,7 @@ class ImageGridBuilder extends StatelessWidget {
                   child: Material(
                     child: InkWell(
                       onTap: () {
+                        updateBlocList(this.imageList[index].items, this.imageList[index].imgurl);
                         navigateTo(context);
                       },
                       child: GridTile(
@@ -158,7 +184,7 @@ class ImageGridBuilder extends StatelessWidget {
                           ),
                         ),
                         child: Image.asset(
-                          'images/pizza.jpg',
+                          snapshot.data[index].imgurl,
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -168,9 +194,94 @@ class ImageGridBuilder extends StatelessWidget {
               );
             });
       },
+    ),
+          new Container(
+            padding: EdgeInsets.all(15),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  getImage(true);
+                },
+                icon: Icon(Icons.camera),
+                label: Text("${Globals.cameraTxt}"),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
+}
 
+// class ImageGridBuilder extends StatelessWidget {
+//   const ImageGridBuilder({
+//     Key key,
+//     @required ImageDataBloc imageDataBloc, DatabaseHelper databaseHelper,
+//   })  : _imageDataBloc = imageDataBloc,
+//         super(key: key);
+
+//   final ImageDataBloc _imageDataBloc;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // return StreamBuilder<List<ImageMetaData>>(
+//     //   stream: _imageDataBloc.imageListStream,
+//     //   builder:
+//     //       (BuildContext context, AsyncSnapshot<List<ImageMetaData>> snapshot) {
+//     //     return GridView.builder(
+//     //         gridDelegate:
+//     //             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+//     //         itemCount: snapshot.data.length,
+//     //         itemBuilder: (BuildContext context, int index) {
+//     //           return Card(
+//     //             child: Hero(
+//     //               tag: snapshot.data[index].foodname,
+//     //               child: Material(
+//     //                 child: InkWell(
+//     //                   onTap: () {
+//     //                     updateBlocList(newItemList, imgurl)
+//     //                     navigateTo(context);
+//     //                   },
+//     //                   child: GridTile(
+//     //                     footer: Container(
+//     //                       color: Colors.black26,
+//     //                       child: ListTile(
+//     //                         leading: Text(
+//     //                           snapshot.data[index].foodname,
+//     //                           style: TextStyle(
+//     //                               fontWeight: FontWeight.bold,
+//     //                               fontSize: 20,
+//     //                               color: Colors.white),
+//     //                         ),
+//     //                       ),
+//     //                     ),
+//     //                     child: Image.asset(
+//     //                       'images/pizza.jpg',
+//     //                       fit: BoxFit.fill,
+//     //                     ),
+//     //                   ),
+//     //                 ),
+//     //               ),
+//     //             ),
+//     //           );
+//     //         });
+//     //   },
+//     // );
+//   }
+
+// }
+
+Future updateBlocList(List newItemList, String imgurl ) async{
+  //TODO: update list in bloc file to use bloc pattern for state management
+  List newItemList2 = newItemList;
+  for (var i = 0; i < newItemList2.length; i++) {
+    dynamic items = newItemList2[i];
+    items.add(imgurl);
+    newItemList2[i] = items;
+  }
+  Globals.changedImageMetaData = newItemList2;
+  return Globals.changedImageMetaData;
 }
 
 Future navigateTo(context) async {
@@ -178,11 +289,11 @@ Future navigateTo(context) async {
       MaterialPageRoute(builder: (BuildContext context) => ImageDetails()));
 }
 
-void processJsonResponse() {
+Future processJsonResponse() async {
   print(Globals.apiResponse);
-  Globals.apiData = Globals.apiResponse['data'];
+  Globals.apiData = Globals.apiResponse;
   //print(Globals.apiData);
-  Globals.apiImgUrl = Globals.apiData['imgurl'];
+  Globals.apiImgUrl = Globals.apiData['img_url'];
   // print(Globals.apiImgUrl);
   Globals.apiitems = Globals.apiData['items'];
   // print(Globals.apiitems);
@@ -190,6 +301,7 @@ void processJsonResponse() {
 //print(Globals.apiitemclass);
   Globals.apiitemCount = Globals.apiData['item_count'];
   //print(Globals.apiitemCount);
+  return 1;
 }
 
 Future compressImage(File) async {
@@ -217,9 +329,10 @@ Future compressImage(File) async {
   });
 }
 
-_incrementCounter() async {
+Future _incrementCounter() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Globals.counter = (prefs.getInt('counter') ?? 0) + 1;
   print('${Globals.counter} times.');
   await prefs.setInt('counter', Globals.counter);
+  return 1;
 }
