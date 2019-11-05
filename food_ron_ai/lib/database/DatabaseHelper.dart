@@ -11,10 +11,11 @@ class DatabaseHelper {
 
   String imageTable = 'imagetable';
   String colId = 'id';
-  String colImgUrl = 'imgurl';
-  String colInfImgUrl = 'infimgurl';
+  String colImgUrl = 'img_url';
+  String colInfImgUrl = 'inf_img_url';
   List<String> colItemClass;
   List<ImgItemDataMapper> colItems;
+  String itemMeta = "itemMeta";
 
   DatabaseHelper._createInstance(); // named constructorr to create instance of database helper
 
@@ -46,7 +47,14 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $imageTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colImgUrl TEXT NOT NULL,$colInfImgUrl TEXT NOT NULL, $colItems LIST NOT NULL )');
+        // 'CREATE TABLE $imageTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colImgUrl TEXT NOT NULL,$colInfImgUrl TEXT NOT NULL, $colItems LIST NOT NULL )');
+        ''' CREATE TABLE $imageTable
+      (
+        $colId INTEGER PRIMARY KEY,
+        $colImgUrl TEXT,
+        $colInfImgUrl TEXT,
+        $itemMeta TEXT
+      )''');
   }
 
   // Fetch Operation: Get all imagemeta objects from database
@@ -69,6 +77,13 @@ class DatabaseHelper {
     Database db = await this.database;
     var result = await db.insert(imageTable, dataModelImageMeta.toMap());
     return result;
+  }
+
+  Future<List> getAllRecords(String dbTable) async {
+    var dbClient = await this.database;
+    var result = await dbClient.rawQuery("SELECT * FROM $dbTable");
+
+    return result.toList();
   }
 
   // Update Operation: Update a imagemeta object and save it to database

@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     response.stream.transform(utf8.decoder).listen((value) {
       Map<String, dynamic> mappingData = json.decode(value);
       imageUploadResponse = ImageUploadResponse();
+      imageUploadResponse.id = 2;
       imageUploadResponse.img_url = mappingData['img_url'];
       imageUploadResponse.inf_img_url = mappingData['inf_img_url'];
       imageUploadResponse.item_count = mappingData['item_count'];
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         var value = ImageUploadMetaItems.fromJson(item);
         imageUploadResponse.items.add(value);
       }
-
+      convertToString(imageUploadResponse);
       print(imageUploadResponse);
       _save();
       // Globals.apiResponse = json.decode(value);
@@ -72,6 +73,15 @@ class _HomeScreenState extends State<HomeScreen> {
       // _incrementCounter();
       // navigateTo(context);
     });
+  }
+
+  void convertToString(ImageUploadResponse imageUploadResponse) {
+    String metaItems = "";
+    imageUploadResponse.items.forEach((oneItem) => {
+          metaItems +=
+              " ${oneItem.name}, ${oneItem.serve}, ${oneItem.weight}, ${oneItem.calorie}, ${oneItem.carbohydrates}, ${oneItem.fiber}, ${oneItem.fat}, ${oneItem.protein}, ${oneItem.sugar} | "
+        });
+    imageUploadResponse.itemMeta = metaItems;
   }
 
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
@@ -125,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _save() async {
     //dataModelImageMeta.date = DateFormat.yMMMd().format(DateTime.now());
     int result;
-    if (dataModelImageMeta.id != null) {
+    if (imageUploadResponse.id != null) {
       // Case 1: Update operation
       result = await databaseHelper.insertImageMeta(imageUploadResponse);
       print(result);
@@ -147,6 +157,20 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(content: Text(message));
     Scaffold.of(context).showSnackBar(snackBar);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //TODO: Pass fetched recoreds to bloc and render on ui
+    //then on increment function update the values and update it in db
+    getRecords();
+  }
+
+  getRecords() async {
+    var result = await databaseHelper.getAllRecords("imagetable");
+    print(result);
   }
 
   @override

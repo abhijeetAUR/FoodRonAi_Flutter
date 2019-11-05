@@ -1,10 +1,12 @@
 import 'dart:core';
 
 class ImageUploadResponse {
+  int id;
   String img_url;
   String inf_img_url;
   int item_count;
   List<ImageUploadMetaItems> items;
+  String itemMeta;
 
   ImageUploadResponse({this.img_url, this.inf_img_url, this.item_count})
       : items = List<ImageUploadMetaItems>();
@@ -13,8 +15,8 @@ class ImageUploadResponse {
     var map = Map<String, dynamic>();
     map['img_url'] = img_url;
     map['inf_img_url'] = inf_img_url;
-    map['item_count'] = item_count;
-    map['items'] = items;
+    // map['item_count'] = item_count;
+    map['itemMeta'] = itemMeta;
 
     return map;
   }
@@ -44,15 +46,15 @@ class ImageUploadMetaItems {
 
   factory ImageUploadMetaItems.fromJson(Map<String, dynamic> json) {
     return ImageUploadMetaItems(
-      name: json['name'].toString() + ",",
-      weight: json['weight'] + ",",
-      serve: json['serve'] + ",",
-      calorie: json['calorie'] + ",",
-      carbohydrates: json['carbohydrates'] + ",",
-      fat: json['fat'] + ",",
-      protein: json['protein'] + ",",
-      fiber: json['fiber'] + ",",
-      sugar: json['sugar'] + ",",
+      name: json['name'].toString(),
+      weight: json['weight'],
+      serve: json['serve'],
+      calorie: json['calorie'],
+      carbohydrates: json['carbohydrates'],
+      fat: json['fat'],
+      protein: json['protein'],
+      fiber: json['fiber'],
+      sugar: json['sugar'],
     );
   }
 }
