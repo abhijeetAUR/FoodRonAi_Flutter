@@ -1,3 +1,4 @@
+import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -45,7 +46,7 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $imageTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colImgUrl TEXT NOT NULL,$colInfImgUrl TEXT NOT NULL, $colItemClass LIST NOT NULL, $colItems LIST NOT NULL )');
+        'CREATE TABLE $imageTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colImgUrl TEXT NOT NULL,$colInfImgUrl TEXT NOT NULL, $colItems LIST NOT NULL )');
   }
 
   // Fetch Operation: Get all imagemeta objects from database
@@ -58,7 +59,13 @@ class DatabaseHelper {
   }
 
   // Insert Operation: Insert a datamodelimagemeta object to database
-  Future<int> insertImage(DataModelImageMeta dataModelImageMeta) async {
+  // Future<int> insertImage(DataModelImageMeta dataModelImageMeta) async {
+  //   Database db = await this.database;
+  //   var result = await db.insert(imageTable, dataModelImageMeta.toMap());
+  //   return result;
+  // }
+
+  Future<int> insertImageMeta(ImageUploadResponse dataModelImageMeta) async {
     Database db = await this.database;
     var result = await db.insert(imageTable, dataModelImageMeta.toMap());
     return result;
