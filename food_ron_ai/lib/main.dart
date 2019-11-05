@@ -1,23 +1,24 @@
-import 'package:flutter/material.dart' show BuildContext, Colors, MaterialApp, State, StatefulWidget, ThemeData, Widget, runApp;
-import 'package:food_ron_ai/ui/SplashScreen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:food_ron_ai/ui/Splashpage.dart';
 
+void main() => runApp(new MyApp());
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-  theme: 
-  ThemeData(primaryColor: Colors.orangeAccent, accentColor: Colors.orangeAccent),
-  debugShowCheckedModeBanner: false,
-  home: SplashScreen(),
-  );
+
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'foodron.ai',
+      theme: new ThemeData(
+        primarySwatch: Colors.orange,
+        hintColor: Colors.white,
+        inputDecorationTheme: new InputDecorationTheme(
+          labelStyle: new TextStyle(color: Colors.white),
+        ),
+      ),
+      home: new SplashPage(),
+    );
   }
 }
-

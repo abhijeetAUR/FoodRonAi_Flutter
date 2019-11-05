@@ -59,7 +59,9 @@ flutter:
     - images/burger.jpg
     - images/icecream.jpg
     - images/pizza.jpg
-    - images/apidata.json
+    - images/splashscreen.png
+    
+
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
