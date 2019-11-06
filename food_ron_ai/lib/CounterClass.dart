@@ -7,17 +7,17 @@ class ReturnCounterValue{
 
   incrementCounterWithOne() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  counterStart = (prefs.getInt('counter') ?? 0) + 1;
+  counterStart = (prefs.getInt('counterfromone') ?? 0) + 1;
   print('$counterStart times.');
   await prefs.setInt('counterfromone', counterStart);
-  return 1;
+  return prefs.getInt('counterfromone');
 }
 
 incrementCounterFromThousand() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  counterValueFrom += (prefs.getInt('counter') ?? 0) + 1;
+  counterValueFrom += 1;
   print('$counterStart times.');
   await prefs.setInt('counterfromthousand', counterValueFrom);
-  return 1;
+  return prefs.getInt('counterfromthousand');
 }
 }
