@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
+import 'package:food_ron_ai/bloc/HomeListBloc.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
@@ -85,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
+  final HomeListBloc _homeListBloc = HomeListBloc();
   File _image;
   File cimage;
 
@@ -176,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  sendDataToBlock(List<dynamic> result) {
+  Future sendDataToBlock(List<dynamic> result) async {
     var imgurl = "";
     List<ImageUploadResponse> lstImageUploadResponse =
         List<ImageUploadResponse>();
@@ -188,8 +190,10 @@ class _HomeScreenState extends State<HomeScreen> {
       imageUploadResponse.itemMeta = item["itemMeta"];
       lstImageUploadResponse.add(imageUploadResponse);
     }
-    print(lstImageUploadResponse);
-    print(imgurl);
+    
+    _homeListBloc.updateHomeList(lstImageUploadResponse);
+    //print(lstImageUploadResponse);
+    //print(imgurl);
   }
 
   @override
@@ -204,10 +208,13 @@ class _HomeScreenState extends State<HomeScreen> {
       // body: FoodItems(),
       body: Stack(
         children: <Widget>[
-          new StreamBuilder<List<ImageMetaData>>(
-            stream: _imageDataBloc.imageListStream,
+          new StreamBuilder<List<ImageUploadResponse>>(
+            stream: _homeListBloc.imageListStream,
             builder: (BuildContext context,
-                AsyncSnapshot<List<ImageMetaData>> snapshot) {
+                AsyncSnapshot<List<ImageUploadResponse>> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
               return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
@@ -215,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: Hero(
-                        tag: snapshot.data[index].foodname,
+                        tag: snapshot.data[index].id,
                         child: Material(
                           child: InkWell(
                             onTap: () {
@@ -228,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: Colors.black26,
                                 child: ListTile(
                                   leading: Text(
-                                    snapshot.data[index].foodname,
+                                    snapshot.data[index].id.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -237,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               child: Image.asset(
-                                snapshot.data[index].imgurl,
+                                snapshot.data[index].img_url,
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -266,64 +273,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-// class ImageGridBuilder extends StatelessWidget {
-//   const ImageGridBuilder({
-//     Key key,
-//     @required ImageDataBloc imageDataBloc, DatabaseHelper databaseHelper,
-//   })  : _imageDataBloc = imageDataBloc,
-//         super(key: key);
-
-//   final ImageDataBloc _imageDataBloc;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // return StreamBuilder<List<ImageMetaData>>(
-//     //   stream: _imageDataBloc.imageListStream,
-//     //   builder:
-//     //       (BuildContext context, AsyncSnapshot<List<ImageMetaData>> snapshot) {
-//     //     return GridView.builder(
-//     //         gridDelegate:
-//     //             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-//     //         itemCount: snapshot.data.length,
-//     //         itemBuilder: (BuildContext context, int index) {
-//     //           return Card(
-//     //             child: Hero(
-//     //               tag: snapshot.data[index].foodname,
-//     //               child: Material(
-//     //                 child: InkWell(
-//     //                   onTap: () {
-//     //                     updateBlocList(newItemList, imgurl)
-//     //                     navigateTo(context);
-//     //                   },
-//     //                   child: GridTile(
-//     //                     footer: Container(
-//     //                       color: Colors.black26,
-//     //                       child: ListTile(
-//     //                         leading: Text(
-//     //                           snapshot.data[index].foodname,
-//     //                           style: TextStyle(
-//     //                               fontWeight: FontWeight.bold,
-//     //                               fontSize: 20,
-//     //                               color: Colors.white),
-//     //                         ),
-//     //                       ),
-//     //                     ),
-//     //                     child: Image.asset(
-//     //                       'images/pizza.jpg',
-//     //                       fit: BoxFit.fill,
-//     //                     ),
-//     //                   ),
-//     //                 ),
-//     //               ),
-//     //             ),
-//     //           );
-//     //         });
-//     //   },
-//     // );
-//   }
-
-// }
 
 Future updateBlocList(List newItemList, String imgurl) async {
   //TODO: update list in bloc file to use bloc pattern for state management
