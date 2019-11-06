@@ -52,7 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
     response.stream.transform(utf8.decoder).listen((value) {
       Map<String, dynamic> mappingData = json.decode(value);
       imageUploadResponse = ImageUploadResponse();
-      imageUploadResponse.id = 2;
+      imageUploadResponse.id = 1;
+      imageUploadResponse.itemMetaId = 100;
       imageUploadResponse.img_url = mappingData['img_url'];
       imageUploadResponse.inf_img_url = mappingData['inf_img_url'];
       imageUploadResponse.item_count = mappingData['item_count'];
@@ -62,8 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
         imageUploadResponse.items.add(value);
       }
       convertToString(imageUploadResponse);
+      if (imageUploadResponse.items.length > 0) {
+        counterForLengthCheck = imageUploadResponse.items.length;
+      }
       print(imageUploadResponse);
       _save();
+      _saveMetaDataOfImage();
       // Globals.apiResponse = json.decode(value);
       // processJsonResponse();
       // updateBlocList(Globals.apiitems, Globals.apiImgUrl);
@@ -74,6 +79,20 @@ class _HomeScreenState extends State<HomeScreen> {
       // _incrementCounter();
       // navigateTo(context);
     });
+  }
+
+  int counterForLengthCheck;
+
+  _saveMetaDataOfImage() async {
+    int result;
+    // Case 1: Update operation
+    result = await databaseHelper.insertImageMeta(imageUploadResponse);
+    print(result);
+    if (counterForLengthCheck != imageUploadResponse.items.length) {
+      _saveMetaDataOfImage();
+    } else {
+      print("Done");
+    }
   }
 
   void convertToString(ImageUploadResponse imageUploadResponse) {

@@ -2,6 +2,7 @@ import 'dart:core';
 
 class ImageUploadResponse {
   int id;
+  int itemMetaId;
   String img_url;
   String inf_img_url;
   int item_count;
@@ -23,6 +24,8 @@ class ImageUploadResponse {
 }
 
 class ImageUploadMetaItems {
+  int id;
+  int itemMetaId;
   String name;
   int weight;
   int serve;
@@ -43,6 +46,22 @@ class ImageUploadMetaItems {
     this.fiber,
     this.sugar,
   });
+
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    map['id'] = id;
+    map['itemMetaId'] = itemMetaId;
+    map['name'] = name;
+    map['weight'] = weight;
+    map['serve'] = serve;
+    map['calorie'] = calorie;
+    map['carbohydrates'] = carbohydrates;
+    map['fat'] = fat;
+    map['weight'] = protein;
+    map['fiber'] = fiber;
+    map['calorie'] = sugar;
+    return map;
+  }
 
   factory ImageUploadMetaItems.fromJson(Map<String, dynamic> json) {
     return ImageUploadMetaItems(

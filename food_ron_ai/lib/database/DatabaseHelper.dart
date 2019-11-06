@@ -10,6 +10,20 @@ class DatabaseHelper {
   static Database _database;
 
   String imageTable = 'imagetable';
+  String imageTableMetaData = 'imagetableMetaData';
+
+  String colMetaId = 'id';
+  String colItemMetaId = 'itemMetaId';
+  String colName = 'name';
+  String colServe = 'serve';
+  String colWeight = 'weight';
+  String colCalorie = 'calorie';
+  String colCarbohydrates = 'carbohydrates';
+  String colFiber = 'fiber';
+  String colFat = 'fat';
+  String colProtein = 'protein';
+  String colSugar = 'sugar';
+
   String colId = 'id';
   String colImgUrl = 'img_url';
   String colInfImgUrl = 'inf_img_url';
@@ -46,15 +60,30 @@ class DatabaseHelper {
   }
 
   void _createDb(Database db, int newVersion) async {
-    await db.execute(
-        // 'CREATE TABLE $imageTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colImgUrl TEXT NOT NULL,$colInfImgUrl TEXT NOT NULL, $colItems LIST NOT NULL )');
-        ''' CREATE TABLE $imageTable
+    Batch batch = db.batch();
+    batch.execute(''' CREATE TABLE $imageTable
       (
         $colId INTEGER PRIMARY KEY,
         $colImgUrl TEXT,
         $colInfImgUrl TEXT,
-        $itemMeta TEXT
+        $itemMeta TEXT,
+        $colItemMetaId int
       )''');
+    batch.execute(''' CREATE TABLE $imageTableMetaData
+      (
+        $colMetaId INTEGER PRIMARY KEY,
+        $colItemMetaId int, 
+        $colName TEXT,
+        $colServe int,
+        $colWeight int,
+        $colCalorie int,
+        $colCarbohydrates int,
+        $colFiber int,
+        $colFat int,
+        $colProtein int,
+        $colSugar int,
+      )''');
+    await batch.commit();
   }
 
   // Fetch Operation: Get all imagemeta objects from database
@@ -74,6 +103,13 @@ class DatabaseHelper {
   // }
 
   Future<int> insertImageMeta(ImageUploadResponse dataModelImageMeta) async {
+    Database db = await this.database;
+    var result = await db.insert(imageTable, dataModelImageMeta.toMap());
+    return result;
+  }
+
+  Future<int> insertImageMetaData(
+      ImageUploadMetaItems dataModelImageMeta) async {
     Database db = await this.database;
     var result = await db.insert(imageTable, dataModelImageMeta.toMap());
     return result;
