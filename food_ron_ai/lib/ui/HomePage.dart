@@ -144,10 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isCamera) {
       image = await ImagePicker.pickImage(
           source: ImageSource.camera, imageQuality: 70);
-      await new Future.delayed(const Duration(seconds: 13), () {
-        uploadImage(image);
-        CircularProgressIndicator();
-      });
+      uploadImage(image);
     } else {
       print('camera error');
     }
@@ -205,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var result1 = await databaseHelper.getAllMetaDataList();
     print(result1);
 
-    var result2 = await databaseHelper.getAllMetaRecords(100);
+    var result2 = await databaseHelper.getAllMetaRecords(1000);
     print(result2);
 
     if (result != null) {
