@@ -14,10 +14,10 @@ class ReturnCounterValue{
 }
 
 incrementCounterFromThousand() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  counterValueFrom += 1;
+ SharedPreferences prefs = await SharedPreferences.getInstance();
+  counterStart = (prefs.getInt('counterfromthousand') ?? 0) + 1;
   print('$counterStart times.');
-  await prefs.setInt('counterfromthousand', counterValueFrom);
+  await prefs.setInt('counterfromthousand', counterStart);
   return prefs.getInt('counterfromthousand');
 }
 }
