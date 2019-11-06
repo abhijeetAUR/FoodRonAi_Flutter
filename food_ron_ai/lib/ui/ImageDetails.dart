@@ -3,6 +3,7 @@ import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/customwidgets/CardDetailsView.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
+import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import '../Global.dart';
 
 class ImageDetails extends StatefulWidget {
@@ -30,6 +31,25 @@ class _ImageDetailsState extends State<ImageDetails> {
     var result =
         await databaseHelper.getAllMetaRecords(imageUploadResponse.itemMetaId);
     print(result);
+
+    List<ImageMetaData> updatedListOfImageMetaData =
+        List<ImageMetaData>();
+    for (var item in result) {
+      ImageMetaData imageMetaData = ImageMetaData();
+      imageMetaData.id = item["itemMetaId"];
+      imageMetaData.foodname = item["name"];
+      imageMetaData.serve = item["serve"];
+      imageMetaData.weight = item["weight"];
+      imageMetaData.cal = item["calorie"];
+      imageMetaData.card = item["carbohydrates"];
+      imageMetaData.fiber = item["fiber"];
+      imageMetaData.fat = item["fat"];
+      imageMetaData.protin = item["protein"];
+      imageMetaData.suger = item["sugar"];
+      updatedListOfImageMetaData.add(imageMetaData);
+    }
+
+    _imageDataBloc.passDataToImageList(updatedListOfImageMetaData);
 
     //TODO: implement same as sendDataTOBlock
   }

@@ -15,7 +15,7 @@ class ImageDataBloc {
   final _imageServeIncrementStreamController =
       StreamController<ImageMetaData>();
   final _imageServeDecrementStreamController =
-      StreamController<ImageMetaData>();
+      StreamController<List<ImageMetaData>>();
 
   Stream<List<ImageMetaData>> get imageListStream =>
       _imageListStreamController.stream;
@@ -25,41 +25,44 @@ class ImageDataBloc {
 
   StreamSink<ImageMetaData> get imageServeIncrement =>
       _imageServeIncrementStreamController.sink;
-  StreamSink<ImageMetaData> get imageServeDecrement =>
+  StreamSink<List<ImageMetaData>> get imageServeDecrement =>
       _imageServeDecrementStreamController.sink;
 
   ImageDataBloc() {
     _imageListStreamController.add(_imagelist);
 
     _imageServeIncrementStreamController.stream.listen(_incrementServe);
-    _imageServeDecrementStreamController.stream.listen(_decrementServe);
+    _imageServeDecrementStreamController.stream.listen(passDataToImageList);
   }
 
   _incrementServe(ImageMetaData imageMetaData) {
     int changedServe = Globals.servecount;
 
     if (Globals.servecount >= 1 && Globals.servecount <= 10) {
-      _imagelist[imageMetaData.id - 1].card =
-          _imagelist2[imageMetaData.id - 1].card * changedServe;
-      _imagelist[imageMetaData.id - 1].fat =
-          _imagelist2[imageMetaData.id - 1].fat * changedServe;
-      _imagelist[imageMetaData.id - 1].cal =
-          _imagelist2[imageMetaData.id - 1].cal * changedServe;
-      _imagelist[imageMetaData.id - 1].fiber =
-          _imagelist2[imageMetaData.id - 1].fiber * changedServe;
-      _imagelist[imageMetaData.id - 1].protin =
-          _imagelist2[imageMetaData.id - 1].protin * changedServe;
-      _imagelist[imageMetaData.id - 1].suger =
-          _imagelist2[imageMetaData.id - 1].suger * changedServe;
-      _imagelist[imageMetaData.id - 1].weight =
-          _imagelist2[imageMetaData.id - 1].weight * changedServe;
+      _imagelist[imageMetaData.id - 1000].card =
+          _imagelist2[imageMetaData.id - 1000].card * changedServe;
+      _imagelist[imageMetaData.id - 1000].fat =
+          _imagelist2[imageMetaData.id - 1000].fat * changedServe;
+      _imagelist[imageMetaData.id - 1000].cal =
+          _imagelist2[imageMetaData.id - 1000].cal * changedServe;
+      _imagelist[imageMetaData.id - 1000].fiber =
+          _imagelist2[imageMetaData.id - 1000].fiber * changedServe;
+      _imagelist[imageMetaData.id - 1000].protin =
+          _imagelist2[imageMetaData.id - 1000].protin * changedServe;
+      _imagelist[imageMetaData.id - 1000].suger =
+          _imagelist2[imageMetaData.id - 1000].suger * changedServe;
+      _imagelist[imageMetaData.id - 1000].weight =
+          _imagelist2[imageMetaData.id - 1000].weight * changedServe;
     }
-    _imagelist[imageMetaData.id - 1].serve = changedServe;
+    _imagelist[imageMetaData.id - 1000].serve = changedServe;
     Globals.servecount = 0;
     imageListSink.add(_imagelist);
   }
 
-  _decrementServe(ImageMetaData imageMetaData) {}
+  passDataToImageList(List<ImageMetaData> updateImageList) {
+    _imageListStreamController.sink.add(updateImageList);
+    _imageListStreamController.sink.add(updateImageList);
+  }
 
   void dispose() {
     _imageListStreamController.close();
