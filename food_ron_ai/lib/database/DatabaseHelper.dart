@@ -67,21 +67,21 @@ class DatabaseHelper {
         $colImgUrl TEXT,
         $colInfImgUrl TEXT,
         $itemMeta TEXT,
-        $colItemMetaId int
+        $colItemMetaId INTEGER
       )''');
     batch.execute(''' CREATE TABLE $imageTableMetaData
       (
         $colMetaId INTEGER PRIMARY KEY,
-        $colItemMetaId int, 
+        $colItemMetaId INTEGER, 
         $colName TEXT,
-        $colServe int,
-        $colWeight int,
-        $colCalorie int,
-        $colCarbohydrates int,
-        $colFiber int,
-        $colFat int,
-        $colProtein int,
-        $colSugar int,
+        $colServe INTEGER,
+        $colWeight INTEGER,
+        $colCalorie INTEGER,
+        $colCarbohydrates INTEGER,
+        $colFiber INTEGER,
+        $colFat INTEGER,
+        $colProtein INTEGER,
+        $colSugar INTEGER
       )''');
     await batch.commit();
   }
@@ -111,13 +111,29 @@ class DatabaseHelper {
   Future<int> insertImageMetaData(
       ImageUploadMetaItems dataModelImageMeta) async {
     Database db = await this.database;
-    var result = await db.insert(imageTable, dataModelImageMeta.toMap());
+    var result =
+        await db.insert(imageTableMetaData, dataModelImageMeta.toMap());
     return result;
   }
 
   Future<List> getAllRecords(String dbTable) async {
     var dbClient = await this.database;
     var result = await dbClient.rawQuery("SELECT * FROM $dbTable");
+
+    return result.toList();
+  }
+
+  Future<List> getAllMetaDataList() async {
+    var dbClient = await this.database;
+    var result = await dbClient.rawQuery("SELECT * FROM $imageTableMetaData");
+
+    return result.toList();
+  }
+
+  Future<List> getAllMetaRecords(int id) async {
+    var dbClient = await this.database;
+    var result = await dbClient.rawQuery(
+        "SELECT * FROM $imageTableMetaData WHERE $colItemMetaId = $id");
 
     return result.toList();
   }

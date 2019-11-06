@@ -9,13 +9,15 @@ class ImageUploadResponse {
   List<ImageUploadMetaItems> items;
   String itemMeta;
 
-  ImageUploadResponse({this.img_url, this.inf_img_url, this.item_count})
+  ImageUploadResponse(
+      {this.itemMetaId, this.img_url, this.inf_img_url, this.item_count})
       : items = List<ImageUploadMetaItems>();
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
     map['img_url'] = img_url;
     map['inf_img_url'] = inf_img_url;
+    map['itemMetaId'] = itemMetaId;
     // map['item_count'] = item_count;
     map['itemMeta'] = itemMeta;
 
@@ -36,6 +38,7 @@ class ImageUploadMetaItems {
   int fiber;
   int sugar;
   ImageUploadMetaItems({
+    this.itemMetaId,
     this.name,
     this.weight,
     this.serve,
@@ -57,14 +60,29 @@ class ImageUploadMetaItems {
     map['calorie'] = calorie;
     map['carbohydrates'] = carbohydrates;
     map['fat'] = fat;
-    map['weight'] = protein;
+    map['protein'] = protein;
     map['fiber'] = fiber;
-    map['calorie'] = sugar;
+    map['sugar'] = sugar;
     return map;
+
+    /*
+    String colMetaId = 'id';
+  String colItemMetaId = 'itemMetaId';
+  String colName = 'name';
+  String colServe = 'serve';
+  String colWeight = 'weight';
+  String colCalorie = 'calorie';
+  String colCarbohydrates = 'carbohydrates';
+  String colFiber = 'fiber';
+  String colFat = 'fat';
+  String colProtein = 'protein';
+  String colSugar = 'sugar';
+    */
   }
 
   factory ImageUploadMetaItems.fromJson(Map<String, dynamic> json) {
     return ImageUploadMetaItems(
+      itemMetaId: json['itemMetaId'],
       name: json['name'].toString(),
       weight: json['weight'],
       serve: json['serve'],

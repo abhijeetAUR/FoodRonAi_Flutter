@@ -27,6 +27,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ImageDataBloc _imageDataBloc = ImageDataBloc();
+  final HomeListBloc _homeListBloc = HomeListBloc();
+  File _image;
+  File cimage;
+
   //file upload image funtion.
   DataModelImageMeta dataModelImageMeta;
   ImageUploadResponse imageUploadResponse;
@@ -53,13 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
       Map<String, dynamic> mappingData = json.decode(value);
       imageUploadResponse = ImageUploadResponse();
       imageUploadResponse.id = 1;
-      imageUploadResponse.itemMetaId = 100;
+      imageUploadResponse.itemMetaId = 1000;
       imageUploadResponse.img_url = mappingData['img_url'];
       imageUploadResponse.inf_img_url = mappingData['inf_img_url'];
       imageUploadResponse.item_count = mappingData['item_count'];
       List<dynamic> items = mappingData['items'];
       for (var item in items) {
+        item["itemMetaId"] = 1000;
         var value = ImageUploadMetaItems.fromJson(item);
+
         imageUploadResponse.items.add(value);
       }
       convertToString(imageUploadResponse);
@@ -68,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       print(imageUploadResponse);
       _save();
-      _saveMetaDataOfImage();
+
       // Globals.apiResponse = json.decode(value);
       // processJsonResponse();
       // updateBlocList(Globals.apiitems, Globals.apiImgUrl);
@@ -82,13 +89,41 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   int counterForLengthCheck;
+  int counterForLengthCheckOfSaveReponse = 0;
+  void _save() async {
+    //dataModelImageMeta.date = DateFormat.yMMMd().format(DateTime.now());
+    int result;
+    if (imageUploadResponse.id != null) {
+      // Case 1: Update operation
+      result = await databaseHelper.insertImageMeta(imageUploadResponse);
+      if (result != null) {
+        _saveMetaDataOfImage();
+      }
+      print(result);
+    } else {
+      // Case 2: Insert Operation
+      result = await databaseHelper.updateImage(dataModelImageMeta);
+      print(result);
+    }
+
+    if (result != 0) {
+      // Success
+      debugPrint('saved successful image data');
+    } else {
+      // Failure
+      debugPrint('Problem Saving saved successful image data');
+    }
+  }
 
   _saveMetaDataOfImage() async {
     int result;
     // Case 1: Update operation
-    result = await databaseHelper.insertImageMeta(imageUploadResponse);
+    result = await databaseHelper.insertImageMetaData(
+        imageUploadResponse.items[counterForLengthCheckOfSaveReponse]);
     print(result);
-    if (counterForLengthCheck != imageUploadResponse.items.length) {
+    if (counterForLengthCheckOfSaveReponse !=
+        (imageUploadResponse.items.length - 1)) {
+      counterForLengthCheckOfSaveReponse += 1;
       _saveMetaDataOfImage();
     } else {
       print("Done");
@@ -103,11 +138,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
     imageUploadResponse.itemMeta = metaItems;
   }
-
-  final ImageDataBloc _imageDataBloc = ImageDataBloc();
-  final HomeListBloc _homeListBloc = HomeListBloc();
-  File _image;
-  File cimage;
 
   Future getImage(bool isCamera) async {
     File image;
@@ -153,28 +183,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _save() async {
-    //dataModelImageMeta.date = DateFormat.yMMMd().format(DateTime.now());
-    int result;
-    if (imageUploadResponse.id != null) {
-      // Case 1: Update operation
-      result = await databaseHelper.insertImageMeta(imageUploadResponse);
-      print(result);
-    } else {
-      // Case 2: Insert Operation
-      result = await databaseHelper.updateImage(dataModelImageMeta);
-      print(result);
-    }
-
-    if (result != 0) {
-      // Success
-      debugPrint('saved successful image data');
-    } else {
-      // Failure
-      debugPrint('Problem Saving saved successful image data');
-    }
-  }
-
   void _showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(content: Text(message));
     Scaffold.of(context).showSnackBar(snackBar);
@@ -190,8 +198,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getRecords() async {
+    //TODO: Check if db is created first
     var result = await databaseHelper.getAllRecords("imagetable");
     print(result);
+
+    var result1 = await databaseHelper.getAllMetaDataList();
+    print(result1);
+
+    var result2 = await databaseHelper.getAllMetaRecords(100);
+    print(result2);
+
     if (result != null) {
       sendDataToBlock(result);
     }
