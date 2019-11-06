@@ -7,7 +7,6 @@ class ImageUploadResponse {
   String inf_img_url;
   int item_count;
   List<ImageUploadMetaItems> items;
-  String itemMeta;
 
   ImageUploadResponse(
       {this.itemMetaId, this.img_url, this.inf_img_url, this.item_count})
@@ -18,9 +17,6 @@ class ImageUploadResponse {
     map['img_url'] = img_url;
     map['inf_img_url'] = inf_img_url;
     map['itemMetaId'] = itemMetaId;
-    // map['item_count'] = item_count;
-    map['itemMeta'] = itemMeta;
-
     return map;
   }
 }

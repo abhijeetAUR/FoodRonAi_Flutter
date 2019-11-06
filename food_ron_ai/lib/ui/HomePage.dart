@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/HomeListBloc.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
@@ -31,93 +32,72 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeListBloc _homeListBloc = HomeListBloc();
   File _image;
   File cimage;
-
+  int counterForLengthCheck;
+  int counterForLengthCheckOfSaveReponse = 0;
   //file upload image funtion.
   DataModelImageMeta dataModelImageMeta;
   ImageUploadResponse imageUploadResponse;
+  DatabaseHelper databaseHelper = DatabaseHelper();
+  List<DataModelImageMeta> imageList;
+  int count = 0;
+  final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
 
   uploadImage(File imageFile) async {
+    var returnCounterValue = ReturnCounterValue();
+    final itemId = await returnCounterValue.incrementCounterWithOne();
+    final itemMetaId = await returnCounterValue.incrementCounterFromThousand();
     var stream =
         new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
     var length = await imageFile.length();
 
     var uri = Uri.parse(Globals.imguploadurl);
-    Map<String, String> headers = {
-      "authorization": "96331CA0-7959-402E-8016-B7ABB3287A16"
-    };
+    Map<String, String> headers = {"authorization": authorizationToken};
     var request = new http.MultipartRequest("POST", uri);
     request.headers.addAll(headers);
     var multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(imageFile.path));
-    //contentType: new MediaType('image', 'png'));
     request.files.add(multipartFile);
 
     var response = await request.send();
     print(response.statusCode);
     response.stream.transform(utf8.decoder).listen((value) {
-      Map<String, dynamic> mappingData = json.decode(value);
-      imageUploadResponse = ImageUploadResponse();
-      imageUploadResponse.id = 1;
-      imageUploadResponse.itemMetaId = 1000;
-      imageUploadResponse.img_url = mappingData['img_url'];
-      imageUploadResponse.inf_img_url = mappingData['inf_img_url'];
-      imageUploadResponse.item_count = mappingData['item_count'];
-      List<dynamic> items = mappingData['items'];
-      for (var item in items) {
-        item["itemMetaId"] = 1000;
-        var value = ImageUploadMetaItems.fromJson(item);
-
-        imageUploadResponse.items.add(value);
-      }
-      convertToString(imageUploadResponse);
-      if (imageUploadResponse.items.length > 0) {
-        counterForLengthCheck = imageUploadResponse.items.length;
-      }
-      print(imageUploadResponse);
-      _save();
-
-      // Globals.apiResponse = json.decode(value);
-      // processJsonResponse();
-      // updateBlocList(Globals.apiitems, Globals.apiImgUrl);
-      // dataModelImageMeta = DataModelImageMeta(Globals.apiImgUrl,
-      //     Globals.apiImgUrl, Globals.apiitemclass, Globals.apiitems);
-      // _save();
-      // updateListView();
-      // _incrementCounter();
-      // navigateTo(context);
+      parseJsonInResponseObject(value, itemMetaId, itemId);
     });
   }
 
-  int counterForLengthCheck;
-  int counterForLengthCheckOfSaveReponse = 0;
+  void parseJsonInResponseObject(value, itemMetaId, itemId) {
+    Map<String, dynamic> mappingData = json.decode(value);
+    imageUploadResponse = ImageUploadResponse();
+    imageUploadResponse.id = itemId;
+    imageUploadResponse.itemMetaId = itemMetaId;
+    imageUploadResponse.img_url = mappingData['img_url'];
+    imageUploadResponse.inf_img_url = mappingData['inf_img_url'];
+    imageUploadResponse.item_count = mappingData['item_count'];
+    List<dynamic> items = mappingData['items'];
+    for (var item in items) {
+      item["itemMetaId"] = itemMetaId;
+      var value = ImageUploadMetaItems.fromJson(item);
+      imageUploadResponse.items.add(value);
+    }
+    if (imageUploadResponse.items.length > 0) {
+      counterForLengthCheck = imageUploadResponse.items.length;
+    }
+    print(imageUploadResponse);
+    _save();
+  }
+
   void _save() async {
-    //dataModelImageMeta.date = DateFormat.yMMMd().format(DateTime.now());
     int result;
     if (imageUploadResponse.id != null) {
-      // Case 1: Update operation
       result = await databaseHelper.insertImageMeta(imageUploadResponse);
       if (result != null) {
         _saveMetaDataOfImage();
       }
-      print(result);
-    } else {
-      // Case 2: Insert Operation
-      result = await databaseHelper.updateImage(dataModelImageMeta);
-      print(result);
-    }
-
-    if (result != 0) {
-      // Success
-      debugPrint('saved successful image data');
-    } else {
-      // Failure
-      debugPrint('Problem Saving saved successful image data');
     }
   }
 
   _saveMetaDataOfImage() async {
     int result;
-    // Case 1: Update operation
     result = await databaseHelper.insertImageMetaData(
         imageUploadResponse.items[counterForLengthCheckOfSaveReponse]);
     print(result);
@@ -126,17 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
       counterForLengthCheckOfSaveReponse += 1;
       _saveMetaDataOfImage();
     } else {
-      print("Done");
+      //TODO Update ui
+      getRecords();
     }
-  }
-
-  void convertToString(ImageUploadResponse imageUploadResponse) {
-    String metaItems = "";
-    imageUploadResponse.items.forEach((oneItem) => {
-          metaItems +=
-              " ${oneItem.name}, ${oneItem.serve}, ${oneItem.weight}, ${oneItem.calorie}, ${oneItem.carbohydrates}, ${oneItem.fiber}, ${oneItem.fat}, ${oneItem.protein}, ${oneItem.sugar} | "
-        });
-    imageUploadResponse.itemMeta = metaItems;
   }
 
   Future getImage(bool isCamera) async {
@@ -158,14 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  // databasehelper instance created
-  DatabaseHelper databaseHelper = DatabaseHelper();
-  List<DataModelImageMeta> imageList;
-  int count = 0;
-
-  //save row to database
-
-  //update list view for image
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
@@ -198,20 +162,12 @@ class _HomeScreenState extends State<HomeScreen> {
     //TODO: Check if db is created first
     var result = await databaseHelper.getAllRecords("imagetable");
     print(result);
-
-    var result1 = await databaseHelper.getAllMetaDataList();
-    print(result1);
-
-    var result2 = await databaseHelper.getAllMetaRecords(1000);
-    print(result2);
-
     if (result != null) {
       sendDataToBlock(result);
     }
   }
 
   Future sendDataToBlock(List<dynamic> result) async {
-    var imgurl = "";
     List<ImageUploadResponse> lstImageUploadResponse =
         List<ImageUploadResponse>();
     for (var item in result) {
@@ -219,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
       imageUploadResponse.id = item["id"];
       imageUploadResponse.img_url = item["img_url"];
       imageUploadResponse.inf_img_url = item["inf_img_url"];
-      imageUploadResponse.itemMeta = item["itemMeta"];
+      imageUploadResponse.itemMetaId = item["itemMetaId"];
       lstImageUploadResponse.add(imageUploadResponse);
     }
     _homeListBloc.updateHomeList(lstImageUploadResponse);
@@ -302,18 +258,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Future updateBlocList(List newItemList, String imgurl) async {
-  //TODO: update list in bloc file to use bloc pattern for state management
-  List newItemList2 = newItemList;
-  for (var i = 0; i < newItemList2.length; i++) {
-    dynamic items = newItemList2[i];
-    items.add(imgurl);
-    newItemList2[i] = items;
-  }
-  Globals.changedImageMetaData = newItemList2;
-  return Globals.changedImageMetaData;
-}
-
 Future navigateTo(context, ImageUploadResponse response) async {
   Navigator.push(
       context,
@@ -321,21 +265,6 @@ Future navigateTo(context, ImageUploadResponse response) async {
           builder: (BuildContext context) => ImageDetails(
                 imageUploadResponse: response,
               )));
-}
-
-Future processJsonResponse() async {
-  print(Globals.apiResponse);
-  Globals.apiData = Globals.apiResponse;
-  //print(Globals.apiData);
-  Globals.apiImgUrl = Globals.apiData['img_url'];
-  // print(Globals.apiImgUrl);
-  Globals.apiitems = Globals.apiData['items'];
-  // print(Globals.apiitems);
-  Globals.apiitemclass = Globals.apiData['item_class'];
-//print(Globals.apiitemclass);
-  Globals.apiitemCount = Globals.apiData['item_count'];
-  //print(Globals.apiitemCount);
-  return 1;
 }
 
 Future compressImage(File) async {
@@ -361,12 +290,4 @@ Future compressImage(File) async {
       return i;
     });
   });
-}
-
-Future _incrementCounter() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  Globals.counter = (prefs.getInt('counter') ?? 0) + 1;
-  print('${Globals.counter} times.');
-  await prefs.setInt('counter', Globals.counter);
-  return 1;
 }

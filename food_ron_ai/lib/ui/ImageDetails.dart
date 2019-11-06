@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/customwidgets/CardDetailsView.dart';
+import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import '../Global.dart';
 
@@ -16,6 +17,23 @@ class _ImageDetailsState extends State<ImageDetails> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   final ImageUploadResponse imageUploadResponse;
   _ImageDetailsState({@required this.imageUploadResponse});
+  DatabaseHelper databaseHelper = DatabaseHelper();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMetaDetails();
+  }
+
+  void getMetaDetails() async {
+    var result =
+        await databaseHelper.getAllMetaRecords(imageUploadResponse.itemMetaId);
+    print(result);
+
+    //TODO: implement same as sendDataTOBlock
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
