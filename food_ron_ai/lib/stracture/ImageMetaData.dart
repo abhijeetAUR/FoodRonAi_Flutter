@@ -1,83 +1,77 @@
-import 'dart:ffi';
 
 class ImageMetaData{
-  int _id;
-  String _foodname;
-  int _weight;
-  int _serve;
-  int _cal;
-  int _card;
-  int _fat;
-  int _protin;
-  int _fiber;
-  int _suger;
-  String _imgurl;
+  int id;
+  String foodname;
+  int weight;
+  int serve;
+  int cal;
+  int card;
+  int fat;
+  int protin;
+  int fiber;
+  int suger;
 
-  ImageMetaData(this._id,this._foodname,this._serve,this._weight,this._cal,this._card,this._fiber,this._fat,this._protin,this._suger,this._imgurl);
+  ImageMetaData(this.id,this.foodname,this.serve,this.weight,this.cal,this.card,this.fiber,this.fat,this.protin,this.suger);
 
   //setters
-  set id(int id){
-    this._id=id;
+  set itemid(int id){
+    this.id=id;
   }
-  set foodname(String foodname){
-    this._foodname=foodname;
+  set itemfoodname(String foodname){
+    this.foodname=foodname;
   }
 
-  set weight(int weight){
-    this._weight=weight;
+  set itemweigh(int weight){
+    this.weight=weight;
   }
   
-  set serve(int serve){
-    this._serve=serve;
+  set itemserve(int serve){
+    this.serve=serve;
   }
 
-  set fat(int fat){
-    this._fat=fat;
+  set itemfat(int fat){
+    this.fat=fat;
   }
 
-  set protin(int protin){
-    this._protin=protin;
+  set itemprotin(int protin){
+    this.protin=protin;
   }
 
-  set fiber(int fiber){
-    this._fiber=fiber;
+  set itemfiber(int fiber){
+    this.fiber=fiber;
   }
 
-  set cal(int cal){
-    this._cal=cal;
+  set itemcal(int cal){
+    this.cal=cal;
   }
 
-  set card(int card){
-    this._card=card;
+  set itemcard(int card){
+    this.card=card;
   }
-  set suger(int suger){
-    this._suger=suger;
+  set itemsuger(int suger){
+    this.suger=suger;
   }
-  set imgurl(String imgurl){
-    this._imgurl=imgurl;
-  }
-
+ 
 
   //getters
-  int get id => this._id;
+  int get itemid => this.id;
 
-  String get foodname => this._foodname;
+  String get itemfoodname => this.foodname;
 
-  int get weight => this._weight;
+  int get itemweigh => this.weight;
 
-  int get cal => this._cal;
+  int get itemcal => this.cal;
 
-  int get card => this._card;
+  int get itemcard => this.card;
 
-  int get protin => this._protin;
+  int get itemprotin => this.protin;
 
-  int get fiber => this._fiber;
+  int get itemfiber => this.fiber;
 
-  int get fat => this._fat;
+  int get itemfat => this.fat;
 
-  int get serve => this._serve;
+  int get itemserve => this.serve;
      
-  int get suger => this._suger;
+  int get itemsuger => this.suger;
 
-  String get imgurl => this._imgurl;
 }

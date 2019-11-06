@@ -19,7 +19,7 @@ final protein = "Protein";
 final sugar = "Suger";
 final imguploadurl = "http://api.foodron.ai/v1.0/uploadimg";
 final cameraTxt = "camera";
-List<ImageMetaData> changedImageMetaData = [ImageMetaData(0, 'no image',0,0 , 0, 0, 0, 0, 0, 0, 'images/pizza.jpg')] ;
+List<ImageMetaData> changedImageMetaData = [ImageMetaData(0, 'no image',0,0 , 0, 0, 0, 0, 0, 0)] ;
 var apiResponse ;
 var apiData ;
 var apiImgUrl;

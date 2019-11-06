@@ -5,15 +5,15 @@ import 'package:sqflite/sqflite.dart';
 
 class ImageDataBloc{
   
-  List<ImageMetaData> _imagelist = [ImageMetaData(1, 'roti', 1, 10, 100, 5, 12, 14, 3, 12, 'images/pizza.jpg'),
-  ImageMetaData(2, 'daal', 1, 14, 23, 45, 6, 56, 3, 12, 'images/pizza.jpg'),
-  ImageMetaData(3, 'chawal', 1, 32, 23, 45, 12, 14, 3, 12, 'images/pizza.jpg'),
+  List<ImageMetaData> _imagelist = [ImageMetaData(1, 'roti', 1, 10, 100, 5, 12, 14, 3, 12),
+  ImageMetaData(2, 'daal', 1, 14, 23, 45, 6, 56, 3, 12),
+  ImageMetaData(3, 'chawal', 1, 32, 23, 45, 12, 14, 3, 12),
   ];
   //Globals.changedImageMetaData;
 
-  List<ImageMetaData> _imagelist2 = [ImageMetaData(1, 'roti', 1, 10, 100, 5, 12, 14, 3, 12, 'images/pizza.jpg'),
-  ImageMetaData(2, 'daal', 1, 14, 23, 45, 6, 56, 3, 12, 'images/pizza.jpg'),
-  ImageMetaData(3, 'chawal', 1, 32, 23, 45, 12, 14, 3, 12, 'images/pizza.jpg'),
+  List<ImageMetaData> _imagelist2 = [ImageMetaData(1, 'roti', 1, 10, 100, 5, 12, 14, 3, 12),
+  ImageMetaData(2, 'daal', 1, 14, 23, 45, 6, 56, 3, 12),
+  ImageMetaData(3, 'chawal', 1, 32, 23, 45, 12, 14, 3, 12),
   ];
 
   //Globals.changedImageMetaData;
