@@ -190,10 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
       imageUploadResponse.itemMeta = item["itemMeta"];
       lstImageUploadResponse.add(imageUploadResponse);
     }
-    
     _homeListBloc.updateHomeList(lstImageUploadResponse);
-    //print(lstImageUploadResponse);
-    //print(imgurl);
   }
 
   @override
@@ -226,9 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Material(
                           child: InkWell(
                             onTap: () {
-                              updateBlocList(this.imageList[index].items,
-                                  this.imageList[index].imgurl);
-                              navigateTo(context);
+                              navigateTo(context, snapshot.data[index]);
                             },
                             child: GridTile(
                               footer: Container(
@@ -243,8 +238,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                              child: Image.asset(
-                                snapshot.data[index].img_url,
+                              child: Image.network(
+                                // snapshot.data[index].img_url,// Change this
+                                'https://dummyimage.com/600x400/000/fff',
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -286,9 +282,13 @@ Future updateBlocList(List newItemList, String imgurl) async {
   return Globals.changedImageMetaData;
 }
 
-Future navigateTo(context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (BuildContext context) => ImageDetails()));
+Future navigateTo(context, ImageUploadResponse response) async {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext context) => ImageDetails(
+                imageUploadResponse: response,
+              )));
 }
 
 Future processJsonResponse() async {
