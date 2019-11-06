@@ -171,6 +171,25 @@ class _HomeScreenState extends State<HomeScreen> {
   getRecords() async {
     var result = await databaseHelper.getAllRecords("imagetable");
     print(result);
+    if (result != null) {
+      sendDataToBlock(result);
+    }
+  }
+
+  sendDataToBlock(List<dynamic> result) {
+    var imgurl = "";
+    List<ImageUploadResponse> lstImageUploadResponse =
+        List<ImageUploadResponse>();
+    for (var item in result) {
+      ImageUploadResponse imageUploadResponse = ImageUploadResponse();
+      imageUploadResponse.id = item["id"];
+      imageUploadResponse.img_url = item["img_url"];
+      imageUploadResponse.inf_img_url = item["inf_img_url"];
+      imageUploadResponse.itemMeta = item["itemMeta"];
+      lstImageUploadResponse.add(imageUploadResponse);
+    }
+    print(lstImageUploadResponse);
+    print(imgurl);
   }
 
   @override
