@@ -125,7 +125,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _imageDataBloc.dispose();
     super.dispose();
   }
@@ -144,22 +143,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    //TODO: Pass fetched recoreds to bloc and render on ui
-    //then on increment function update the values and update it in db
     getRecords();
   }
 
   getRecords() async {
-    //TODO: Check if db is created first
     var result = await databaseHelper.getAllRecords("imagetable");
     print(result);
     if (result != null) {
@@ -190,7 +180,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: Globals.topAppBar,
-      // body: FoodItems(),
       body: Stack(
         children: <Widget>[
           new StreamBuilder<List<ImageUploadResponse>>(
@@ -227,8 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               child: Image.network(
-                                // snapshot.data[index].img_url,// Change this
-                                'https://dummyimage.com/600x400/000/fff',
+                                snapshot.data[index].img_url, // Change this
                                 fit: BoxFit.fill,
                               ),
                             ),

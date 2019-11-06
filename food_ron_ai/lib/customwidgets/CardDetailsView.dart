@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:async';
+import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/database/DataModelImageMeta.dart';
@@ -9,23 +10,53 @@ import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 
 class CardDetailsView extends StatefulWidget {
+  final ImageUploadResponse imageUploadResponse;
+  CardDetailsView({@required this.imageUploadResponse});
   @override
-  _CardDetailsViewState createState() => _CardDetailsViewState();
+  _CardDetailsViewState createState() =>
+      _CardDetailsViewState(imageUploadResponse: imageUploadResponse);
 }
 
 class _CardDetailsViewState extends State<CardDetailsView> {
+  final ImageUploadResponse imageUploadResponse;
+  _CardDetailsViewState({@required this.imageUploadResponse});
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
-  int serve ;
+  DatabaseHelper databaseHelper = DatabaseHelper();
+  int serve;
   @override
   void initState() {
     super.initState();
+    getMetaDetails();
     serve = 1;
   }
+
   @override
   void dispose() {
-    // TODO: implement dispose
     _imageDataBloc.dispose();
     super.dispose();
+  }
+
+  void getMetaDetails() async {
+    var result =
+        await databaseHelper.getAllMetaRecords(imageUploadResponse.itemMetaId);
+    print(result);
+
+    List<ImageMetaData> updatedListOfImageMetaData = List<ImageMetaData>();
+    for (var item in result) {
+      ImageMetaData imageMetaData = ImageMetaData();
+      imageMetaData.id = item["itemMetaId"];
+      imageMetaData.foodname = item["name"];
+      imageMetaData.serve = item["serve"];
+      imageMetaData.weight = item["weight"];
+      imageMetaData.cal = item["calorie"];
+      imageMetaData.card = item["carbohydrates"];
+      imageMetaData.fiber = item["fiber"];
+      imageMetaData.fat = item["fat"];
+      imageMetaData.protin = item["protein"];
+      imageMetaData.suger = item["sugar"];
+      updatedListOfImageMetaData.add(imageMetaData);
+    }
+    _imageDataBloc.passDataToImageList(updatedListOfImageMetaData);
   }
 
   @override
@@ -63,25 +94,26 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                               ),
                               SizedBox(width: 20.0),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 2, right: 2, top: 10),
-                                    child: Slider.adaptive(                                   
-                                      key: UniqueKey(),
-                                      activeColor: Colors.orangeAccent,
-                                      value: snapshot.data[index].serve.truncateToDouble(),
-                                      min: 1,
-                                      max: 10,
-                                      divisions: 9,
-                                      label: "$serve",
-                                      onChanged: (double newServe){
-                                        setState(() {
-                                        serve= newServe.round(); 
-                                        }); 
-                                        Globals.servecount= serve;
-                                       _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
-                                      },
-                                      
-                                    ),
+                                padding: const EdgeInsets.only(
+                                    left: 2, right: 2, top: 10),
+                                child: Slider.adaptive(
+                                  key: UniqueKey(),
+                                  activeColor: Colors.orangeAccent,
+                                  value: snapshot.data[index].serve
+                                      .truncateToDouble(),
+                                  min: 1,
+                                  max: 10,
+                                  divisions: 9,
+                                  label: "$serve",
+                                  onChanged: (double newServe) {
+                                    setState(() {
+                                      serve = newServe.round();
+                                    });
+                                    Globals.servecount = serve;
+                                    _imageDataBloc.imageServeIncrement
+                                        .add(snapshot.data[index]);
+                                  },
+                                ),
                               ),
                               SizedBox(width: 20.0),
                               Padding(
@@ -163,12 +195,11 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                 ],
                               ),
                               Container(
-                                padding: new EdgeInsets.only(
-                                        right: 5),
+                                padding: new EdgeInsets.only(right: 5),
                                 child: Text(
-                                          '${Globals.protein} :\t${snapshot.data[index].protin} \n',
-                                          style: TextStyle(fontSize: 20.0),
-                                        ),
+                                  '${Globals.protein} :\t${snapshot.data[index].protin} \n',
+                                  style: TextStyle(fontSize: 20.0),
+                                ),
                               )
                             ],
                           ),

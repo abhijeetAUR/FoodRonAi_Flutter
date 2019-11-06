@@ -18,40 +18,12 @@ class _ImageDetailsState extends State<ImageDetails> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   final ImageUploadResponse imageUploadResponse;
   _ImageDetailsState({@required this.imageUploadResponse});
-  DatabaseHelper databaseHelper = DatabaseHelper();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getMetaDetails();
-  }
-
-  void getMetaDetails() async {
-    var result =
-        await databaseHelper.getAllMetaRecords(imageUploadResponse.itemMetaId);
-    print(result);
-
-    List<ImageMetaData> updatedListOfImageMetaData =
-        List<ImageMetaData>();
-    for (var item in result) {
-      ImageMetaData imageMetaData = ImageMetaData();
-      imageMetaData.id = item["itemMetaId"];
-      imageMetaData.foodname = item["name"];
-      imageMetaData.serve = item["serve"];
-      imageMetaData.weight = item["weight"];
-      imageMetaData.cal = item["calorie"];
-      imageMetaData.card = item["carbohydrates"];
-      imageMetaData.fiber = item["fiber"];
-      imageMetaData.fat = item["fat"];
-      imageMetaData.protin = item["protein"];
-      imageMetaData.suger = item["sugar"];
-      updatedListOfImageMetaData.add(imageMetaData);
-    }
-
-    _imageDataBloc.passDataToImageList(updatedListOfImageMetaData);
-
-    //TODO: implement same as sendDataTOBlock
+    // getMetaDetails();
   }
 
   @override
@@ -84,7 +56,7 @@ class DetailView extends StatelessWidget {
           flex: 2,
           child: Card(
             child: Image.network(
-              imageUploadResponse.img_url,
+              imageUploadResponse.inf_img_url,
               fit: BoxFit.fill,
             ),
           ),
@@ -92,7 +64,9 @@ class DetailView extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Container(
-            child: CardDetailsView(),
+            child: CardDetailsView(
+              imageUploadResponse: imageUploadResponse,
+            ),
           ),
         )
       ],
