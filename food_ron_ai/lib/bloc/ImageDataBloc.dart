@@ -14,7 +14,7 @@ class ImageDataBloc {
   final _imageListStreamController = StreamController<List<ImageMetaData>>();
   final _imageServeIncrementStreamController =
       StreamController<ImageMetaData>();
-  final _imageServeDecrementStreamController =
+  final _imageListUpdateStreamController =
       StreamController<List<ImageMetaData>>();
 
   Stream<List<ImageMetaData>> get imageListStream =>
@@ -26,13 +26,13 @@ class ImageDataBloc {
   StreamSink<ImageMetaData> get imageServeIncrement =>
       _imageServeIncrementStreamController.sink;
   StreamSink<List<ImageMetaData>> get imageServeDecrement =>
-      _imageServeDecrementStreamController.sink;
+      _imageListUpdateStreamController.sink;
 
   ImageDataBloc() {
     _imageListStreamController.add(_imagelist);
 
     _imageServeIncrementStreamController.stream.listen(_incrementServe);
-    _imageServeDecrementStreamController.stream.listen(passDataToImageList);
+    _imageListUpdateStreamController.stream.listen(passDataToImageList);
   }
 
   _incrementServe(ImageMetaData imageMetaData) {
@@ -61,12 +61,11 @@ class ImageDataBloc {
 
   passDataToImageList(List<ImageMetaData> updateImageList) {
     _imageListStreamController.sink.add(updateImageList);
-    _imageListStreamController.sink.add(updateImageList);
   }
 
   void dispose() {
     _imageListStreamController.close();
-    _imageServeDecrementStreamController.close();
+    _imageListUpdateStreamController.close();
     _imageServeIncrementStreamController.close();
   }
 }
