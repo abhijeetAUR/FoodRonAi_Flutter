@@ -1,5 +1,4 @@
-
-class ImageMetaData{
+class ImageMetaData {
   int id;
   String foodname;
   int weight;
@@ -11,47 +10,58 @@ class ImageMetaData{
   int fiber;
   int suger;
 
-  ImageMetaData(this.id,this.foodname,this.serve,this.weight,this.cal,this.card,this.fiber,this.fat,this.protin,this.suger);
+  ImageMetaData(
+      {this.id,
+      this.foodname,
+      this.serve,
+      this.weight,
+      this.cal,
+      this.card,
+      this.fiber,
+      this.fat,
+      this.protin,
+      this.suger});
 
   //setters
-  set itemid(int id){
-    this.id=id;
-  }
-  set itemfoodname(String foodname){
-    this.foodname=foodname;
+  set itemid(int id) {
+    this.id = id;
   }
 
-  set itemweigh(int weight){
-    this.weight=weight;
-  }
-  
-  set itemserve(int serve){
-    this.serve=serve;
+  set itemfoodname(String foodname) {
+    this.foodname = foodname;
   }
 
-  set itemfat(int fat){
-    this.fat=fat;
+  set itemweigh(int weight) {
+    this.weight = weight;
   }
 
-  set itemprotin(int protin){
-    this.protin=protin;
+  set itemserve(int serve) {
+    this.serve = serve;
   }
 
-  set itemfiber(int fiber){
-    this.fiber=fiber;
+  set itemfat(int fat) {
+    this.fat = fat;
   }
 
-  set itemcal(int cal){
-    this.cal=cal;
+  set itemprotin(int protin) {
+    this.protin = protin;
   }
 
-  set itemcard(int card){
-    this.card=card;
+  set itemfiber(int fiber) {
+    this.fiber = fiber;
   }
-  set itemsuger(int suger){
-    this.suger=suger;
+
+  set itemcal(int cal) {
+    this.cal = cal;
   }
- 
+
+  set itemcard(int card) {
+    this.card = card;
+  }
+
+  set itemsuger(int suger) {
+    this.suger = suger;
+  }
 
   //getters
   int get itemid => this.id;
@@ -71,7 +81,6 @@ class ImageMetaData{
   int get itemfat => this.fat;
 
   int get itemserve => this.serve;
-     
-  int get itemsuger => this.suger;
 
+  int get itemsuger => this.suger;
 }

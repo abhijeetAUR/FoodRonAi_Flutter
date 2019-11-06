@@ -54,7 +54,7 @@ class DetailView extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Container(
-            child: CardDetailsView(),
+            child: CardDetailsView(imageUploadResponse: imageUploadResponse),
           ),
         )
       ],
