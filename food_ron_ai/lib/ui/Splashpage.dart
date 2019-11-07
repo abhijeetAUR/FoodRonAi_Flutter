@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:food_ron_ai/ui/HomePage.dart';
-
 
 class SplashPage extends StatefulWidget {
   @override
@@ -32,7 +30,23 @@ class SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     // full screen image for splash screen.
-    return Container(
-        child: new Image.asset('images/splashscreen.png', fit: BoxFit.fill));
+    return Scaffold(
+      body: SafeArea(
+        top: true,
+        bottom: false,
+        left: false,
+        right: false,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: new SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: new Image.asset('images/splashscreen.png', fit: BoxFit.fill),
+          ),
+        )
+      ),
+    );
+    // child: new Image.asset('images/splashscreen.png', fit: BoxFit.fill));
   }
 }
