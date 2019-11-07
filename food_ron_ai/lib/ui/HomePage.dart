@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/HomeListBloc.dart';
@@ -248,6 +249,118 @@ class _HomeScreenState extends State<HomeScreen> {
       updateListView();
     }
 
+    Widget dateChangeBtnContainer(){
+      return Container(
+        height: 80,
+        color: Colors.redAccent,
+              padding: EdgeInsets.all(15),
+              child: Row(
+              children: <Widget>[
+                SizedBox.fromSize(
+                  size: Size(45, 45), // button width and height
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.orange, // button color
+                      child: InkWell(
+                        splashColor: Colors.green, // splash color
+                        onTap: () {}, // button pressed
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.arrow_back_ios), // icon// text
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(child: Center(child: Text("Today",style: TextStyle(fontSize: 20),))),
+                SizedBox.fromSize(
+                  size: Size(45, 45), // button width and height
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.orange, // button color
+                      child: InkWell(
+                        splashColor: Colors.green, // splash color
+                        onTap: () {}, // button pressed
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.arrow_forward_ios), // icon// text
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+              ],
+                
+              ),
+            );
+
+    }
+
+    Widget multipleStatusValueWidget(){
+
+      return Container(
+        padding: EdgeInsets.only(top: 20),
+        child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: <Widget>[
+                Text("CARB"),
+                Text("67g")
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: <Widget>[
+                Text("FAT"),
+                Text("67g")
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: <Widget>[
+                Text("PROT"),
+                Text("67g")
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: <Widget>[
+                Text("KCAL"),
+                Text("67g")
+              ],
+            ),
+          ),
+        ],
+        ),
+      );
+    }
+
+    Widget statusWidgetContainer() {
+      return Container(
+        height: 150,
+        child: Column(
+          children: <Widget>[
+            dateChangeBtnContainer(),
+            multipleStatusValueWidget()
+            
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -257,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: <Widget>[
-          new DailyStatusContainer(),
+          statusWidgetContainer(),
           Expanded(
             child: buildStreamBuilder(),
           )
@@ -265,24 +378,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
-
-class DailyStatusContainer extends StatelessWidget {
-  const DailyStatusContainer({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 150,
-      color: Colors.red,
-      child: Column(
-        children: <Widget>[new Row()],
-      ),
-    );
-  }
-}
 
 Future navigateTo(context, ImageUploadResponse response) async {
   Navigator.push(
@@ -291,4 +386,5 @@ Future navigateTo(context, ImageUploadResponse response) async {
           builder: (BuildContext context) => ImageDetails(
                 imageUploadResponse: response,
               )));
+}
 }
