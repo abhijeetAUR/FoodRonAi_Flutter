@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _homeListBloc.updateHomeList(lstImageUploadResponse);
   }
 
-  Stack buildStreamBuilder() {
+  Widget buildStreamBuilder() {
     return Stack(
       children: <Widget>[
         new StreamBuilder<List<ImageUploadResponse>>(
@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
         new Container(
           padding: EdgeInsets.all(15),
           child: Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.bottomRight,
             child: FloatingActionButton.extended(
               onPressed: () {
                 getImage(true);
@@ -252,47 +252,46 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget dateChangeBtnContainer(){
       return Container(
         height: 80,
-        color: Colors.redAccent,
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.only(top: 14),
               child: Row(
               children: <Widget>[
-                SizedBox.fromSize(
-                  size: Size(45, 45), // button width and height
-                  child: ClipOval(
-                    child: Material(
-                      color: Colors.orange, // button color
-                      child: InkWell(
-                        splashColor: Colors.green, // splash color
-                        onTap: () {}, // button pressed
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.arrow_back_ios), // icon// text
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // SizedBox.fromSize(
+                //   size: Size(45, 45), // button width and height
+                //   child: ClipOval(
+                //     child: Material(
+                //       color: Colors.orange, // button color
+                //       child: InkWell(
+                //         splashColor: Colors.green, // splash color
+                //         onTap: () {}, // button pressed
+                //         child: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: <Widget>[
+                //             Icon(Icons.arrow_back_ios), // icon// text
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Expanded(child: Center(child: Text("Today",style: TextStyle(fontSize: 20),))),
-                SizedBox.fromSize(
-                  size: Size(45, 45), // button width and height
-                  child: ClipOval(
-                    child: Material(
-                      color: Colors.orange, // button color
-                      child: InkWell(
-                        splashColor: Colors.green, // splash color
-                        onTap: () {}, // button pressed
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.arrow_forward_ios), // icon// text
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // SizedBox.fromSize(
+                //   size: Size(45, 45), // button width and height
+                //   child: ClipOval(
+                //     child: Material(
+                //       color: Colors.orange, // button color
+                //       child: InkWell(
+                //         splashColor: Colors.green, // splash color
+                //         onTap: () {}, // button pressed
+                //         child: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: <Widget>[
+                //             Icon(Icons.arrow_forward_ios), // icon// text
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
 
               ],
                 
@@ -304,15 +303,17 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget multipleStatusValueWidget(){
 
       return Container(
-        padding: EdgeInsets.only(top: 20),
+        // padding: EdgeInsets.only(top: 10),
         child: Row(
         children: <Widget>[
           Expanded(
             flex: 1,
             child: Column(
               children: <Widget>[
-                Text("CARB"),
-                Text("67g")
+                Container(
+                  padding: EdgeInsets.all(5),
+                  child: Text("CARB",style: TextStyle(fontSize: 14))),
+                Text("67g",style: TextStyle(fontSize: 20))
               ],
             ),
           ),
@@ -320,8 +321,10 @@ class _HomeScreenState extends State<HomeScreen> {
             flex: 1,
             child: Column(
               children: <Widget>[
-                Text("FAT"),
-                Text("67g")
+                 Container(
+                  padding: EdgeInsets.all(5),
+                  child: Text("FAT",style: TextStyle(fontSize: 14))),
+                Text("24g",style: TextStyle(fontSize: 20))
               ],
             ),
           ),
@@ -329,8 +332,10 @@ class _HomeScreenState extends State<HomeScreen> {
             flex: 1,
             child: Column(
               children: <Widget>[
-                Text("PROT"),
-                Text("67g")
+                 Container(
+                  padding: EdgeInsets.all(5),
+                  child: Text("PROT",style: TextStyle(fontSize: 14))),
+                Text("31g",style: TextStyle(fontSize: 20))
               ],
             ),
           ),
@@ -338,8 +343,10 @@ class _HomeScreenState extends State<HomeScreen> {
             flex: 1,
             child: Column(
               children: <Widget>[
-                Text("KCAL"),
-                Text("67g")
+                 Container(
+                  padding: EdgeInsets.all(5),
+                  child: Text("KCAL",style: TextStyle(fontSize: 14))),
+                Text("787",style: TextStyle(fontSize: 20))
               ],
             ),
           ),
@@ -350,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Widget statusWidgetContainer() {
       return Container(
-        height: 150,
+        height: 160,
         child: Column(
           children: <Widget>[
             dateChangeBtnContainer(),
@@ -363,9 +370,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "foodron.ai",
-          style: TextStyle(color: Colors.white, fontSize: 20),
+        title: Center(
+          child: Text(
+            "Home",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
         ),
       ),
       body: Column(
