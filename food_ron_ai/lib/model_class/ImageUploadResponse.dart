@@ -60,20 +60,6 @@ class ImageUploadMetaItems {
     map['fiber'] = fiber;
     map['sugar'] = sugar;
     return map;
-
-    /*
-    String colMetaId = 'id';
-  String colItemMetaId = 'itemMetaId';
-  String colName = 'name';
-  String colServe = 'serve';
-  String colWeight = 'weight';
-  String colCalorie = 'calorie';
-  String colCarbohydrates = 'carbohydrates';
-  String colFiber = 'fiber';
-  String colFat = 'fat';
-  String colProtein = 'protein';
-  String colSugar = 'sugar';
-    */
   }
 
   factory ImageUploadMetaItems.fromJson(Map<String, dynamic> json) {

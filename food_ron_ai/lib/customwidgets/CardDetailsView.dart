@@ -44,16 +44,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
     List<ImageMetaData> updatedListOfImageMetaData = List<ImageMetaData>();
     for (var item in result) {
       ImageMetaData imageMetaData = ImageMetaData();
-      imageMetaData.id = item["itemMetaId"];
-      imageMetaData.foodname = item["name"];
-      imageMetaData.serve = item["serve"];
-      imageMetaData.weight = item["weight"];
-      imageMetaData.cal = item["calorie"];
-      imageMetaData.card = item["carbohydrates"];
-      imageMetaData.fiber = item["fiber"];
-      imageMetaData.fat = item["fat"];
-      imageMetaData.protin = item["protein"];
-      imageMetaData.suger = item["sugar"];
+      imageMetaData = ImageMetaData.fromJson(item);
       updatedListOfImageMetaData.add(imageMetaData);
     }
     _imageDataBloc.passDataToImageList(updatedListOfImageMetaData);

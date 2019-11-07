@@ -4,12 +4,7 @@ import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:sqflite/sqflite.dart';
 
 class ImageDataBloc {
-  List<ImageMetaData> _imagelist = [];
-  //Globals.changedImageMetaData;
-
-  List<ImageMetaData> _imagelist2 = [];
-
-  //Globals.changedImageMetaData;
+  List<ImageMetaData> _metaData = [];
 
   final _imageListStreamController = StreamController<List<ImageMetaData>>();
   final _imageServeIncrementStreamController =
@@ -29,7 +24,7 @@ class ImageDataBloc {
       _imageListUpdateStreamController.sink;
 
   ImageDataBloc() {
-    _imageListStreamController.add(_imagelist);
+    _imageListStreamController.add(_metaData);
 
     _imageServeIncrementStreamController.stream.listen(_incrementServe);
     _imageListUpdateStreamController.stream.listen(passDataToImageList);
@@ -37,34 +32,30 @@ class ImageDataBloc {
 
   _incrementServe(ImageMetaData imageMetaData) {
     int changedServe = Globals.servecount;
-
-    if (Globals.servecount >= 1 && Globals.servecount <= 10) {
-      _imagelist[imageMetaData.id - 1000].card =
-          _imagelist2[imageMetaData.id - 1000].card * changedServe;
-      _imagelist[imageMetaData.id - 1000].fat =
-          _imagelist2[imageMetaData.id - 1000].fat * changedServe;
-      _imagelist[imageMetaData.id - 1000].cal =
-          _imagelist2[imageMetaData.id - 1000].cal * changedServe;
-      _imagelist[imageMetaData.id - 1000].fiber =
-          _imagelist2[imageMetaData.id - 1000].fiber * changedServe;
-      _imagelist[imageMetaData.id - 1000].protin =
-          _imagelist2[imageMetaData.id - 1000].protin * changedServe;
-      _imagelist[imageMetaData.id - 1000].suger =
-          _imagelist2[imageMetaData.id - 1000].suger * changedServe;
-      _imagelist[imageMetaData.id - 1000].weight =
-          _imagelist2[imageMetaData.id - 1000].weight * changedServe;
-    }
-    _imagelist[imageMetaData.id - 1000].serve = changedServe;
+    var item = _metaData
+        .where((oneItem) => oneItem.id == imageMetaData.id)
+        .toList()
+        .first;
+    var index = _metaData.indexOf(imageMetaData);
+    imageMetaData.weight =
+        ((item.weight / item.serve) * changedServe).truncate();
+    imageMetaData.cal = ((item.cal / item.serve) * changedServe).truncate();
+    imageMetaData.card = ((item.card / item.serve) * changedServe).truncate();
+    imageMetaData.fat = ((item.fat / item.serve) * changedServe).truncate();
+    imageMetaData.protin =
+        ((item.protin / item.serve) * changedServe).truncate();
+    imageMetaData.fiber = ((item.fiber / item.serve) * changedServe).truncate();
+    imageMetaData.suger = ((item.suger / item.serve) * changedServe).truncate();
+    imageMetaData.serve = changedServe;
+    _metaData[index] = imageMetaData;
+    imageListSink.add(_metaData);
     Globals.servecount = 0;
-    imageListSink.add(_imagelist);
   }
 
   passDataToImageList(List<ImageMetaData> updateImageList) {
     _imageListStreamController.sink.add(updateImageList);
-    _imagelist.clear();
-    _imagelist2.clear();
-    _imagelist.addAll(updateImageList);
-    _imagelist2.addAll(updateImageList);
+    _metaData.clear();
+    _metaData.addAll(updateImageList);
   }
 
   void dispose() {
