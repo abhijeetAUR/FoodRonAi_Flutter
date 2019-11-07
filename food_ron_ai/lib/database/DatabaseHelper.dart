@@ -1,4 +1,5 @@
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
+import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -139,9 +140,9 @@ class DatabaseHelper {
   }
 
   // Update Operation: Update a imagemeta object and save it to database
-  Future<int> updateImage(DataModelImageMeta dataModelImageMeta) async {
+  Future<int> updateImage(ImageMetaData dataModelImageMeta) async {
     var db = await this.database;
-    var result = await db.update(imageTable, dataModelImageMeta.toMap(),
+    var result = await db.update(imageTableMetaData, dataModelImageMeta.toMap(),
         where: '$colId = ?', whereArgs: [dataModelImageMeta.id]);
     return result;
   }

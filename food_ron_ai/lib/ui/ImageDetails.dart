@@ -5,6 +5,7 @@ import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import '../Global.dart';
+import 'package:food_ron_ai/Global.dart' as Globals;
 
 class ImageDetails extends StatefulWidget {
   final ImageUploadResponse imageUploadResponse;
@@ -15,6 +16,8 @@ class ImageDetails extends StatefulWidget {
 }
 
 class _ImageDetailsState extends State<ImageDetails> {
+  DatabaseHelper databaseHelper = DatabaseHelper();
+
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   final ImageUploadResponse imageUploadResponse;
   _ImageDetailsState({@required this.imageUploadResponse});
@@ -33,10 +36,29 @@ class _ImageDetailsState extends State<ImageDetails> {
     super.dispose();
   }
 
+  _saveButtonClicked() async {
+    print("Inside save");
+    // var result = await databaseHelper.updateImage(Globals.metaData[0]);
+    // print(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topAppBar,
+      appBar: AppBar(
+        title: Center(
+          child: Text("$appName"),
+        ),
+        actions: <Widget>[
+          // action button
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              _saveButtonClicked();
+            },
+          )
+        ],
+      ),
       body: DetailView(
         imageUploadResponse: imageUploadResponse,
       ),
@@ -48,6 +70,14 @@ class DetailView extends StatelessWidget {
   final ImageUploadResponse imageUploadResponse;
   DetailView({@required this.imageUploadResponse});
 
+//REFER THIS
+  Widget imageUpdateWidget() {
+    return Image.network(
+      imageUploadResponse.inf_img_url,
+      fit: BoxFit.cover,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -55,23 +85,19 @@ class DetailView extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Container(
-            child: new SizedBox(
-              width: double.infinity,
-              child: Card(
+              child: new SizedBox(
+            width: double.infinity,
+            child: Card(
               semanticContainer: true,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Image.network(
-              imageUploadResponse.inf_img_url,
-              fit: BoxFit.cover,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: imageUpdateWidget(),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              elevation: 5,
+              margin: EdgeInsets.all(10),
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            elevation: 5,
-            margin: EdgeInsets.all(10),
-            ),
-            )
-          ),
+          )),
         ),
         Expanded(
           flex: 2,

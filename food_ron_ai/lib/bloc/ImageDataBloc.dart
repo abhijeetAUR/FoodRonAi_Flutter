@@ -48,8 +48,10 @@ class ImageDataBloc {
     imageMetaData.suger = ((item.suger / item.serve) * changedServe).truncate();
     imageMetaData.serve = changedServe;
     _metaData[index] = imageMetaData;
-    imageListSink.add(_metaData);
+    Globals.metaData.clear();
+    Globals.metaData.addAll(_metaData);
     Globals.servecount = 0;
+    imageListSink.add(_metaData);
   }
 
   passDataToImageList(List<ImageMetaData> updateImageList) {
@@ -62,5 +64,9 @@ class ImageDataBloc {
     _imageListStreamController.close();
     _imageListUpdateStreamController.close();
     _imageServeIncrementStreamController.close();
+  }
+
+  getMetaData() {
+    return _metaData;
   }
 }

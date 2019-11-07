@@ -26,6 +26,7 @@ var apiImgUrl;
 var apiitems;
 var apiitemclass;
 var apiitemCount;
+List<ImageMetaData> metaData = [];
 final topAppBar = AppBar(
   title: Center(
     child: Text("$appName"),
