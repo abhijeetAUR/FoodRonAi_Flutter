@@ -61,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
     var response = await request.send();
     print(response.statusCode);
     response.stream.transform(utf8.decoder).listen((value) {
-      parseJsonInResponseObject(value, itemMetaId, itemId);
+      parseResponse(value, itemMetaId, itemId);
     });
   }
 
-  void parseJsonInResponseObject(value, itemMetaId, itemId) {
+  void parseResponse(value, itemMetaId, itemId) {
     Map<String, dynamic> mappingData = json.decode(value);
     imageUploadResponse = ImageUploadResponse();
     imageUploadResponse.id = itemId;
@@ -82,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
     if (imageUploadResponse.items.length > 0) {
       counterForLengthCheck = imageUploadResponse.items.length;
     }
-    print(imageUploadResponse);
     _save();
   }
 
@@ -117,8 +116,6 @@ class _HomeScreenState extends State<HomeScreen> {
       image = await ImagePicker.pickImage(
           source: ImageSource.camera, imageQuality: 70);
       uploadImage(image);
-    } else {
-      print('camera error');
     }
     _image = image;
   }

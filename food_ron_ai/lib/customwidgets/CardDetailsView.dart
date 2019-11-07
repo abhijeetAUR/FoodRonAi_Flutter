@@ -97,7 +97,7 @@ class _CardDetailsViewState extends State<CardDetailsView> {
                                 padding: const EdgeInsets.only(
                                     left: 2, right: 2, top: 10),
                                 child: Slider.adaptive(
-                                  key: UniqueKey(),
+                                  // key: UniqueKey(),
                                   activeColor: Colors.orangeAccent,
                                   value: snapshot.data[index].serve
                                       .truncateToDouble(),

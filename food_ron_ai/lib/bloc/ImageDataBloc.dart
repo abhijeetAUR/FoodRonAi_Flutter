@@ -61,6 +61,10 @@ class ImageDataBloc {
 
   passDataToImageList(List<ImageMetaData> updateImageList) {
     _imageListStreamController.sink.add(updateImageList);
+    _imagelist.clear();
+    _imagelist2.clear();
+    _imagelist.addAll(updateImageList);
+    _imagelist2.addAll(updateImageList);
   }
 
   void dispose() {
