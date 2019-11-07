@@ -54,11 +54,23 @@ class DetailView extends StatelessWidget {
       children: <Widget>[
         Expanded(
           flex: 2,
-          child: Card(
+          child: Container(
+            child: new SizedBox(
+              width: double.infinity,
+              child: Card(
+              semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
             child: Image.network(
               imageUploadResponse.inf_img_url,
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 5,
+            margin: EdgeInsets.all(10),
+            ),
+            )
           ),
         ),
         Expanded(
