@@ -176,7 +176,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
-      appBar: Globals.topAppBar,
+      appBar: AppBar(
+        title: Center(
+          child: Text("foodron.ai",style: TextStyle(color: Colors.white,fontSize: 20),),
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           new StreamBuilder<List<ImageUploadResponse>>(
@@ -189,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
+                  padding: EdgeInsets.all(5),
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
@@ -201,7 +206,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             child: GridTile(
                               footer: Container(
-                                color: Colors.black26,
+                                decoration: new BoxDecoration(
+                                  color: Colors.black26,
+                                  borderRadius:
+                                      new BorderRadiusDirectional.circular(10),
+                                ),
                                 child: ListTile(
                                   leading: Text(
                                     snapshot.data[index].id.toString(),
@@ -212,9 +221,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                              child: Image.network(
-                                snapshot.data[index].img_url, // Change this
-                                fit: BoxFit.fill,
+                              child: ClipRRect(
+                                borderRadius: new BorderRadius.circular(10),
+                                child: Image.network(
+                                  snapshot.data[index].img_url, // Change this
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
                           ),
@@ -227,13 +239,13 @@ class _HomeScreenState extends State<HomeScreen> {
           new Container(
             padding: EdgeInsets.all(15),
             child: Align(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.bottomCenter,
               child: FloatingActionButton.extended(
                 onPressed: () {
                   getImage(true);
                 },
-                icon: Icon(Icons.camera),
-                label: Text("${Globals.cameraTxt}"),
+                icon: Icon(Icons.camera,color: Colors.white,),
+                label: Text("${Globals.cameraTxt}",style: TextStyle(color: Colors.white,fontSize: 16),),
               ),
             ),
           ),
