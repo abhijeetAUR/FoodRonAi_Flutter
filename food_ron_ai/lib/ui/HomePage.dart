@@ -1,23 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/HomeListBloc.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
-import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import 'package:food_ron_ai/ui/ImageDetails.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dio/dio.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/database/DataModelImageMeta.dart';
@@ -168,6 +162,85 @@ class _HomeScreenState extends State<HomeScreen> {
     _homeListBloc.updateHomeList(lstImageUploadResponse);
   }
 
+  Stack buildStreamBuilder() {
+    return Stack(
+      children: <Widget>[
+        new StreamBuilder<List<ImageUploadResponse>>(
+          stream: _homeListBloc.imageListStream,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<ImageUploadResponse>> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                padding: EdgeInsets.all(5),
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: Hero(
+                      tag: snapshot.data[index].id,
+                      child: Material(
+                        child: InkWell(
+                          onTap: () {
+                            navigateTo(context, snapshot.data[index]);
+                          },
+                          child: GridTile(
+                            footer: Container(
+                              decoration: new BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius:
+                                    new BorderRadiusDirectional.circular(10),
+                              ),
+                              child: ListTile(
+                                leading: Text(
+                                  snapshot.data[index].id.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: new BorderRadius.circular(10),
+                              child: Image.network(
+                                snapshot.data[index].img_url, // Change this
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                });
+          },
+        ),
+        new Container(
+          padding: EdgeInsets.all(15),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                getImage(true);
+              },
+              icon: Icon(
+                Icons.camera,
+                color: Colors.white,
+              ),
+              label: Text(
+                "${Globals.cameraTxt}",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (imageList == null) {
@@ -177,79 +250,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text("foodron.ai",style: TextStyle(color: Colors.white,fontSize: 20),),
+        title: Text(
+          "foodron.ai",
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
-      body: Stack(
+      body: Column(
         children: <Widget>[
-          new StreamBuilder<List<ImageUploadResponse>>(
-            stream: _homeListBloc.imageListStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<ImageUploadResponse>> snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
-              return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  padding: EdgeInsets.all(5),
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      child: Hero(
-                        tag: snapshot.data[index].id,
-                        child: Material(
-                          child: InkWell(
-                            onTap: () {
-                              navigateTo(context, snapshot.data[index]);
-                            },
-                            child: GridTile(
-                              footer: Container(
-                                decoration: new BoxDecoration(
-                                  color: Colors.black26,
-                                  borderRadius:
-                                      new BorderRadiusDirectional.circular(10),
-                                ),
-                                child: ListTile(
-                                  leading: Text(
-                                    snapshot.data[index].id.toString(),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: new BorderRadius.circular(10),
-                                child: Image.network(
-                                  snapshot.data[index].img_url, // Change this
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  });
-            },
-          ),
-          new Container(
-            padding: EdgeInsets.all(15),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: FloatingActionButton.extended(
-                onPressed: () {
-                  getImage(true);
-                },
-                icon: Icon(Icons.camera,color: Colors.white,),
-                label: Text("${Globals.cameraTxt}",style: TextStyle(color: Colors.white,fontSize: 16),),
-              ),
-            ),
-          ),
+          new DailyStatusContainer(),
+          Expanded(
+            child: buildStreamBuilder(),
+          )
         ],
+      ),
+    );
+  }
+}
+
+class DailyStatusContainer extends StatelessWidget {
+  const DailyStatusContainer({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 150,
+      color: Colors.red,
+      child: Column(
+        children: <Widget>[new Row()],
       ),
     );
   }
@@ -262,29 +291,4 @@ Future navigateTo(context, ImageUploadResponse response) async {
           builder: (BuildContext context) => ImageDetails(
                 imageUploadResponse: response,
               )));
-}
-
-Future compressImage(File) async {
-  Uint8List m = File.path.readAsBytesSync();
-  ui.Image x = await decodeImageFromList(m);
-  ByteData bytes = await x.toByteData();
-  print('height is ${x.height}'); //height of original image
-  print('width is ${x.width}'); //width of oroginal image
-
-  print('array is $m');
-  print('original image size is ${bytes.lengthInBytes}');
-
-  ui
-      .instantiateImageCodec(m, targetHeight: 2160, targetWidth: 2160)
-      .then((codec) {
-    codec.getNextFrame().then((frameInfo) async {
-      ui.Image i = frameInfo.image;
-      print('image width is ${i.width}'); //height of resized image
-      print('image height is ${i.height}'); //width of resized image
-      ByteData bytes = await i.toByteData();
-      File.writeAsBytes(bytes.buffer.asUint32List());
-      print('resized image size is ${bytes.lengthInBytes}');
-      return i;
-    });
-  });
 }
