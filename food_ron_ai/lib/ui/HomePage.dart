@@ -251,8 +251,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Widget dateChangeBtnContainer(){
       return Container(
-        height: 80,
-              padding: EdgeInsets.only(top: 14),
+        height: 60,
+              padding: EdgeInsets.all(1),
               child: Row(
               children: <Widget>[
                 // SizedBox.fromSize(
@@ -357,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Widget statusWidgetContainer() {
       return Container(
-        height: 160,
+        height: 125,
         child: Column(
           children: <Widget>[
             dateChangeBtnContainer(),
@@ -394,6 +394,6 @@ Future navigateTo(context, ImageUploadResponse response) async {
       MaterialPageRoute(
           builder: (BuildContext context) => ImageDetails(
                 imageUploadResponse: response,
-              )));
+              ),),);
 }
 }
