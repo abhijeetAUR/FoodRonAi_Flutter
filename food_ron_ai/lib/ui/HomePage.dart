@@ -179,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
           stream: _homeListBloc.imageListStream,
           builder: (BuildContext context,
               AsyncSnapshot<List<ImageUploadResponse>> snapshot) {
-            if (!snapshot.hasData) {
+            if (!snapshot.hasData && snapshot.data.isEmpty) {
               return Center(child: CircularProgressIndicator());
             }
             return GridView.builder(
@@ -252,38 +252,50 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getTotalCarbohydrates(List<ImageUploadMetaItems> imageUploadResponseList) {
-    var item = imageUploadResponseList
-        .map((item) => item.carbohydrates)
-        .toList()
-        .reduce((combine, next) => combine + next)
-        .toString();
+    var item;
+    if (imageUploadResponseList != null && imageUploadResponseList.isNotEmpty) {
+      item = imageUploadResponseList
+          .map((item) => item.carbohydrates)
+          .toList()
+          .reduce((combine, next) => combine + next)
+          .toString();
+    }
     return item.isNotEmpty ? "$item g" : "0";
   }
 
   getTotalFats(List<ImageUploadMetaItems> imageUploadResponseList) {
-    var item = imageUploadResponseList
-        .map((item) => item.fat)
-        .toList()
-        .reduce((combine, next) => combine + next)
-        .toString();
+    var item;
+    if (imageUploadResponseList != null && imageUploadResponseList.isNotEmpty) {
+      item = imageUploadResponseList
+          .map((item) => item.fat)
+          .toList()
+          .reduce((combine, next) => combine + next)
+          .toString();
+    }
     return item.isNotEmpty ? "$item g" : "0";
   }
 
   getTotalProtein(List<ImageUploadMetaItems> imageUploadResponseList) {
-    var item = imageUploadResponseList
-        .map((item) => item.protein)
-        .toList()
-        .reduce((combine, next) => combine + next)
-        .toString();
+    var item;
+    if (imageUploadResponseList != null && imageUploadResponseList.isNotEmpty) {
+      item = imageUploadResponseList
+          .map((item) => item.protein)
+          .toList()
+          .reduce((combine, next) => combine + next)
+          .toString();
+    }
     return item.isNotEmpty ? "$item g" : "0";
   }
 
   getTotalCalories(List<ImageUploadMetaItems> imageUploadResponseList) {
-    var item = imageUploadResponseList
-        .map((item) => item.calorie)
-        .toList()
-        .reduce((combine, next) => combine + next)
-        .toString();
+    var item;
+    if (imageUploadResponseList != null && imageUploadResponseList.isNotEmpty) {
+      item = imageUploadResponseList
+          .map((item) => item.calorie)
+          .toList()
+          .reduce((combine, next) => combine + next)
+          .toString();
+    }
     return item.isNotEmpty ? item : "0";
   }
 
@@ -428,10 +440,10 @@ class _HomeScreenState extends State<HomeScreen> {
           StreamBuilder<List<ImageUploadMetaItems>>(
               stream: _homeListBloc.todaysMetaStream,
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.data.isNotEmpty && snapshot.hasData) {
                   return statusWidgetContainer(snapshot.data);
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return Container();
                 }
               }),
           Expanded(
