@@ -25,11 +25,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   final HomeListBloc _homeListBloc = HomeListBloc();
-  File _image;
   File cimage;
   int counterForLengthCheck;
   int counterForLengthCheckOfSaveReponse = 0;
-  //file upload image funtion.
   DataModelImageMeta dataModelImageMeta;
   ImageUploadResponse imageUploadResponse;
   DatabaseHelper databaseHelper = DatabaseHelper();
@@ -62,23 +60,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void parseResponse(value, itemMetaId, itemId) {
     Map<String, dynamic> mappingData = json.decode(value);
-    imageUploadResponse = ImageUploadResponse();
-    imageUploadResponse.id = itemId;
-    imageUploadResponse.itemMetaId = itemMetaId;
-    imageUploadResponse.img_url = mappingData['img_url'];
-    imageUploadResponse.inf_img_url = mappingData['inf_img_url'];
-    imageUploadResponse.item_count = mappingData['item_count'];
-    imageUploadResponse.datetime = DateTime.now().toString().substring(0, 10);
-    List<dynamic> items = mappingData['items'];
-    for (var item in items) {
-      item["itemMetaId"] = itemMetaId;
-      var value = ImageUploadMetaItems.fromJson(item);
-      imageUploadResponse.items.add(value);
+    if (mappingData != null && mappingData.isNotEmpty) {
+      imageUploadResponse = ImageUploadResponse();
+      imageUploadResponse.id = itemId;
+      imageUploadResponse.itemMetaId = itemMetaId;
+      imageUploadResponse.img_url = mappingData['img_url'];
+      imageUploadResponse.inf_img_url = mappingData['inf_img_url'];
+      imageUploadResponse.item_count = mappingData['item_count'];
+      imageUploadResponse.datetime = DateTime.now().toString().substring(0, 10);
+      List<dynamic> items = mappingData['items'];
+      for (var item in items) {
+        item["itemMetaId"] = itemMetaId;
+        var value = ImageUploadMetaItems.fromJson(item);
+        imageUploadResponse.items.add(value);
+      }
+      if (imageUploadResponse.items.length > 0) {
+        counterForLengthCheck = imageUploadResponse.items.length;
+      }
+      _save();
     }
-    if (imageUploadResponse.items.length > 0) {
-      counterForLengthCheck = imageUploadResponse.items.length;
-    }
-    _save();
   }
 
   void _save() async {
@@ -86,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (imageUploadResponse.id != null) {
       result = await databaseHelper.insertImageMeta(imageUploadResponse);
       if (result != null) {
+        counterForLengthCheckOfSaveReponse = 0;
         _saveMetaDataOfImage();
       }
     }
@@ -93,16 +94,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _saveMetaDataOfImage() async {
     int result;
-    result = await databaseHelper.insertImageMetaData(
-        imageUploadResponse.items[counterForLengthCheckOfSaveReponse]);
-    print(result);
-    if (counterForLengthCheckOfSaveReponse !=
-        (imageUploadResponse.items.length - 1)) {
-      counterForLengthCheckOfSaveReponse += 1;
-      _saveMetaDataOfImage();
-    } else {
-      getRecords();
-      getTodaysRecordsFromDb();
+    if (imageUploadResponse.items.isNotEmpty) {
+      result = await databaseHelper.insertImageMetaData(
+          imageUploadResponse.items[counterForLengthCheckOfSaveReponse]);
+      print(result);
+      if (counterForLengthCheckOfSaveReponse !=
+          (imageUploadResponse.items.length - 1)) {
+        counterForLengthCheckOfSaveReponse += 1;
+        _saveMetaDataOfImage();
+      } else {
+        getRecords();
+        getTodaysRecordsFromDb();
+      }
     }
   }
 
@@ -115,20 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
         uploadImage(image);
       }
     }
-    _image = image;
-  }
-
-  @override
-  void dispose() {
-    _imageDataBloc.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getRecords();
-    getTodaysRecordsFromDb();
   }
 
   getTodaysRecordsFromDb() async {
@@ -166,89 +155,9 @@ class _HomeScreenState extends State<HomeScreen> {
       imageUploadResponse.inf_img_url = item["inf_img_url"];
       imageUploadResponse.itemMetaId = item["itemMetaId"];
       imageUploadResponse.datetime = item["datetime"];
-
       lstImageUploadResponse.add(imageUploadResponse);
     }
     _homeListBloc.updateHomeList(lstImageUploadResponse);
-  }
-
-  Widget buildStreamBuilder() {
-    return Stack(
-      children: <Widget>[
-        StreamBuilder<List<ImageUploadResponse>>(
-          stream: _homeListBloc.imageListStream,
-          builder: (BuildContext context,
-              AsyncSnapshot<List<ImageUploadResponse>> snapshot) {
-            if (!snapshot.hasData && snapshot.data.isEmpty) {
-              return Center(child: CircularProgressIndicator());
-            }
-            return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                padding: EdgeInsets.all(5),
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: Hero(
-                      tag: snapshot.data[index].id,
-                      child: Material(
-                        child: InkWell(
-                          onTap: () {
-                            navigateTo(context, snapshot.data[index]);
-                          },
-                          child: GridTile(
-                            footer: Container(
-                              decoration: new BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius:
-                                    new BorderRadiusDirectional.circular(10),
-                              ),
-                              child: ListTile(
-                                leading: Text(
-                                  snapshot.data[index].id.toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: new BorderRadius.circular(10),
-                              child: Image.network(
-                                snapshot.data[index].img_url, // Change this
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                });
-          },
-        ),
-        new Container(
-          padding: EdgeInsets.all(15),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                getImage(true);
-              },
-              icon: Icon(
-                Icons.camera,
-                color: Colors.white,
-              ),
-              label: Text(
-                "${Globals.cameraTxt}",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
-        )
-      ],
-    );
   }
 
   getTotalCarbohydrates(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -260,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toString();
     }
-    return item.isNotEmpty ? "$item g" : "0";
+    return item.isNotEmpty ? "$item g" : "0g";
   }
 
   getTotalFats(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -272,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toString();
     }
-    return item.isNotEmpty ? "$item g" : "0";
+    return item.isNotEmpty ? "$item g" : "0g";
   }
 
   getTotalProtein(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -284,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toString();
     }
-    return item.isNotEmpty ? "$item g" : "0";
+    return item.isNotEmpty ? "$item g" : "0g";
   }
 
   getTotalCalories(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -297,6 +206,30 @@ class _HomeScreenState extends State<HomeScreen> {
           .toString();
     }
     return item.isNotEmpty ? item : "0";
+  }
+
+  void navigateTo(context, ImageUploadResponse response) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => ImageDetails(
+          imageUploadResponse: response,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _imageDataBloc.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getRecords();
+    getTodaysRecordsFromDb();
   }
 
   @override
@@ -413,6 +346,85 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
+    Widget buildStreamBuilder() {
+      return Stack(
+        children: <Widget>[
+          StreamBuilder<List<ImageUploadResponse>>(
+            stream: _homeListBloc.imageListStream,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<ImageUploadResponse>> snapshot) {
+              if (!snapshot.hasData && snapshot.data.isEmpty) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  padding: EdgeInsets.all(5),
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      child: Hero(
+                        tag: snapshot.data[index].id,
+                        child: Material(
+                          child: InkWell(
+                            onTap: () {
+                              navigateTo(context, snapshot.data[index]);
+                            },
+                            child: GridTile(
+                              footer: Container(
+                                decoration: new BoxDecoration(
+                                  color: Colors.black26,
+                                  borderRadius:
+                                      new BorderRadiusDirectional.circular(10),
+                                ),
+                                child: ListTile(
+                                  leading: Text(
+                                    snapshot.data[index].id.toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: new BorderRadius.circular(10),
+                                child: Image.network(
+                                  snapshot.data[index].img_url, // Change this
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  });
+            },
+          ),
+          Container(
+            padding: EdgeInsets.all(15),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  getImage(true);
+                },
+                icon: Icon(
+                  Icons.camera,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  "${Globals.cameraTxt}",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          )
+        ],
+      );
+    }
+
     Widget statusWidgetContainer(
         List<ImageUploadMetaItems> imageUploadResponseList) {
       return Container(
@@ -450,17 +462,6 @@ class _HomeScreenState extends State<HomeScreen> {
             child: buildStreamBuilder(),
           )
         ],
-      ),
-    );
-  }
-
-  void navigateTo(context, ImageUploadResponse response) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => ImageDetails(
-          imageUploadResponse: response,
-        ),
       ),
     );
   }
