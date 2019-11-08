@@ -49,6 +49,10 @@ class _ImageDetailsState extends State<ImageDetails> {
     _imageDataBloc.passDataToImageList(updatedListOfImageMetaData);
   }
 
+  capitalizeName(String name) {
+    return name[0].toUpperCase() + name.substring(1);
+  }
+
   Widget imageItemDetailCard() {
     return StreamBuilder<List<ImageMetaData>>(
         stream: _imageDataBloc.imageListStream,
@@ -73,7 +77,8 @@ class _ImageDetailsState extends State<ImageDetails> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      snapshot.data[index].foodname,
+                                      capitalizeName(
+                                          snapshot.data[index].foodname),
                                       style: TextStyle(fontSize: 25),
                                     ),
                                   ],
@@ -143,7 +148,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                                           style: TextStyle(fontSize: 20.0),
                                         ),
                                         Text(
-                                          '${Globals.carbohydrates} :\t${snapshot.data[index].protin} \n',
+                                          '${Globals.protein} :\t${snapshot.data[index].protin} \n',
                                           style: TextStyle(fontSize: 20.0),
                                         ),
                                       ],

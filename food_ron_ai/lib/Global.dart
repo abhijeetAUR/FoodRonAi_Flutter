@@ -12,7 +12,7 @@ int servecount;
 int counter = 1;
 final weight = "Weight";
 final calorie = "Calorie";
-final carbohydrates = "Carb's";
+final carbohydrates = "Carbohydrate";
 final fiber = "Fiber";
 final fat = "Fat";
 final protein = "Protein";
