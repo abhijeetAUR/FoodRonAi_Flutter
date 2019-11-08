@@ -259,11 +259,17 @@ class _HomeScreenState extends State<HomeScreen> {
             //   ),
             // ),
             Expanded(
-                child: Center(
-                    child: Text(
-              "Today",
-              style: TextStyle(fontSize: 20),
-            ))),
+              child: Container(
+                padding: EdgeInsets.only(left: 23),
+                child: Text(
+                  "Today",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'HelveticaNeue',
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+            ),
             // SizedBox.fromSize(
             //   size: Size(45, 45), // button width and height
             //   child: ClipOval(
@@ -295,50 +301,154 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             Expanded(
               flex: 1,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.all(5),
-                      child: Text("CARB", style: TextStyle(fontSize: 14))),
-                  Text(getTotalCarbohydrates(imageUploadResponseList),
-                      style: TextStyle(fontSize: 20))
-                ],
+              child: Container(
+                margin: EdgeInsets.only(left: 5, right: 5),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    // Where the linear gradient begins and ends
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    // Add one stop for each color. Stops should increase from 0 to 1
+                    stops: [0.1, 0.3, 0.6, 0.9],
+                    colors: [
+                      // Colors are easy thanks to Flutter's Colors class.
+                      Colors.orange[800],
+                      Colors.orange[700],
+                      Colors.orange[500],
+                      Colors.orange[300],
+                    ],
+                  ),
+                  color: Color(0xFFFF8356),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.only(left: 3,right: 3,top: 10,bottom: 10),
+                        child: Text("C A R B",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.white,fontFamily: 'HelveticaNeue',
+                      fontWeight: FontWeight.w700))),
+                    Text(getTotalCarbohydrates(imageUploadResponseList),
+                        style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: 'HelveticaNeue',
+                      fontWeight: FontWeight.w700))
+                  ],
+                ),
               ),
             ),
             Expanded(
               flex: 1,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.all(5),
-                      child: Text("FAT", style: TextStyle(fontSize: 14))),
-                  Text(getTotalFats(imageUploadResponseList),
-                      style: TextStyle(fontSize: 20))
-                ],
+              child: Container(
+                margin: EdgeInsets.only(left: 5, right: 5),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    // Where the linear gradient begins and ends
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    // Add one stop for each color. Stops should increase from 0 to 1
+                    stops: [0.1, 0.3, 0.6, 0.9],
+                    colors: [
+                      // Colors are easy thanks to Flutter's Colors class.
+                      Colors.orange[800],
+                      Colors.orange[700],
+                      Colors.orange[500],
+                      Colors.orange[300],
+                    ],
+                  ),
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                         padding: EdgeInsets.only(left: 3,right: 3,top: 10,bottom: 10),
+                        child: Text("F A T",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.white,fontFamily: 'HelveticaNeue',
+                      fontWeight: FontWeight.w700))),
+                    Text(getTotalFats(imageUploadResponseList),
+                        style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: 'HelveticaNeue',
+                      fontWeight: FontWeight.w700))
+                  ],
+                ),
               ),
             ),
             Expanded(
               flex: 1,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.all(5),
-                      child: Text("PROTEIN", style: TextStyle(fontSize: 14))),
-                  Text(getTotalProtein(imageUploadResponseList),
-                      style: TextStyle(fontSize: 20))
-                ],
+              child: Container(
+                margin: EdgeInsets.only(left: 5, right: 5),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    // Where the linear gradient begins and ends
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    // Add one stop for each color. Stops should increase from 0 to 1
+                    stops: [0.1, 0.3, 0.6, 0.9],
+                    colors: [
+                      // Colors are easy thanks to Flutter's Colors class.
+                      Colors.orange[800],
+                      Colors.orange[700],
+                      Colors.orange[500],
+                      Colors.orange[300],
+                    ],
+                  ),
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.only(left: 3,right: 3,top: 10,bottom: 10),
+                        child: Text("P R O T",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.white,fontFamily: 'HelveticaNeue',
+                      fontWeight: FontWeight.w700))),
+                    Text(getTotalProtein(imageUploadResponseList),
+                        style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: 'HelveticaNeue',
+                      fontWeight: FontWeight.w700))
+                  ],
+                ),
               ),
             ),
             Expanded(
               flex: 1,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.all(5),
-                      child: Text("KCAL", style: TextStyle(fontSize: 14))),
-                  Text(getTotalCalories(imageUploadResponseList),
-                      style: TextStyle(fontSize: 20))
-                ],
+              child: Container(
+                margin: EdgeInsets.only(left: 5, right: 5),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    // Where the linear gradient begins and ends
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    // Add one stop for each color. Stops should increase from 0 to 1
+                    stops: [0.1, 0.3, 0.6, 0.9],
+                    colors: [
+                      // Colors are easy thanks to Flutter's Colors class.
+                      Colors.orange[800],
+                      Colors.orange[700],
+                      Colors.orange[500],
+                      Colors.orange[300],
+                    ],
+                  ),
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                         padding: EdgeInsets.only(left: 3,right: 3,top: 10,bottom: 10),
+                        child: Text("K C A L",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.white,fontFamily: 'HelveticaNeue',
+                      fontWeight: FontWeight.w700))),
+                    Text(getTotalCalories(imageUploadResponseList),
+                        style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: 'HelveticaNeue',
+                      fontWeight: FontWeight.w700))
+                  ],
+                ),
               ),
             ),
           ],
@@ -363,6 +473,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
+                      shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(25),
+  ),
                       child: Hero(
                         tag: snapshot.data[index].id,
                         child: Material(
@@ -373,9 +486,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: GridTile(
                               footer: Container(
                                 decoration: new BoxDecoration(
-                                  color: Colors.black26,
-                                  borderRadius:
-                                      new BorderRadiusDirectional.circular(10),
+                                  color: Colors.orange[300],
+                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25))
+                                     // new BorderRadiusDirectional.circular(10),
                                 ),
                                 child: ListTile(
                                   leading: Text(
@@ -413,9 +526,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(
                   Icons.camera,
                   color: Colors.white,
+                  size: 35,
                 ),
                 label: Text(
-                  "${Globals.cameraTxt}",
+                  "",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
@@ -428,7 +542,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget statusWidgetContainer(
         List<ImageUploadMetaItems> imageUploadResponseList) {
       return Container(
-        height: 125,
+        height: 160,
         child: Column(
           children: <Widget>[
             dateChangeBtnContainer(),
