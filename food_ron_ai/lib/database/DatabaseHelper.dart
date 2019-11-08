@@ -24,7 +24,9 @@ class DatabaseHelper {
   String colFat = 'fat';
   String colProtein = 'protein';
   String colSugar = 'sugar';
+  String colMetaDatetime = 'datetime';
 
+  String colDatetime = "datetime";
   String colId = 'id';
   String colImgUrl = 'img_url';
   String colInfImgUrl = 'inf_img_url';
@@ -68,7 +70,8 @@ class DatabaseHelper {
         $colImgUrl TEXT,
         $colInfImgUrl TEXT,
         $itemMeta TEXT,
-        $colItemMetaId INTEGER
+        $colItemMetaId INTEGER,
+        $colDatetime TEXT
       )''');
     batch.execute(''' CREATE TABLE $imageTableMetaData
       (
@@ -82,7 +85,8 @@ class DatabaseHelper {
         $colFiber INTEGER,
         $colFat INTEGER,
         $colProtein INTEGER,
-        $colSugar INTEGER
+        $colSugar INTEGER,
+        $colMetaDatetime TEXT
       )''');
     await batch.commit();
   }
@@ -107,6 +111,13 @@ class DatabaseHelper {
     Database db = await this.database;
     var result = await db.insert(imageTable, dataModelImageMeta.toMap());
     return result;
+  }
+
+  Future<List> getTodaysRecords(String datetime) async {
+    Database db = await this.database;
+    var result =
+        await db.rawQuery("SELECT * FROM $imageTableMetaData WHERE $datetime");
+    return result.toList();
   }
 
   Future<int> insertImageMetaData(

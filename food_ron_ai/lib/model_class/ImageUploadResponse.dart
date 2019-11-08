@@ -6,6 +6,7 @@ class ImageUploadResponse {
   String img_url;
   String inf_img_url;
   int item_count;
+  String datetime;
   List<ImageUploadMetaItems> items;
 
   ImageUploadResponse(
@@ -17,6 +18,7 @@ class ImageUploadResponse {
     map['img_url'] = img_url;
     map['inf_img_url'] = inf_img_url;
     map['itemMetaId'] = itemMetaId;
+    map['datetime'] = datetime;
     return map;
   }
 }
@@ -33,18 +35,20 @@ class ImageUploadMetaItems {
   int protein;
   int fiber;
   int sugar;
-  ImageUploadMetaItems({
-    this.itemMetaId,
-    this.name,
-    this.weight,
-    this.serve,
-    this.calorie,
-    this.carbohydrates,
-    this.fat,
-    this.protein,
-    this.fiber,
-    this.sugar,
-  });
+  String datetime;
+
+  ImageUploadMetaItems(
+      {this.itemMetaId,
+      this.name,
+      this.weight,
+      this.serve,
+      this.calorie,
+      this.carbohydrates,
+      this.fat,
+      this.protein,
+      this.fiber,
+      this.sugar,
+      this.datetime});
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -59,21 +63,22 @@ class ImageUploadMetaItems {
     map['protein'] = protein;
     map['fiber'] = fiber;
     map['sugar'] = sugar;
+    map['datetime'] = datetime;
     return map;
   }
 
   factory ImageUploadMetaItems.fromJson(Map<String, dynamic> json) {
     return ImageUploadMetaItems(
-      itemMetaId: json['itemMetaId'],
-      name: json['name'].toString(),
-      weight: json['weight'],
-      serve: json['serve'],
-      calorie: json['calorie'],
-      carbohydrates: json['carbohydrates'],
-      fat: json['fat'],
-      protein: json['protein'],
-      fiber: json['fiber'],
-      sugar: json['sugar'],
-    );
+        itemMetaId: json['itemMetaId'],
+        name: json['name'].toString(),
+        weight: json['weight'],
+        serve: json['serve'],
+        calorie: json['calorie'],
+        carbohydrates: json['carbohydrates'],
+        fat: json['fat'],
+        protein: json['protein'],
+        fiber: json['fiber'],
+        sugar: json['sugar'],
+        datetime: DateTime.now().toString().substring(0, 10));
   }
 }
