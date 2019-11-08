@@ -37,12 +37,14 @@ class SplashPageState extends State<SplashPage> {
         left: false,
         right: false,
         child: Container(
+          color: Color(0xFF434343),
+          padding: EdgeInsets.all(70),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: new SizedBox(
             width: double.infinity,
             height: double.infinity,
-            child: new Image.asset('images/splashscreen.png', fit: BoxFit.fill),
+            child: Center(child: new Image.asset('images/foodronlogo.png')),
           ),
         )
       ),
