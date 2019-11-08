@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'foodron.ai',
       theme: new ThemeData(
         primarySwatch: Colors.orange,
+        accentColor: Colors.orange,
         hintColor: Colors.white,
         inputDecorationTheme: new InputDecorationTheme(
           labelStyle: new TextStyle(color: Colors.white),

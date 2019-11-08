@@ -35,6 +35,7 @@ class _ImageDetailsState extends State<ImageDetails> {
     _imageDataBloc.dispose();
     super.dispose();
   }
+
   void getMetaDetails() async {
     var result =
         await databaseHelper.getAllMetaRecords(imageUploadResponse.itemMetaId);
@@ -49,7 +50,7 @@ class _ImageDetailsState extends State<ImageDetails> {
     _imageDataBloc.passDataToImageList(updatedListOfImageMetaData);
   }
 
-  Widget imageItemDetailCard(){
+  Widget imageItemDetailCard() {
     return StreamBuilder<List<ImageMetaData>>(
         stream: _imageDataBloc.imageListStream,
         builder: (BuildContext context,
@@ -59,7 +60,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
-              return Card(
+              return Container(
                 child: Hero(
                   tag: snapshot.data[index].foodname,
                   child: Material(
@@ -67,10 +68,11 @@ class _ImageDetailsState extends State<ImageDetails> {
                       onTap: () {},
                       child: GridTile(
                         child: Container(
+                         // height: 250,
                           child: Column(
                             children: <Widget>[
                               new Container(
-                                padding: new EdgeInsets.only(top: 30),
+                                padding: new EdgeInsets.only(top: 10),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -81,7 +83,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 20.0),
+                             // SizedBox(width: 20.0),
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 15, right: 15, top: 10),
@@ -104,7 +106,6 @@ class _ImageDetailsState extends State<ImageDetails> {
                                   },
                                 ),
                               ),
-                              SizedBox(width: 20.0),
                               Padding(
                                   padding:
                                       const EdgeInsets.only(top: 10, left: 30),
@@ -112,15 +113,14 @@ class _ImageDetailsState extends State<ImageDetails> {
                                     children: <Widget>[
                                       Text(
                                         '${Globals.serve} :\t',
-                                        style: TextStyle(fontSize: 20),
+                                        style: TextStyle(fontSize: 22),
                                       ),
                                       Text(
                                         '${snapshot.data[index].serve}',
-                                        style: TextStyle(fontSize: 20),
+                                        style: TextStyle(fontSize: 22),
                                       ),
                                     ],
                                   )),
-                              SizedBox(width: 20.0),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -132,24 +132,20 @@ class _ImageDetailsState extends State<ImageDetails> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        SizedBox(width: 20.0),
                                         Text(
                                           '\n${Globals.weight} :\t${snapshot.data[index].weight} \n',
                                           style: TextStyle(
                                             fontSize: 20.0,
                                           ),
                                         ),
-                                        SizedBox(width: 20.0),
                                         Text(
                                           '${Globals.calorie} :\t${snapshot.data[index].cal} \n',
                                           style: TextStyle(fontSize: 20.0),
                                         ),
-                                        SizedBox(width: 20.0),
                                         Text(
                                           '${Globals.carbohydrates} :\t${snapshot.data[index].card} \n',
                                           style: TextStyle(fontSize: 20.0),
-                                        ),
-                                        SizedBox(width: 20.0),
+                                        ), 
                                         Text(
                                           '${Globals.carbohydrates} :\t${snapshot.data[index].protin} \n',
                                           style: TextStyle(fontSize: 20.0),
@@ -165,20 +161,17 @@ class _ImageDetailsState extends State<ImageDetails> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        SizedBox(width: 20.0),
+                                      children: <Widget>[ 
                                         Text(
                                           '\n${Globals.fat} :\t${snapshot.data[index].fat} \n',
                                           style: TextStyle(
                                             fontSize: 20.0,
                                           ),
                                         ),
-                                        SizedBox(width: 20.0),
                                         Text(
                                           '${Globals.fiber} :\t${snapshot.data[index].fiber} \n',
                                           style: TextStyle(fontSize: 20.0),
                                         ),
-                                        SizedBox(width: 20.0),
                                         Text(
                                           '${Globals.sugar} :\t${snapshot.data[index].suger} \n',
                                           style: TextStyle(fontSize: 20.0),
@@ -188,7 +181,6 @@ class _ImageDetailsState extends State<ImageDetails> {
                                   ),
                                 ],
                               ),
-                              
                             ],
                           ),
                         ),
@@ -215,30 +207,37 @@ class _ImageDetailsState extends State<ImageDetails> {
     );
   }
 
-  Widget imageViewContainer(){
+  Widget imageViewContainer() {
     return Container(
-            height: 300,
-              child: new SizedBox(
-            width: double.infinity,
-            child: Card(
-              semanticContainer: true,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: imageUpdateWidget(),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              elevation: 5,
-              margin: EdgeInsets.all(10),
-            ),
-          ),);
+      height: 300,
+      child: new SizedBox(
+        width: double.infinity,
+        child: Card(
+          semanticContainer: true,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: imageUpdateWidget(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 5,
+          margin: EdgeInsets.all(10),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(
+            color: Colors.white, //change your color here
+          ),
         title: Center(
-          child: Text("Image Detail",style: TextStyle(color: Colors.white),),
+          child: Text(
+            "Image Detail",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         actions: <Widget>[
           // action button
@@ -253,13 +252,13 @@ class _ImageDetailsState extends State<ImageDetails> {
       ),
       body: Column(
         children: <Widget>[
-        imageViewContainer(),
-         Expanded(
-           flex: 3,
-           child: imageItemDetailCard(),
-         )
+          imageViewContainer(),
+          Expanded(
+            flex: 3,
+            child: imageItemDetailCard(),
+          )
         ],
-      ), 
+      ),
     );
   }
 }
