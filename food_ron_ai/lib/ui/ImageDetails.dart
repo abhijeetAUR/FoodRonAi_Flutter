@@ -20,10 +20,10 @@ class _ImageDetailsState extends State<ImageDetails> {
   final ImageUploadResponse imageUploadResponse;
   _ImageDetailsState({@required this.imageUploadResponse});
   int serve;
+  int counterToCheckMetaDataUpdate = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getMetaDetails();
     serve = 1;
@@ -31,7 +31,6 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _imageDataBloc.dispose();
     super.dispose();
   }
@@ -58,10 +57,10 @@ class _ImageDetailsState extends State<ImageDetails> {
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container( 
+              return Container(
                 child: Hero(
                   tag: snapshot.data[index].foodname,
-                  child: Card( 
+                  child: Card(
                     child: InkWell(
                       onTap: () {},
                       child: GridTile(
@@ -80,7 +79,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                                   ],
                                 ),
                               ),
-                             // SizedBox(width: 20.0),
+                              // SizedBox(width: 20.0),
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 15, right: 15, top: 10),
@@ -142,7 +141,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                                         Text(
                                           '${Globals.carbohydrates} :\t${snapshot.data[index].card} \n',
                                           style: TextStyle(fontSize: 20.0),
-                                        ), 
+                                        ),
                                         Text(
                                           '${Globals.carbohydrates} :\t${snapshot.data[index].protin} \n',
                                           style: TextStyle(fontSize: 20.0),
@@ -158,7 +157,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: <Widget>[ 
+                                      children: <Widget>[
                                         Text(
                                           '\n${Globals.fat} :\t${snapshot.data[index].fat} \n',
                                           style: TextStyle(
@@ -193,8 +192,18 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   _saveButtonClicked() async {
     print("Inside save");
-    // var result = await databaseHelper.updateImage(Globals.metaData[0]);
-    // print(result);
+    updateRecordsOfMetaData();
+  }
+
+  updateRecordsOfMetaData() async {
+    if (Globals.metaData.length != counterToCheckMetaDataUpdate) {
+      var result = await databaseHelper
+          .updateImage(Globals.metaData[counterToCheckMetaDataUpdate]);
+      if (result != null) {
+        counterToCheckMetaDataUpdate += 1;
+        updateRecordsOfMetaData();
+      }
+    }
   }
 
   Widget imageUpdateWidget() {
@@ -228,8 +237,8 @@ class _ImageDetailsState extends State<ImageDetails> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-            color: Colors.white, //change your color here
-          ),
+          color: Colors.white, //change your color here
+        ),
         title: Center(
           child: Text(
             "Image Detail",
@@ -249,8 +258,7 @@ class _ImageDetailsState extends State<ImageDetails> {
       ),
       body: Column(
         children: <Widget>[
-          Flexible(
-            flex: 2,child: imageViewContainer()),
+          Flexible(flex: 2, child: imageViewContainer()),
           Flexible(
             flex: 2,
             fit: FlexFit.tight,
