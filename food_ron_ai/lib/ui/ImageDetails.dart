@@ -65,6 +65,9 @@ class _ImageDetailsState extends State<ImageDetails> {
                 child: Hero(
                   tag: snapshot.data[index].foodname,
                   child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.only(bottomLeft: Radius.circular(30))),
                     child: InkWell(
                       onTap: () {},
                       child: GridTile(
@@ -79,7 +82,10 @@ class _ImageDetailsState extends State<ImageDetails> {
                                     Text(
                                       capitalizeName(
                                           snapshot.data[index].foodname),
-                                      style: TextStyle(fontSize: 25),
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          fontFamily: 'HelveticaNeue',
+                                          fontWeight: FontWeight.w700),
                                     ),
                                   ],
                                 ),
@@ -107,81 +113,419 @@ class _ImageDetailsState extends State<ImageDetails> {
                                   },
                                 ),
                               ),
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 10, left: 30),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                        '${Globals.serve} :\t',
-                                        style: TextStyle(fontSize: 22),
+                              //------------------
+
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 20.0),
+                                height: 110,
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: <Widget>[
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          // Where the linear gradient begins and ends
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          // Add one stop for each color. Stops should increase from 0 to 1
+                                          stops: [0.1, 0.3, 0.6, 0.9],
+                                          colors: [
+                                            // Colors are easy thanks to Flutter's Colors class.
+                                            Colors.orange[800],
+                                            Colors.orange[700],
+                                            Colors.orange[500],
+                                            Colors.orange[300],
+                                          ],
+                                        ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
                                       ),
-                                      Text(
-                                        '${snapshot.data[index].serve}',
-                                        style: TextStyle(fontSize: 22),
+                                      padding:
+                                          EdgeInsets.only(top: 20, bottom: 5),
+                                      width: 110.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text("${snapshot.data[index].serve}",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontFamily: 'HelveticaNeue',
+                                                fontWeight: FontWeight.w900,
+                                              )),
+                                          Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 3,
+                                                  right: 3,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              child: Text("S E R V E",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontFamily:
+                                                          'HelveticaNeue',
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                        ],
                                       ),
-                                    ],
-                                  )),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2.2,
-                                    padding: new EdgeInsets.only(left: 30),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          '\n${Globals.weight} :\t${snapshot.data[index].weight} \n',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${Globals.calorie} :\t${snapshot.data[index].cal} \n',
-                                          style: TextStyle(fontSize: 20.0),
-                                        ),
-                                        Text(
-                                          '${Globals.carbohydrates} :\t${snapshot.data[index].card} \n',
-                                          style: TextStyle(fontSize: 20.0),
-                                        ),
-                                        Text(
-                                          '${Globals.protein} :\t${snapshot.data[index].protin} \n',
-                                          style: TextStyle(fontSize: 20.0),
-                                        ),
-                                      ],
                                     ),
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2,
-                                    padding: new EdgeInsets.only(
-                                        left: 30, right: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          '\n${Globals.fat} :\t${snapshot.data[index].fat} \n',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                          ),
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          // Where the linear gradient begins and ends
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          // Add one stop for each color. Stops should increase from 0 to 1
+                                          stops: [0.1, 0.3, 0.6, 0.9],
+                                          colors: [
+                                            // Colors are easy thanks to Flutter's Colors class.
+                                            Colors.orange[800],
+                                            Colors.orange[700],
+                                            Colors.orange[500],
+                                            Colors.orange[300],
+                                          ],
                                         ),
-                                        Text(
-                                          '${Globals.fiber} :\t${snapshot.data[index].fiber} \n',
-                                          style: TextStyle(fontSize: 20.0),
-                                        ),
-                                        Text(
-                                          '${Globals.sugar} :\t${snapshot.data[index].suger} \n',
-                                          style: TextStyle(fontSize: 20.0),
-                                        ),
-                                      ],
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: 20, bottom: 5),
+                                      width: 125.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text("${snapshot.data[index].weight}",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontFamily: 'HelveticaNeue',
+                                                fontWeight: FontWeight.w900,
+                                              )),
+                                          Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 3,
+                                                  right: 3,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              child: Text("W E I G H T",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontFamily:
+                                                          'HelveticaNeue',
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          // Where the linear gradient begins and ends
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          // Add one stop for each color. Stops should increase from 0 to 1
+                                          stops: [0.1, 0.3, 0.6, 0.9],
+                                          colors: [
+                                            // Colors are easy thanks to Flutter's Colors class.
+                                            Colors.orange[800],
+                                            Colors.orange[700],
+                                            Colors.orange[500],
+                                            Colors.orange[300],
+                                          ],
+                                        ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: 20, bottom: 5),
+                                      width: 130.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text("${snapshot.data[index].cal}",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontFamily: 'HelveticaNeue',
+                                                fontWeight: FontWeight.w900,
+                                              )),
+                                          Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 3,
+                                                  right: 3,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              child: Text("C A L O R I E",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontFamily:
+                                                          'HelveticaNeue',
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          // Where the linear gradient begins and ends
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          // Add one stop for each color. Stops should increase from 0 to 1
+                                          stops: [0.1, 0.3, 0.6, 0.9],
+                                          colors: [
+                                            // Colors are easy thanks to Flutter's Colors class.
+                                            Colors.orange[800],
+                                            Colors.orange[700],
+                                            Colors.orange[500],
+                                            Colors.orange[300],
+                                          ],
+                                        ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: 20, bottom: 5),
+                                      width: 120.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text("${snapshot.data[index].card}",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontFamily: 'HelveticaNeue',
+                                                fontWeight: FontWeight.w900,
+                                              )),
+                                          Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 3,
+                                                  right: 3,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              child: Text("C A R B ' S",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontFamily:
+                                                          'HelveticaNeue',
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          // Where the linear gradient begins and ends
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          // Add one stop for each color. Stops should increase from 0 to 1
+                                          stops: [0.1, 0.3, 0.6, 0.9],
+                                          colors: [
+                                            // Colors are easy thanks to Flutter's Colors class.
+                                            Colors.orange[800],
+                                            Colors.orange[700],
+                                            Colors.orange[500],
+                                            Colors.orange[300],
+                                          ],
+                                        ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: 20, bottom: 5),
+                                      width: 90.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text("${snapshot.data[index].fat}",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontFamily: 'HelveticaNeue',
+                                                fontWeight: FontWeight.w900,
+                                              )),
+                                          Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 3,
+                                                  right: 3,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              child: Text("F A T",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontFamily:
+                                                          'HelveticaNeue',
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          // Where the linear gradient begins and ends
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          // Add one stop for each color. Stops should increase from 0 to 1
+                                          stops: [0.1, 0.3, 0.6, 0.9],
+                                          colors: [
+                                            // Colors are easy thanks to Flutter's Colors class.
+                                            Colors.orange[800],
+                                            Colors.orange[700],
+                                            Colors.orange[500],
+                                            Colors.orange[300],
+                                          ],
+                                        ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: 20, bottom: 5),
+                                      width: 115.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text("${snapshot.data[index].protin}",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontFamily: 'HelveticaNeue',
+                                                fontWeight: FontWeight.w900,
+                                              )),
+                                          Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 3,
+                                                  right: 3,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              child: Text("P R O T I N",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontFamily:
+                                                          'HelveticaNeue',
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          // Where the linear gradient begins and ends
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          // Add one stop for each color. Stops should increase from 0 to 1
+                                          stops: [0.1, 0.3, 0.6, 0.9],
+                                          colors: [
+                                            // Colors are easy thanks to Flutter's Colors class.
+                                            Colors.orange[800],
+                                            Colors.orange[700],
+                                            Colors.orange[500],
+                                            Colors.orange[300],
+                                          ],
+                                        ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: 20, bottom: 5),
+                                      width: 105.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text("${snapshot.data[index].fiber}",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontFamily: 'HelveticaNeue',
+                                                fontWeight: FontWeight.w900,
+                                              )),
+                                          Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 3,
+                                                  right: 3,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              child: Text("F I B E R",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontFamily:
+                                                          'HelveticaNeue',
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          // Where the linear gradient begins and ends
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          // Add one stop for each color. Stops should increase from 0 to 1
+                                          stops: [0.1, 0.3, 0.6, 0.9],
+                                          colors: [
+                                            // Colors are easy thanks to Flutter's Colors class.
+                                            Colors.orange[800],
+                                            Colors.orange[700],
+                                            Colors.orange[500],
+                                            Colors.orange[300],
+                                          ],
+                                        ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: 20, bottom: 5),
+                                      width: 105.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text("${snapshot.data[index].suger}",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontFamily: 'HelveticaNeue',
+                                                fontWeight: FontWeight.w900,
+                                              )),
+                                          Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 3,
+                                                  right: 3,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              child: Text("S U G E R",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontFamily:
+                                                          'HelveticaNeue',
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
+
+                              //---------------------
                             ],
                           ),
                         ),
@@ -212,6 +556,7 @@ class _ImageDetailsState extends State<ImageDetails> {
   }
 
   Widget imageUpdateWidget() {
+    //TODO:Change to network image
     return Image.network(
       imageUploadResponse.inf_img_url,
       fit: BoxFit.cover,
@@ -228,10 +573,11 @@ class _ImageDetailsState extends State<ImageDetails> {
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: imageUpdateWidget(),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50))
+              //BorderRadius.circular(25),
+              ),
           elevation: 5,
-          margin: EdgeInsets.all(10),
+          margin: EdgeInsets.only(bottom: 10),
         ),
       ),
     );
@@ -263,10 +609,9 @@ class _ImageDetailsState extends State<ImageDetails> {
       ),
       body: Column(
         children: <Widget>[
-          Flexible(flex: 2, child: imageViewContainer()),
-          Flexible(
+          Expanded(flex: 2, child: imageViewContainer()),
+          Expanded(
             flex: 2,
-            fit: FlexFit.tight,
             child: imageItemDetailCard(),
           )
         ],

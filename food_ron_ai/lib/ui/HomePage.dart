@@ -325,14 +325,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                        padding: EdgeInsets.only(left: 3,right: 3,top: 10,bottom: 10),
+                        padding: EdgeInsets.only(
+                            left: 3, right: 3, top: 10, bottom: 10),
                         child: Text("C A R B",
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.white,fontFamily: 'HelveticaNeue',
-                      fontWeight: FontWeight.w700))),
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontFamily: 'HelveticaNeue',
+                                fontWeight: FontWeight.w700))),
                     Text(getTotalCarbohydrates(imageUploadResponseList),
-                        style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: 'HelveticaNeue',
-                      fontWeight: FontWeight.w700))
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'HelveticaNeue',
+                            fontWeight: FontWeight.w700))
                   ],
                 ),
               ),
@@ -363,14 +369,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                         padding: EdgeInsets.only(left: 3,right: 3,top: 10,bottom: 10),
+                        padding: EdgeInsets.only(
+                            left: 3, right: 3, top: 10, bottom: 10),
                         child: Text("F A T",
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.white,fontFamily: 'HelveticaNeue',
-                      fontWeight: FontWeight.w700))),
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontFamily: 'HelveticaNeue',
+                                fontWeight: FontWeight.w700))),
                     Text(getTotalFats(imageUploadResponseList),
-                        style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: 'HelveticaNeue',
-                      fontWeight: FontWeight.w700))
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'HelveticaNeue',
+                            fontWeight: FontWeight.w700))
                   ],
                 ),
               ),
@@ -401,14 +413,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                        padding: EdgeInsets.only(left: 3,right: 3,top: 10,bottom: 10),
+                        padding: EdgeInsets.only(
+                            left: 3, right: 3, top: 10, bottom: 10),
                         child: Text("P R O T",
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.white,fontFamily: 'HelveticaNeue',
-                      fontWeight: FontWeight.w700))),
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontFamily: 'HelveticaNeue',
+                                fontWeight: FontWeight.w700))),
                     Text(getTotalProtein(imageUploadResponseList),
-                        style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: 'HelveticaNeue',
-                      fontWeight: FontWeight.w700))
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'HelveticaNeue',
+                            fontWeight: FontWeight.w700))
                   ],
                 ),
               ),
@@ -439,14 +457,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                         padding: EdgeInsets.only(left: 3,right: 3,top: 10,bottom: 10),
+                        padding: EdgeInsets.only(
+                            left: 3, right: 3, top: 10, bottom: 10),
                         child: Text("K C A L",
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.white,fontFamily: 'HelveticaNeue',
-                      fontWeight: FontWeight.w700))),
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontFamily: 'HelveticaNeue',
+                                fontWeight: FontWeight.w700))),
                     Text(getTotalCalories(imageUploadResponseList),
-                        style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: 'HelveticaNeue',
-                      fontWeight: FontWeight.w700))
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'HelveticaNeue',
+                            fontWeight: FontWeight.w700))
                   ],
                 ),
               ),
@@ -474,8 +498,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(25),
-  ),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                       child: Hero(
                         tag: snapshot.data[index].id,
                         child: Material(
@@ -486,10 +510,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: GridTile(
                               footer: Container(
                                 decoration: new BoxDecoration(
-                                  color: Colors.orange[300],
-                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25))
-                                     // new BorderRadiusDirectional.circular(10),
-                                ),
+                                    color: Colors.orange[300],
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(25))
+                                    // new BorderRadiusDirectional.circular(10),
+                                    ),
                                 child: ListTile(
                                   leading: Text(
                                     snapshot.data[index].id.toString(),
