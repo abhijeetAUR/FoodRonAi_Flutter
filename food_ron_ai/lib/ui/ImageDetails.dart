@@ -55,20 +55,17 @@ class _ImageDetailsState extends State<ImageDetails> {
         stream: _imageDataBloc.imageListStream,
         builder: (BuildContext context,
             AsyncSnapshot<List<ImageMetaData>> snapshot) {
-          return GridView.builder(
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+          return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
+              return Container( 
                 child: Hero(
                   tag: snapshot.data[index].foodname,
-                  child: Material(
+                  child: Card( 
                     child: InkWell(
                       onTap: () {},
                       child: GridTile(
                         child: Container(
-                         // height: 250,
                           child: Column(
                             children: <Widget>[
                               new Container(
@@ -209,7 +206,7 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   Widget imageViewContainer() {
     return Container(
-      height: 300,
+      //height: 300,
       child: new SizedBox(
         width: double.infinity,
         child: Card(
@@ -252,9 +249,11 @@ class _ImageDetailsState extends State<ImageDetails> {
       ),
       body: Column(
         children: <Widget>[
-          imageViewContainer(),
-          Expanded(
-            flex: 3,
+          Flexible(
+            flex: 2,child: imageViewContainer()),
+          Flexible(
+            flex: 2,
+            fit: FlexFit.tight,
             child: imageItemDetailCard(),
           )
         ],
