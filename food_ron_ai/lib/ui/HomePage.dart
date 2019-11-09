@@ -262,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   "Today",
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontFamily: 'HelveticaNeue',
                       fontWeight: FontWeight.w700),
                 ),
@@ -327,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 2, bottom: 5),
                         child: Text("C A R B",
                             style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 11,
                                 color: Colors.white,
                                 fontFamily: 'HelveticaNeue',
                                 fontWeight: FontWeight.w700))),
@@ -371,7 +371,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 2, bottom: 5),
                         child: Text("F A T",
                             style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 11,
                                 color: Colors.white,
                                 fontFamily: 'HelveticaNeue',
                                 fontWeight: FontWeight.w700))),
@@ -415,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 2, bottom: 5),
                         child: Text("P R O T",
                             style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 11,
                                 color: Colors.white,
                                 fontFamily: 'HelveticaNeue',
                                 fontWeight: FontWeight.w700))),
@@ -458,7 +458,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 2, bottom: 5),
                         child: Text("K C A L",
                             style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 11,
                                 color: Colors.white,
                                 fontFamily: 'HelveticaNeue',
                                 fontWeight: FontWeight.w700))),
@@ -548,11 +548,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(
                   Icons.camera,
                   color: Colors.white,
-                  size: 35,
+                  size: 25,
                 ),
                 label: Text(
-                  "",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  "camera",
+                  style: TextStyle(color: Colors.white, fontSize: 16,fontFamily: 'HelveticaNeue',fontWeight: FontWeight.w600),
                 ),
               ),
             ),

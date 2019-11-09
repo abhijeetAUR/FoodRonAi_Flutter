@@ -81,10 +81,10 @@ class _ImageDetailsState extends State<ImageDetails> {
                     stops: [0.1, 0.3, 0.6, 0.9],
                     colors: [
                       // Colors are easy thanks to Flutter's Colors class.
-                      Colors.orange[800],
-                      Colors.orange[700],
-                      Colors.orange[500],
                       Colors.orange[300],
+                      Colors.orange[400],
+                      Colors.orange[500],
+                      Colors.orange[600],
                     ],
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(25)),
@@ -102,7 +102,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                                       style: TextStyle(
                                           fontSize: 25,
                                           fontFamily: 'HelveticaNeue',
-                                          fontWeight: FontWeight.w700,color: Colors.white),
+                                          fontWeight: FontWeight.w600,color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -110,7 +110,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                               // SizedBox(width: 20.0),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 25, right: 25, top: 10),
+                                    left: 20, right: 20, top: 10),
                                 child: Slider.adaptive(
                                   // key: UniqueKey(),
                                   activeColor: Colors.white,
@@ -139,7 +139,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                                     child: Container(
                                       
                                       child: Center(
-                                        child: Text("${Globals.serve}\n${Globals.weight}\n${Globals.calorie}\n${Globals.carbohydrates}\n${Globals.protein}\n${Globals.fat}\n${Globals.fiber}\n${Globals.sugar}\n",style: TextStyle(fontSize: 16,fontFamily: 'HelveticaNeue',fontWeight: FontWeight.w500,color: Colors.white),),
+                                        child: Text("${Globals.serve}\n${Globals.weight}\n${Globals.calorie}\n${Globals.carbohydrates}\n${Globals.protein}\n${Globals.fat}\n${Globals.fiber}\n${Globals.sugar}\n",style: TextStyle(fontSize: 18,fontFamily: 'HelveticaNeue',fontWeight: FontWeight.w500,color: Colors.white),),
                                       ),
                                     ),
                                   ),
@@ -147,7 +147,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                                     flex:2,
                                     child: Container(
                                       child: Center(
-                                        child: Text("${snapshot.data[index].serve}\n${snapshot.data[index].weight}\n${snapshot.data[index].cal}\n${snapshot.data[index].card}\n${snapshot.data[index].protin}\n${snapshot.data[index].fat}\n${snapshot.data[index].fiber}\n${snapshot.data[index].suger}\n",style: TextStyle(fontSize: 16,fontFamily: 'HelveticaNeue',fontWeight: FontWeight.w500,color: Colors.white),),
+                                        child: Text("${snapshot.data[index].serve}\n${snapshot.data[index].weight}\n${snapshot.data[index].cal}\n${snapshot.data[index].card}\n${snapshot.data[index].protin}\n${snapshot.data[index].fat}\n${snapshot.data[index].fiber}\n${snapshot.data[index].suger}\n",style: TextStyle(fontSize: 18,fontFamily: 'HelveticaNeue',fontWeight: FontWeight.w500,color: Colors.white),),
                                       ),
                                     ),
                                   ),
