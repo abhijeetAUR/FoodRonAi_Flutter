@@ -7,7 +7,6 @@ void main() => runApp(new MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'foodron.ai',
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.orange,
         hintColor: Colors.white,
         inputDecorationTheme: new InputDecorationTheme(
-          labelStyle: new TextStyle(color: Colors.white),
+          labelStyle: new TextStyle(color: Colors.black),
         ),
       ),
       home: new SplashPage(),
