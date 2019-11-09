@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/HomeListBloc.dart';
@@ -13,7 +12,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/database/DataModelImageMeta.dart';
 
@@ -236,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Widget dateChangeBtnContainer() {
       return Container(
-        height: 60,
+        height: 50,
         padding: EdgeInsets.all(1),
         child: Row(
           children: <Widget>[
@@ -260,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // ),
             Expanded(
               child: Container(
-                padding: EdgeInsets.only(left: 23),
+                padding: EdgeInsets.only(left: 12),
                 child: Text(
                   "Today",
                   style: TextStyle(
@@ -302,8 +300,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               flex: 1,
               child: Container(
-                margin: EdgeInsets.only(left: 5, right: 5),
-                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.only(left: 10, right: 10),
+                padding: EdgeInsets.only(top:10, bottom: 10),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     // Where the linear gradient begins and ends
@@ -326,16 +324,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Container(
                         padding: EdgeInsets.only(
-                            left: 3, right: 3, top: 10, bottom: 10),
+                            top: 2, bottom: 5),
                         child: Text("C A R B",
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Colors.white,
                                 fontFamily: 'HelveticaNeue',
                                 fontWeight: FontWeight.w700))),
                     Text(getTotalCarbohydrates(imageUploadResponseList),
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 12,
                             color: Colors.white,
                             fontFamily: 'HelveticaNeue',
                             fontWeight: FontWeight.w700))
@@ -346,8 +344,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               flex: 1,
               child: Container(
-                margin: EdgeInsets.only(left: 5, right: 5),
-                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.only(left: 10, right: 10),
+                padding: EdgeInsets.only(top:10, bottom: 10),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     // Where the linear gradient begins and ends
@@ -370,16 +368,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Container(
                         padding: EdgeInsets.only(
-                            left: 3, right: 3, top: 10, bottom: 10),
+                            top: 2, bottom: 5),
                         child: Text("F A T",
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Colors.white,
                                 fontFamily: 'HelveticaNeue',
                                 fontWeight: FontWeight.w700))),
                     Text(getTotalFats(imageUploadResponseList),
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 12,
                             color: Colors.white,
                             fontFamily: 'HelveticaNeue',
                             fontWeight: FontWeight.w700))
@@ -390,8 +388,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               flex: 1,
               child: Container(
-                margin: EdgeInsets.only(left: 5, right: 5),
-                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.only(left: 10, right: 10),
+                padding: EdgeInsets.only(top:10, bottom: 10),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     // Where the linear gradient begins and ends
@@ -414,16 +412,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Container(
                         padding: EdgeInsets.only(
-                            left: 3, right: 3, top: 10, bottom: 10),
+                            top: 2, bottom: 5),
                         child: Text("P R O T",
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Colors.white,
                                 fontFamily: 'HelveticaNeue',
                                 fontWeight: FontWeight.w700))),
                     Text(getTotalProtein(imageUploadResponseList),
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 12,
                             color: Colors.white,
                             fontFamily: 'HelveticaNeue',
                             fontWeight: FontWeight.w700))
@@ -434,8 +432,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               flex: 1,
               child: Container(
-                margin: EdgeInsets.only(left: 5, right: 5),
-                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.only(left: 10, right: 10),
+                padding: EdgeInsets.only(top:10, bottom: 10),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     // Where the linear gradient begins and ends
@@ -458,16 +456,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Container(
                         padding: EdgeInsets.only(
-                            left: 3, right: 3, top: 10, bottom: 10),
+                            top: 2, bottom: 5),
                         child: Text("K C A L",
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Colors.white,
                                 fontFamily: 'HelveticaNeue',
                                 fontWeight: FontWeight.w700))),
                     Text(getTotalCalories(imageUploadResponseList),
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 12,
                             color: Colors.white,
                             fontFamily: 'HelveticaNeue',
                             fontWeight: FontWeight.w700))
@@ -510,9 +508,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: GridTile(
                               footer: Container(
                                 decoration: new BoxDecoration(
-                                    color: Colors.orange[300],
+                                    color: Colors.black12,
                                     borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(25))
+                                        bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10))
                                     // new BorderRadiusDirectional.circular(10),
                                     ),
                                 child: ListTile(
@@ -567,7 +565,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget statusWidgetContainer(
         List<ImageUploadMetaItems> imageUploadResponseList) {
       return Container(
-        height: 160,
+        height: 110,
         child: Column(
           children: <Widget>[
             dateChangeBtnContainer(),
