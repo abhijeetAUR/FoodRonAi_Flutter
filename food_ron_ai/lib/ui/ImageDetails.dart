@@ -203,11 +203,11 @@ class _ImageDetailsState extends State<ImageDetails> {
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: imageUpdateWidget(),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50))
+              borderRadius: BorderRadius.all(Radius.circular(25))
               //BorderRadius.circular(25),
               ),
           elevation: 5,
-          margin: EdgeInsets.only(bottom: 10),
+          margin: EdgeInsets.all(5),
         ),
       ),
     );
