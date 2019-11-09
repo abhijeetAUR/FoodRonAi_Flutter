@@ -311,10 +311,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     stops: [0.1, 0.3, 0.6, 0.9],
                     colors: [
                       // Colors are easy thanks to Flutter's Colors class.
-                      Colors.orange[800],
-                      Colors.orange[700],
-                      Colors.orange[500],
-                      Colors.orange[300],
+                      Colors.grey[500],
+                      Colors.grey[600],
+                      Colors.grey[700],
+                      Colors.grey[800],
                     ],
                   ),
                   color: Color(0xFFFF8356),
@@ -355,10 +355,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     stops: [0.1, 0.3, 0.6, 0.9],
                     colors: [
                       // Colors are easy thanks to Flutter's Colors class.
-                      Colors.orange[800],
-                      Colors.orange[700],
-                      Colors.orange[500],
-                      Colors.orange[300],
+                      Colors.grey[500],
+                      Colors.grey[600],
+                      Colors.grey[700],
+                      Colors.grey[800],
                     ],
                   ),
                   color: Colors.red,
@@ -399,10 +399,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     stops: [0.1, 0.3, 0.6, 0.9],
                     colors: [
                       // Colors are easy thanks to Flutter's Colors class.
-                      Colors.orange[800],
-                      Colors.orange[700],
-                      Colors.orange[500],
-                      Colors.orange[300],
+                      Colors.grey[500],
+                      Colors.grey[600],
+                      Colors.grey[700],
+                      Colors.grey[800],
                     ],
                   ),
                   color: Colors.red,
@@ -443,10 +443,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     stops: [0.1, 0.3, 0.6, 0.9],
                     colors: [
                       // Colors are easy thanks to Flutter's Colors class.
-                      Colors.orange[800],
-                      Colors.orange[700],
-                      Colors.orange[500],
-                      Colors.orange[300],
+                      Colors.grey[500],
+                      Colors.grey[600],
+                      Colors.grey[700],
+                      Colors.grey[800],
                     ],
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(10)),

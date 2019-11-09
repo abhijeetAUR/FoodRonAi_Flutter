@@ -81,10 +81,10 @@ class _ImageDetailsState extends State<ImageDetails> {
                     stops: [0.1, 0.3, 0.6, 0.9],
                     colors: [
                       // Colors are easy thanks to Flutter's Colors class.
-                      Colors.orange[300],
-                      Colors.orange[400],
-                      Colors.orange[500],
-                      Colors.orange[600],
+                      Colors.grey[500],
+                      Colors.grey[600],
+                      Colors.grey[700],
+                      Colors.grey[800],
                     ],
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(25)),
