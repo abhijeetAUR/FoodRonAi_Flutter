@@ -449,7 +449,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       Colors.orange[300],
                     ],
                   ),
-                  color: Colors.red,
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 child: Column(
