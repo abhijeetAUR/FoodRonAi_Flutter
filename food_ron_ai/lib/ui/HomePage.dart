@@ -604,10 +604,14 @@ class _HomeScreenState extends State<HomeScreen> {
         stream: _homeListBloc.imageListStream,
         builder: (BuildContext context,
             AsyncSnapshot<List<ImageUploadResponse>> snapshot) {
-          if (!snapshot.hasData && snapshot.data.isEmpty) {
-            return Center(child: CircularProgressIndicator());
+          if (snapshot.hasData) {
+            return lstForImageAndMetaDetails(snapshot);
           }
-          return lstForImageAndMetaDetails(snapshot);
+          return Container(
+            child: Center(
+              child: Text("Please click image to get started"),
+            ),
+          );
         },
       );
     }
@@ -671,7 +675,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return StreamBuilder<List<ImageUploadMetaItems>>(
           stream: _homeListBloc.todaysMetaStream,
           builder: (context, snapshot) {
-            if (snapshot.data != null && snapshot.hasData) {
+            if (snapshot.hasData) {
               return statusWidgetContainer(snapshot.data);
             } else {
               return Container(
