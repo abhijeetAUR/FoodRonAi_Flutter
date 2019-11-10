@@ -604,7 +604,7 @@ class _HomeScreenState extends State<HomeScreen> {
         stream: _homeListBloc.imageListStream,
         builder: (BuildContext context,
             AsyncSnapshot<List<ImageUploadResponse>> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
             return lstForImageAndMetaDetails(snapshot);
           }
           return Container(
@@ -675,7 +675,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return StreamBuilder<List<ImageUploadMetaItems>>(
           stream: _homeListBloc.todaysMetaStream,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.hasData && snapshot.data.isNotEmpty) {
               return statusWidgetContainer(snapshot.data);
             } else {
               return Container(
