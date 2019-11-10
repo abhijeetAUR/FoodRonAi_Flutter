@@ -367,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(getTotalCalories(imageUploadResponseList),
                   style: TextStyle(
                       fontSize: 16,
-                      color: Color.fromRGBO(120, 222, 184, 1),
+                      color: Color.fromRGBO(69, 150, 80, 1),
                       fontFamily: 'HelveticaNeue',
                       fontWeight: FontWeight.w700))
             ],
@@ -457,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 .toString(),
             style: TextStyle(
                 fontSize: 14,
-                color: Color.fromRGBO(120, 222, 184, 1),
+                color: Color.fromRGBO(69, 150, 80, 1),
                 fontFamily: 'HelveticaNeue',
                 fontWeight: FontWeight.w700),
           )
@@ -555,7 +555,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget rowForImageMetaDetails(
         AsyncSnapshot<List<ImageUploadResponse>> snapshot, int index) {
       return Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(left: 20, right: 0, top: 20, bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -618,6 +618,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Align(
           alignment: Alignment.bottomRight,
           child: FloatingActionButton(
+            backgroundColor: Color.fromRGBO(69, 150, 80, 1),
             splashColor: Colors.green,
             child: FlatButton(
               child: Icon(
@@ -670,10 +671,12 @@ class _HomeScreenState extends State<HomeScreen> {
       return StreamBuilder<List<ImageUploadMetaItems>>(
           stream: _homeListBloc.todaysMetaStream,
           builder: (context, snapshot) {
-            if (snapshot.data.isNotEmpty && snapshot.hasData) {
+            if (snapshot.data != null && snapshot.hasData) {
               return statusWidgetContainer(snapshot.data);
             } else {
-              return Container();
+              return Container(
+                child: Text(""),
+              );
             }
           });
     }
