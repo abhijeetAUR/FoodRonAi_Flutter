@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:food_ron_ai/ui/Splashpage.dart';
 
 void main() => runApp(new MyApp());

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
-import 'package:sqflite/sqflite.dart';
 
 class ImageDataBloc {
   List<ImageMetaData> _metaData = [];

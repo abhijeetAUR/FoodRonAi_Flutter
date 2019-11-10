@@ -1,10 +1,7 @@
 library global_values.globals;
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
-import 'bloc/ImageDataBloc.dart';
 
 final appName = "Foodron.ai";
 final serve = "Serve";

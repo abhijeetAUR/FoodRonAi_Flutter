@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/HomeListBloc.dart';
@@ -63,9 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
       imageUploadResponse = ImageUploadResponse();
       imageUploadResponse.id = itemId;
       imageUploadResponse.itemMetaId = itemMetaId;
-      imageUploadResponse.img_url = mappingData['img_url'];
-      imageUploadResponse.inf_img_url = mappingData['inf_img_url'];
-      imageUploadResponse.item_count = mappingData['item_count'];
+      imageUploadResponse.imgUrl = mappingData['img_url'];
+      imageUploadResponse.infImgUrl = mappingData['inf_img_url'];
+      imageUploadResponse.itemCount = mappingData['item_count'];
       imageUploadResponse.datetime = DateTime.now().toString().substring(0, 10);
       List<dynamic> items = mappingData['items'];
       for (var item in items) {
@@ -176,8 +175,8 @@ class _HomeScreenState extends State<HomeScreen> {
     for (var item in result) {
       ImageUploadResponse imageUploadResponse = ImageUploadResponse();
       imageUploadResponse.id = item["id"];
-      imageUploadResponse.img_url = item["img_url"];
-      imageUploadResponse.inf_img_url = item["inf_img_url"];
+      imageUploadResponse.imgUrl = item["img_url"];
+      imageUploadResponse.infImgUrl = item["inf_img_url"];
       imageUploadResponse.itemMetaId = item["itemMetaId"];
       imageUploadResponse.datetime = item["datetime"];
       lstImageUploadResponse.add(imageUploadResponse);
@@ -429,7 +428,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 70,
           width: 70,
           child: Image.network(
-            snapshot.data[index].img_url, // Change this
+            snapshot.data[index].imgUrl, // Change this
             fit: BoxFit.fill,
           ),
         ),

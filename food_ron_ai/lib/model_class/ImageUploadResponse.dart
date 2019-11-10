@@ -3,20 +3,20 @@ import 'dart:core';
 class ImageUploadResponse {
   int id;
   int itemMetaId;
-  String img_url;
-  String inf_img_url;
-  int item_count;
+  String imgUrl;
+  String infImgUrl;
+  int itemCount;
   String datetime;
   List<ImageUploadMetaItems> items;
 
   ImageUploadResponse(
-      {this.itemMetaId, this.img_url, this.inf_img_url, this.item_count})
+      {this.itemMetaId, this.imgUrl, this.infImgUrl, this.itemCount})
       : items = List<ImageUploadMetaItems>();
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
-    map['img_url'] = img_url;
-    map['inf_img_url'] = inf_img_url;
+    map['img_url'] = imgUrl;
+    map['inf_img_url'] = infImgUrl;
     map['itemMetaId'] = itemMetaId;
     map['datetime'] = datetime;
     return map;

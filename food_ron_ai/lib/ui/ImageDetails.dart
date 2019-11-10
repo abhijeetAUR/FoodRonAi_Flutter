@@ -231,7 +231,7 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   Widget imageUpdateWidget() {
     return Image.network(
-      imageUploadResponse.inf_img_url,
+      imageUploadResponse.infImgUrl,
       fit: BoxFit.cover,
     );
   }
