@@ -298,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.only(top: 2, bottom: 5),
                     child: Text("CARB",
                         style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             color: Color.fromRGBO(189, 189, 221, 1),
                             fontFamily: 'HelveticaNeue',
                             fontWeight: FontWeight.w700))),
@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.only(top: 2, bottom: 5),
                   child: Text("FAT",
                       style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 13,
                           color: Color.fromRGBO(189, 189, 221, 1),
                           fontFamily: 'HelveticaNeue',
                           fontWeight: FontWeight.w700))),
@@ -359,7 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.only(top: 2, bottom: 5),
                   child: Text("KCAL",
                       style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 13,
                           color: Color.fromRGBO(189, 189, 221, 1),
                           fontFamily: 'HelveticaNeue',
                           fontWeight: FontWeight.w700))),
@@ -389,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.only(top: 2, bottom: 5),
                   child: Text("PROTEIN",
                       style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 13,
                           color: Color.fromRGBO(189, 189, 221, 1),
                           fontFamily: 'HelveticaNeue',
                           fontWeight: FontWeight.w700))),
