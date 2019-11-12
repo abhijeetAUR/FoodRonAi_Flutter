@@ -30,22 +30,22 @@ class ImageDataBloc {
   }
 
   _incrementServe(ImageMetaData imageMetaData) {
-    int changedServe = Globals.servecount;
+    double changedServe = Globals.servecount;
     var item = _metaData
         .where((oneItem) => oneItem.id == imageMetaData.id)
         .toList()
         .first;
     var index = _metaData.indexOf(imageMetaData);
     imageMetaData.weight =
-        ((item.weight / item.serve) * changedServe).truncate();
-    imageMetaData.cal = ((item.cal / item.serve) * changedServe).truncate();
-    imageMetaData.card = ((item.card / item.serve) * changedServe).truncate();
-    imageMetaData.fat = ((item.fat / item.serve) * changedServe).truncate();
+        ((item.weight / item.serve) * changedServe);
+    imageMetaData.cal = ((item.cal / item.serve) * changedServe);
+    imageMetaData.card = ((item.card / item.serve) * changedServe);
+    imageMetaData.fat = ((item.fat / item.serve) * changedServe);
     imageMetaData.protin =
-        ((item.protin / item.serve) * changedServe).truncate();
-    imageMetaData.fiber = ((item.fiber / item.serve) * changedServe).truncate();
-    imageMetaData.suger = ((item.suger / item.serve) * changedServe).truncate();
-    imageMetaData.serve = changedServe;
+        ((item.protin / item.serve) * changedServe);
+    imageMetaData.fiber = ((item.fiber / item.serve) * changedServe);
+    imageMetaData.suger = ((item.suger / item.serve) * changedServe);
+    imageMetaData.serve = changedServe.truncateToDouble();
     _metaData[index] = imageMetaData;
     Globals.metaData.clear();
     Globals.metaData.addAll(_metaData);

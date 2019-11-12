@@ -19,7 +19,7 @@ class _ImageDetailsState extends State<ImageDetails> {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   final ImageUploadResponse imageUploadResponse;
   _ImageDetailsState({@required this.imageUploadResponse});
-  int serve;
+  double serve;
   int counterToCheckMetaDataUpdate = 0;
 
   @override
@@ -93,7 +93,7 @@ class _ImageDetailsState extends State<ImageDetails> {
       padding: const EdgeInsets.only(left: 35.0),
       child: Text(capitalizeName(snapshot.data[index].foodname),
           style: TextStyle(
-              fontSize: 26,
+              fontSize: 22,
               color: Color.fromRGBO(189, 189, 221, 1),
               fontFamily: 'HelveticaNeue',
               fontWeight: FontWeight.w700)),
@@ -108,14 +108,14 @@ class _ImageDetailsState extends State<ImageDetails> {
         key: UniqueKey(),
         activeColor: Color.fromRGBO(69, 150, 80, 1),
         inactiveColor: Color.fromRGBO(109, 190, 80, 1),
-        value: snapshot.data[index].serve.truncateToDouble(),
-        min: 1,
+        value: snapshot.data[index].serve,
+        min: 0.5,
         max: 10,
-        divisions: 9,
+        divisions: 22,
         label: "$serve",
         onChanged: (double newServe) {
           setState(() {
-            serve = newServe.round();
+            serve = newServe;
           });
           Globals.servecount = serve;
           _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
@@ -141,7 +141,7 @@ class _ImageDetailsState extends State<ImageDetails> {
         child: Text(
           "${Globals.serve}\n${Globals.weight}\n${Globals.calorie}\n${Globals.carbohydrates}\n${Globals.protein}\n${Globals.fat}\n${Globals.fiber}\n${Globals.sugar}\n",
           style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontFamily: 'HelveticaNeue',
               fontWeight: FontWeight.w500,
               color: Colors.black),
@@ -157,7 +157,7 @@ class _ImageDetailsState extends State<ImageDetails> {
         child: Text(
           "${snapshot.data[index].serve}\n${snapshot.data[index].weight}\n${snapshot.data[index].cal}\n${snapshot.data[index].card}\n${snapshot.data[index].protin}\n${snapshot.data[index].fat}\n${snapshot.data[index].fiber}\n${snapshot.data[index].suger}\n",
           style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontFamily: 'HelveticaNeue',
               fontWeight: FontWeight.w500,
               color: Colors.black),
