@@ -35,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int count = 0;
   final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
   CameraController controller;
-  
 
   uploadImage(File imageFile) async {
     var returnCounterValue = ReturnCounterValue();
@@ -73,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
       List<dynamic> items = mappingData['items'];
       for (var item in items) {
         item["itemMetaId"] = itemMetaId;
+        item["datetime"] = DateTime.now().toString().substring(0, 10);
         var value = ImageUploadMetaItems.fromJson(item);
         imageUploadResponse.items.add(value);
       }
@@ -118,18 +118,17 @@ class _HomeScreenState extends State<HomeScreen> {
 //   // Get a specific camera from the list of available cameras.
 //   final firstCamera = cameras.first;
 
-  
 // }
-
-  
 
   Future getImage(bool isCamera) async {
     File image;
     if (isCamera) {
-      
       image = await ImagePicker.pickImage(
-          source: ImageSource.camera, imageQuality: 80,maxHeight: 1024,maxWidth: 1024);
-          print(image.lengthSync());
+          source: ImageSource.camera,
+          imageQuality: 80,
+          maxHeight: 1024,
+          maxWidth: 1024);
+      print(image.lengthSync());
       if (image != null) {
         uploadImage(image);
       }
@@ -137,30 +136,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getTodaysRecordsFromDb() async {
-    var result = await databaseHelper
-        .getTodaysRecords(DateTime.now().toString().substring(0, 10));
+    var result = await databaseHelper.getTodaysRecords();
     if (result != null) {
       sendDataToBlockForMetaData(result);
     }
   }
 
   getMetaRecordsFromDb(List<ImageUploadResponse> list) async {
-    var result = await databaseHelper
-        .getTodaysRecords(DateTime.now().toString().substring(0, 10));
+    var result = await databaseHelper.getTodaysRecords();
     if (result != null) {
       sendDataToBlockForImageWithMetaData(result, list);
     }
   }
 
   getRecords() async {
-    var result = await databaseHelper.getAllRecords("imagetable");
+    var result = await databaseHelper.getAllRecords();
     print(result);
     if (result != null) {
       final list = getListOfImageUploadResponse(result);
       getMetaRecordsFromDb(list);
     }
   }
-
 
   sendDataToBlockForImageWithMetaData(
       List result, List<ImageUploadResponse> list) {
@@ -185,7 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
       var imageUploadMetaItems = ImageUploadMetaItems.fromJson(item);
       lstImageUploadMetaItems.add(imageUploadMetaItems);
     }
-    _homeListBloc.sinkTodaysMeta(lstImageUploadMetaItems);
+    final todaysMetaDataList = lstImageUploadMetaItems
+        .where((item) =>
+            item.datetime.contains(DateTime.now().toString().substring(0, 10)))
+        .toList();
+    _homeListBloc.sinkTodaysMeta(todaysMetaDataList);
   }
 
   List<ImageUploadResponse> getListOfImageUploadResponse(List<dynamic> result) {

@@ -113,10 +113,9 @@ class DatabaseHelper {
     return result;
   }
 
-  Future<List> getTodaysRecords(String datetime) async {
+  Future<List> getTodaysRecords() async {
     Database db = await this.database;
-    var result =
-        await db.rawQuery("SELECT * FROM $imageTableMetaData WHERE $datetime");
+    var result = await db.rawQuery("SELECT * FROM $imageTableMetaData");
     return result.toList();
   }
 
@@ -128,9 +127,9 @@ class DatabaseHelper {
     return result;
   }
 
-  Future<List> getAllRecords(String dbTable) async {
+  Future<List> getAllRecords() async {
     var dbClient = await this.database;
-    var result = await dbClient.rawQuery("SELECT * FROM $dbTable");
+    var result = await dbClient.rawQuery("SELECT * FROM $imageTable");
 
     return result.toList();
   }

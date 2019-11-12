@@ -79,6 +79,6 @@ class ImageUploadMetaItems {
         protein: json['protein'],
         fiber: json['fiber'],
         sugar: json['sugar'],
-        datetime: DateTime.now().toString().substring(0, 10));
+        datetime: json['datetime']);
   }
 }
