@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int count = 0;
   final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
   CameraController controller;
+  bool isLoading = true;
 
   uploadImage(File imageFile) async {
     var returnCounterValue = ReturnCounterValue();
@@ -53,6 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
     request.files.add(multipartFile);
 
     var response = await request.send();
+    if(response.statusCode == 200){
+        setState(() {
+          isLoading = false;
+        });
+    }
     print(response.statusCode);
     response.stream.transform(utf8.decoder).listen((value) {
       parseResponse(value, itemMetaId, itemId);
@@ -128,9 +134,16 @@ class _HomeScreenState extends State<HomeScreen> {
           imageQuality: 80,
           maxHeight: 1024,
           maxWidth: 1024);
+
       print(image.lengthSync());
       if (image != null) {
         uploadImage(image);
+        if(isLoading == true){
+          return new Center(
+            child: Center( child: CircularProgressIndicator(),
+          ));
+         // CircularProgressIndicator();
+        }  
       }
     }
   }
@@ -601,6 +614,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return ListView.builder(
           itemCount: snapshot.data.length,
           itemBuilder: (BuildContext context, int index) {
+
             return GestureDetector(
               onTap: (() {
                 navigateTo(context, snapshot.data[index]);
