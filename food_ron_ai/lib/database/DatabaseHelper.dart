@@ -78,14 +78,14 @@ class DatabaseHelper {
         $colMetaId INTEGER PRIMARY KEY,
         $colItemMetaId INTEGER, 
         $colName TEXT,
-        $colServe INTEGER,
-        $colWeight INTEGER,
-        $colCalorie INTEGER,
-        $colCarbohydrates INTEGER,
-        $colFiber INTEGER,
-        $colFat INTEGER,
-        $colProtein INTEGER,
-        $colSugar INTEGER,
+        $colServe FLOAT,
+        $colWeight FLOAT,
+        $colCalorie FLOAT,
+        $colCarbohydrates FLOAT,
+        $colFiber FLOAT,
+        $colFat FLOAT,
+        $colProtein FLOAT,
+        $colSugar FLOAT,
         $colMetaDatetime TEXT
       )''');
     await batch.commit();
