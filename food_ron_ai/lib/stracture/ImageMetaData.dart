@@ -2,14 +2,14 @@ class ImageMetaData {
   int id;
   int itemMetaId;
   String foodname;
-  int weight;
-  int serve;
-  int cal;
-  int card;
-  int fat;
-  int protin;
-  int fiber;
-  int suger;
+  double weight;
+  double serve;
+  double cal;
+  double card;
+  double fat;
+  double protin;
+  double fiber;
+  double suger;
 
   ImageMetaData(
       {this.id,

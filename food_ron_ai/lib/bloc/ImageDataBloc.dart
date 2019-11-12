@@ -30,21 +30,26 @@ class ImageDataBloc {
   }
 
   _incrementServe(ImageMetaData imageMetaData) {
-    int changedServe = Globals.servecount;
+    double changedServe = Globals.servecount;
     var item = _metaData
         .where((oneItem) => oneItem.id == imageMetaData.id)
         .toList()
         .first;
     var index = _metaData.indexOf(imageMetaData);
-    imageMetaData.weight =
-        ((item.weight / item.serve) * changedServe).truncate();
-    imageMetaData.cal = ((item.cal / item.serve) * changedServe).truncate();
-    imageMetaData.card = ((item.card / item.serve) * changedServe).truncate();
-    imageMetaData.fat = ((item.fat / item.serve) * changedServe).truncate();
-    imageMetaData.protin =
-        ((item.protin / item.serve) * changedServe).truncate();
-    imageMetaData.fiber = ((item.fiber / item.serve) * changedServe).truncate();
-    imageMetaData.suger = ((item.suger / item.serve) * changedServe).truncate();
+    imageMetaData.weight = double.parse(
+        ((item.weight / item.serve) * changedServe).toStringAsFixed(2));
+    imageMetaData.cal = double.parse(
+        ((item.cal / item.serve) * changedServe).toStringAsFixed(2));
+    imageMetaData.card = double.parse(
+        ((item.card / item.serve) * changedServe).toStringAsFixed(2));
+    imageMetaData.fat = double.parse(
+        ((item.fat / item.serve) * changedServe).toStringAsFixed(2));
+    imageMetaData.protin = double.parse(
+        ((item.protin / item.serve) * changedServe).toStringAsFixed(2));
+    imageMetaData.fiber = double.parse(
+        ((item.fiber / item.serve) * changedServe).toStringAsFixed(2));
+    imageMetaData.suger = double.parse(
+        ((item.suger / item.serve) * changedServe).toStringAsFixed(2));
     imageMetaData.serve = changedServe;
     _metaData[index] = imageMetaData;
     Globals.metaData.clear();

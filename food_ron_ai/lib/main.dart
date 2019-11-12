@@ -10,8 +10,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'foodron.ai',
       theme: new ThemeData(
-        primarySwatch: Colors.orange,
-        accentColor: Colors.orange,
+        primarySwatch: Colors.green,
+        accentColor: Colors.green,
         hintColor: Colors.white,
         inputDecorationTheme: new InputDecorationTheme(
           labelStyle: new TextStyle(color: Colors.black),

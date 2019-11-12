@@ -27,14 +27,14 @@ class ImageUploadMetaItems {
   int id;
   int itemMetaId;
   String name;
-  int weight;
-  int serve;
-  int calorie;
-  int carbohydrates;
-  int fat;
-  int protein;
-  int fiber;
-  int sugar;
+  double serve;
+  double weight;
+  double calorie;
+  double carbohydrates;
+  double fat;
+  double protein;
+  double fiber;
+  double sugar;
   String datetime;
 
   ImageUploadMetaItems(

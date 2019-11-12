@@ -5,7 +5,7 @@ import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 
 final appName = "Foodron.ai";
 final serve = "Serve";
-int servecount;
+double servecount;
 int counter = 1;
 final weight = "Weight";
 final calorie = "Calorie";

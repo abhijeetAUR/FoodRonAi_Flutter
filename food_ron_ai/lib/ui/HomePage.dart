@@ -111,6 +111,18 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<bool> checkInternetConnectivity() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        return true;
+      }
+    } on SocketException catch (_) {
+      return false;
+    }
+  }
+
 //  Future<void> squareImageCapture() async {
 //   // Obtain a list of the available cameras on the device.
 //   final cameras = await availableCameras();
@@ -128,7 +140,6 @@ class _HomeScreenState extends State<HomeScreen> {
           imageQuality: 80,
           maxHeight: 1024,
           maxWidth: 1024);
-      print(image.lengthSync());
       if (image != null) {
         uploadImage(image);
       }
@@ -210,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .map((item) => item.carbohydrates)
           .toList()
           .reduce((combine, next) => combine + next)
-          .toString();
+          .toStringAsFixed(2);
     }
     return item.isNotEmpty ? "$item g" : "0g";
   }
@@ -222,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .map((item) => item.fat)
           .toList()
           .reduce((combine, next) => combine + next)
-          .toString();
+          .toStringAsFixed(2);
     }
     return item.isNotEmpty ? "$item g" : "0g";
   }
@@ -234,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .map((item) => item.protein)
           .toList()
           .reduce((combine, next) => combine + next)
-          .toString();
+          .toStringAsFixed(2);
     }
     return item.isNotEmpty ? "$item g" : "0g";
   }
@@ -246,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .map((item) => item.calorie)
           .toList()
           .reduce((combine, next) => combine + next)
-          .toString();
+          .toStringAsFixed(2);
     }
     return item.isNotEmpty ? item : "0";
   }
@@ -323,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontWeight: FontWeight.w700))),
                 Text(getTotalCarbohydrates(imageUploadResponseList),
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Colors.black,
                         fontFamily: 'HelveticaNeue',
                         fontWeight: FontWeight.w700))
@@ -354,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.w700))),
               Text(getTotalFats(imageUploadResponseList),
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Colors.black,
                       fontFamily: 'HelveticaNeue',
                       fontWeight: FontWeight.w700))
@@ -384,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.w700))),
               Text(getTotalCalories(imageUploadResponseList),
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Color.fromRGBO(69, 150, 80, 1),
                       fontFamily: 'HelveticaNeue',
                       fontWeight: FontWeight.w700))
@@ -414,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.w700))),
               Text(getTotalProtein(imageUploadResponseList),
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Colors.black,
                       fontFamily: 'HelveticaNeue',
                       fontWeight: FontWeight.w700))
@@ -465,7 +476,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontFamily: 'HelveticaNeue',
                   fontWeight: FontWeight.w700)),
           SizedBox(
-            width: 21,
+            width: 10,
           ),
           Text(
             snapshot.data[index].items
@@ -570,16 +581,42 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
+    Widget rowForTodaysDateInMetaDetails() {
+      return Row(
+        children: <Widget>[
+          Text("Date",
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Color.fromRGBO(189, 189, 221, 1),
+                  fontFamily: 'HelveticaNeue',
+                  fontWeight: FontWeight.w700)),
+          SizedBox(
+            width: 15,
+          ),
+          Text(
+            DateTime.now().toString().substring(0, 10),
+            style: TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                fontFamily: 'HelveticaNeue',
+                fontWeight: FontWeight.w700),
+          )
+        ],
+      );
+    }
+
     Widget rowForImageMetaDetails(
         AsyncSnapshot<List<ImageUploadResponse>> snapshot, int index) {
       return Padding(
         padding: const EdgeInsets.only(left: 20, right: 0, top: 20, bottom: 20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            rowForCarbsInMetaDetails(snapshot, index),
-            rowForFatInMetaDetails(snapshot, index),
-            rowForProteinInMetaDetails(snapshot, index),
+            rowForTodaysDateInMetaDetails(),
+            // rowForCarbsInMetaDetails(snapshot, index),
+            // rowForFatInMetaDetails(snapshot, index),
+            // rowForProteinInMetaDetails(snapshot, index),
             rowForKCALInMetaDetails(snapshot, index),
           ],
         ),
@@ -605,13 +642,17 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: (() {
                 navigateTo(context, snapshot.data[index]);
               }),
-              child: Row(
-                children: <Widget>[
-                  Expanded(flex: 1, child: cntForImage(snapshot, index)),
-                  Expanded(
-                      flex: 1, child: rowForImageMetaDetails(snapshot, index)),
-                  Expanded(child: cntForDisclosureIndicator())
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(flex: 0, child: cntForImage(snapshot, index)),
+                    Expanded(
+                        flex: 1,
+                        child: rowForImageMetaDetails(snapshot, index)),
+                    Expanded(flex: 1, child: cntForDisclosureIndicator())
+                  ],
+                ),
               ),
             );
           });
@@ -634,6 +675,27 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
+    dialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("No internet"),
+            content: new Text("Device is not connected to internet"),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new FlatButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     Widget cntFabCamera() {
       return Container(
         padding: EdgeInsets.all(15),
@@ -648,9 +710,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.white,
                 size: 25,
               ),
-              onPressed: () {
-                //squareImageCapture();
-                getImage(true);
+              onPressed: () async {
+                try {
+                  final result = await InternetAddress.lookup('www.google.com');
+                  if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+                    getImage(true);
+                  }
+                } on SocketException catch (_) {
+                  dialog();
+                }
               },
             ),
             onPressed: () {},
