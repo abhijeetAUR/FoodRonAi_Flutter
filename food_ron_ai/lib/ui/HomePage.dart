@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:camera/new/camera.dart' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
@@ -14,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/database/DataModelImageMeta.dart';
+import 'package:camera/camera.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -32,6 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<DataModelImageMeta> imageList;
   int count = 0;
   final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
+  CameraController controller;
+  
 
   uploadImage(File imageFile) async {
     var returnCounterValue = ReturnCounterValue();
@@ -107,11 +111,25 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+//  Future<void> squareImageCapture() async {
+//   // Obtain a list of the available cameras on the device.
+//   final cameras = await availableCameras();
+
+//   // Get a specific camera from the list of available cameras.
+//   final firstCamera = cameras.first;
+
+  
+// }
+
+  
+
   Future getImage(bool isCamera) async {
     File image;
     if (isCamera) {
+      
       image = await ImagePicker.pickImage(
-          source: ImageSource.camera, imageQuality: 70);
+          source: ImageSource.camera, imageQuality: 80,maxHeight: 1024,maxWidth: 1024);
+          print(image.lengthSync());
       if (image != null) {
         uploadImage(image);
       }
@@ -142,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
       getMetaRecordsFromDb(list);
     }
   }
+
 
   sendDataToBlockForImageWithMetaData(
       List result, List<ImageUploadResponse> list) {
@@ -630,6 +649,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: 25,
               ),
               onPressed: () {
+                //squareImageCapture();
                 getImage(true);
               },
             ),
