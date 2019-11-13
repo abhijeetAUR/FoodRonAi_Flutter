@@ -333,28 +333,54 @@ class _ImageDetailsState extends State<ImageDetails> {
     );
   }
 
+  Widget cntFabAddFoodItem() {
+    return Container(
+      padding: EdgeInsets.all(15),
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: FloatingActionButton(
+          backgroundColor: Color.fromRGBO(69, 150, 80, 1),
+          splashColor: Colors.green,
+          child: FlatButton(
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 25,
+            ),
+            onPressed: () {},
+          ),
+          onPressed: () {},
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () => _willPopCallback(),
         child: Scaffold(
-            body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            SizedBox(height: 30),
-            titleHolder(),
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                children: <Widget>[
-                  imageViewContainer(),
-                  addNewMetaData(),
-                  imageDetailStreamBuilder(),
-                ],
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              SizedBox(height: 30),
+              titleHolder(),
+              Expanded(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    imageViewContainer(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    imageDetailStreamBuilder(),
+                  ],
+                ),
               ),
-            ),
-          ],
-        )));
+            ],
+          ),
+          floatingActionButton: cntFabAddFoodItem(),
+        ));
   }
 }
