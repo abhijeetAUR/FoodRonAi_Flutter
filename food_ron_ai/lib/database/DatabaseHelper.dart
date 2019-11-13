@@ -25,7 +25,7 @@ class DatabaseHelper {
   String colProtein = 'protein';
   String colSugar = 'sugar';
   String colMetaDatetime = 'datetime';
-
+  String colBase64Image = "base64Image";
   String colDatetime = "datetime";
   String colId = 'id';
   String colImgUrl = 'img_url';
@@ -71,7 +71,8 @@ class DatabaseHelper {
         $colInfImgUrl TEXT,
         $itemMeta TEXT,
         $colItemMetaId INTEGER,
-        $colDatetime TEXT
+        $colDatetime TEXT,
+        $colBase64Image TEXT
       )''');
     batch.execute(''' CREATE TABLE $imageTableMetaData
       (
@@ -86,7 +87,9 @@ class DatabaseHelper {
         $colFat REAL,
         $colProtein REAL,
         $colSugar REAL,
-        $colMetaDatetime TEXT
+        $colMetaDatetime TEXT,
+        $colBase64Image TEXT
+        
       )''');
     await batch.commit();
   }
@@ -99,13 +102,6 @@ class DatabaseHelper {
     //var result = await db.query('imageTable');
     return result;
   }
-
-  // Insert Operation: Insert a datamodelimagemeta object to database
-  // Future<int> insertImage(DataModelImageMeta dataModelImageMeta) async {
-  //   Database db = await this.database;
-  //   var result = await db.insert(imageTable, dataModelImageMeta.toMap());
-  //   return result;
-  // }
 
   Future<int> insertImageMeta(ImageUploadResponse dataModelImageMeta) async {
     Database db = await this.database;

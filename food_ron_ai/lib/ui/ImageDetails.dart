@@ -92,7 +92,11 @@ class _ImageDetailsState extends State<ImageDetails> {
     return Container(
       child: Center(
         child: Text(
-          "${Globals.serve}\n${Globals.weight}\n${Globals.calorie}\n${Globals.carbohydrates}\n${Globals.protein}\n${Globals.fat}\n${Globals.fiber}\n${Globals.sugar}\n",
+          // "${Globals.serve}\n${Globals.weight}\n${Globals.calorie}\n${Globals.carbohydrates}\n${Globals.protein}\n${Globals.fat}\n${Globals.fiber}\n${Globals.sugar}\n",
+          '''${Globals.serve} \t ${snapshot.data[index].serve} \t \t \t \t \t \t \t${Globals.weight} \t ${snapshot.data[index].weight} 
+          \n${Globals.calorie} \t${snapshot.data[index].cal} \t \t \t \t \t${Globals.carbohydrates} \t ${snapshot.data[index].card}
+          \n${Globals.protein} \t${snapshot.data[index].protin} \t \t \t \t \t \t\t${Globals.fat} \t${snapshot.data[index].fat}
+          \n${Globals.fiber} \t${snapshot.data[index].fiber} \t \t \t \t \t \t \t \t${Globals.sugar} \t${snapshot.data[index].suger}''',
           style: TextStyle(
               fontSize: 16,
               fontFamily: 'HelveticaNeue',
@@ -192,11 +196,11 @@ class _ImageDetailsState extends State<ImageDetails> {
   Widget rowForFoodMetaData(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return Padding(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.only(left: 35),
       child: Row(
         children: <Widget>[
-          Expanded(flex: 1, child: cntForMetaDataFieldNames(snapshot, index)),
-          Expanded(flex: 1, child: cntForMetaDataFieldValues(snapshot, index)),
+          Expanded(flex: 0, child: cntForMetaDataFieldNames(snapshot, index)),
+          // Expanded(flex: 2, child: cntForMetaDataFieldValues(snapshot, index)),
         ],
       ),
     );
@@ -205,7 +209,9 @@ class _ImageDetailsState extends State<ImageDetails> {
   Widget lstBuilderForImageMetaItems(
       AsyncSnapshot<List<ImageMetaData>> snapshot) {
     return ListView.builder(
+        shrinkWrap: true,
         itemCount: snapshot.data.length,
+        physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.only(
@@ -341,22 +347,25 @@ class _ImageDetailsState extends State<ImageDetails> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _willPopCallback(),
-      child: Scaffold(
-        body: Column(
+        onWillPop: () => _willPopCallback(),
+        child: Scaffold(
+            body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            SizedBox(height: 60),
+            SizedBox(height: 40),
             titleHolder(),
-            SizedBox(height: 20),
-            Expanded(flex: 1, child: imageViewContainer()),
-            addNewMetaData(),
             Expanded(
-              flex: 1,
-              child: imageDetailStreamBuilder(),
-            )
+              child: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  imageViewContainer(),
+                  addNewMetaData(),
+                  imageDetailStreamBuilder(),
+                ],
+              ),
+            ),
           ],
-        ),
-      ),
-    );
+        )));
   }
 }

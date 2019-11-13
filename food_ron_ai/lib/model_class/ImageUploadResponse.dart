@@ -8,6 +8,7 @@ class ImageUploadResponse {
   int itemCount;
   String datetime;
   List<ImageUploadMetaItems> items;
+  String base64Image;
 
   ImageUploadResponse(
       {this.itemMetaId, this.imgUrl, this.infImgUrl, this.itemCount})
@@ -19,6 +20,7 @@ class ImageUploadResponse {
     map['inf_img_url'] = infImgUrl;
     map['itemMetaId'] = itemMetaId;
     map['datetime'] = datetime;
+    map['base64Image'] = base64Image;
     return map;
   }
 }

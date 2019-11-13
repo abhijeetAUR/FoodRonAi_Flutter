@@ -9,6 +9,7 @@ import 'package:food_ron_ai/bloc/HomeListBloc.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import 'package:food_ron_ai/ui/ImageDetails.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void parseResponse(value, itemMetaId, itemId) {
+  void parseResponse(value, itemMetaId, itemId) async {
     Map<String, dynamic> mappingData = json.decode(value);
     if (mappingData != null && mappingData.isNotEmpty) {
       imageUploadResponse = ImageUploadResponse();
@@ -68,6 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
       imageUploadResponse.imgUrl = mappingData['img_url'];
       imageUploadResponse.infImgUrl = mappingData['inf_img_url'];
       imageUploadResponse.itemCount = mappingData['item_count'];
+      Response resposne = await http.get(mappingData['img_url']);
+      var base64Image = base64Encode(resposne.bodyBytes);
+      imageUploadResponse.base64Image = base64Image;
       imageUploadResponse.datetime = DateTime.now().toString().substring(0, 10);
       List<dynamic> items = mappingData['items'];
       for (var item in items) {
@@ -108,18 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
         getRecords();
         getTodaysRecordsFromDb();
       }
-    }
-  }
-
-  Future<bool> checkInternetConnectivity() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
-        return true;
-      }
-    } on SocketException catch (_) {
-      return false;
     }
   }
 
@@ -581,7 +573,8 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    Widget rowForTodaysDateInMetaDetails() {
+    Widget rowForTodaysDateInMetaDetails(
+        AsyncSnapshot<List<ImageUploadResponse>> snapshot, int index) {
       return Row(
         children: <Widget>[
           Text("Date",
@@ -594,7 +587,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 15,
           ),
           Text(
-            DateTime.now().toString().substring(0, 10),
+            snapshot.data[index].datetime,
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
@@ -613,7 +606,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            rowForTodaysDateInMetaDetails(),
+            rowForTodaysDateInMetaDetails(snapshot, index),
             // rowForCarbsInMetaDetails(snapshot, index),
             // rowForFatInMetaDetails(snapshot, index),
             // rowForProteinInMetaDetails(snapshot, index),
