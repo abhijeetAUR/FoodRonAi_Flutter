@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
@@ -280,27 +282,14 @@ class _ImageDetailsState extends State<ImageDetails> {
   }
 
   Widget imageUpdateWidget() {
-    return Image.network(
-      imageUploadResponse.infImgUrl,
+    return Image.memory(
+      base64Decode(imageUploadResponse.base64InfImage),
       fit: BoxFit.cover,
     );
   }
 
   Widget imageViewContainer() {
-    return Container(
-      child: new SizedBox(
-        width: double.infinity,
-        child: Card(
-          semanticContainer: true,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: imageUpdateWidget(),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(25))),
-          elevation: 2,
-          margin: EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 0),
-        ),
-      ),
-    );
+    return Container(child: imageUpdateWidget());
   }
 
   Widget backArrow() {
@@ -353,7 +342,7 @@ class _ImageDetailsState extends State<ImageDetails> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            SizedBox(height: 40),
+            SizedBox(height: 30),
             titleHolder(),
             Expanded(
               child: ListView(

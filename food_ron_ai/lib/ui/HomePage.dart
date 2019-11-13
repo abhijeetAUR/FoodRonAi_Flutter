@@ -69,9 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
       imageUploadResponse.imgUrl = mappingData['img_url'];
       imageUploadResponse.infImgUrl = mappingData['inf_img_url'];
       imageUploadResponse.itemCount = mappingData['item_count'];
+
       Response resposne = await http.get(mappingData['img_url']);
       var base64Image = base64Encode(resposne.bodyBytes);
+      Response resposneOfInfImage = await http.get(mappingData['inf_img_url']);
+      var base64InfImage = base64Encode(resposneOfInfImage.bodyBytes);
+      imageUploadResponse.base64InfImage = base64InfImage;
       imageUploadResponse.base64Image = base64Image;
+
       imageUploadResponse.datetime = DateTime.now().toString().substring(0, 10);
       List<dynamic> items = mappingData['items'];
       for (var item in items) {
@@ -201,6 +206,8 @@ class _HomeScreenState extends State<HomeScreen> {
       imageUploadResponse.infImgUrl = item["inf_img_url"];
       imageUploadResponse.itemMetaId = item["itemMetaId"];
       imageUploadResponse.datetime = item["datetime"];
+      imageUploadResponse.base64Image = item["base64Image"].toString();
+      imageUploadResponse.base64InfImage = item["base64InfImage"].toString();
       lstImageUploadResponse.add(imageUploadResponse);
     }
     return lstImageUploadResponse;
@@ -215,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toStringAsFixed(2);
     }
-    return item.isNotEmpty ? "$item g" : "0g";
+    return item.isNotEmpty ? "${item}g" : "0g";
   }
 
   getTotalFats(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -227,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toStringAsFixed(2);
     }
-    return item.isNotEmpty ? "$item g" : "0g";
+    return item.isNotEmpty ? "${item}g" : "0g";
   }
 
   getTotalProtein(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -239,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toStringAsFixed(2);
     }
-    return item.isNotEmpty ? "$item g" : "0g";
+    return item.isNotEmpty ? "${item}g" : "0g";
   }
 
   getTotalCalories(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -446,10 +453,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           height: 70,
           width: 70,
-          child: Image.network(
-            snapshot.data[index].imgUrl, // Change this
-            fit: BoxFit.fill,
-          ),
+          child: Image.memory(base64Decode(snapshot.data[index].base64Image)),
         ),
       );
     }
@@ -638,7 +642,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Expanded(flex: 0, child: cntForImage(snapshot, index)),
                     Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: rowForImageMetaDetails(snapshot, index)),
                     Expanded(flex: 1, child: cntForDisclosureIndicator())
                   ],

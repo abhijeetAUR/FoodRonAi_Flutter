@@ -26,10 +26,12 @@ class DatabaseHelper {
   String colSugar = 'sugar';
   String colMetaDatetime = 'datetime';
   String colBase64Image = "base64Image";
+  String colBase64InfImage = "base64InfImage";
   String colDatetime = "datetime";
   String colId = 'id';
   String colImgUrl = 'img_url';
   String colInfImgUrl = 'inf_img_url';
+
   List<String> colItemClass;
   List<ImgItemDataMapper> colItems;
   String itemMeta = "itemMeta";
@@ -72,7 +74,8 @@ class DatabaseHelper {
         $itemMeta TEXT,
         $colItemMetaId INTEGER,
         $colDatetime TEXT,
-        $colBase64Image TEXT
+        $colBase64Image TEXT,
+        $colBase64InfImage TEXT
       )''');
     batch.execute(''' CREATE TABLE $imageTableMetaData
       (
@@ -88,7 +91,8 @@ class DatabaseHelper {
         $colProtein REAL,
         $colSugar REAL,
         $colMetaDatetime TEXT,
-        $colBase64Image TEXT
+        $colBase64Image TEXT,
+        $colBase64InfImage TEXT
         
       )''');
     await batch.commit();
