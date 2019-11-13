@@ -91,21 +91,43 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   Widget cntForMetaDataFieldNames(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
-    return Container(
-      child: Center(
-        child: Text(
-          // "${Globals.serve}\n${Globals.weight}\n${Globals.calorie}\n${Globals.carbohydrates}\n${Globals.protein}\n${Globals.fat}\n${Globals.fiber}\n${Globals.sugar}\n",
-          '''${Globals.serve} \t ${snapshot.data[index].serve} \t \t \t \t \t \t \t${Globals.weight} \t ${snapshot.data[index].weight} 
-          \n${Globals.calorie} \t${snapshot.data[index].cal} \t \t \t \t \t${Globals.carbohydrates} \t ${snapshot.data[index].card}
-          \n${Globals.protein} \t${snapshot.data[index].protin} \t \t \t \t \t \t\t${Globals.fat} \t${snapshot.data[index].fat}
-          \n${Globals.fiber} \t${snapshot.data[index].fiber} \t \t \t \t \t \t \t \t${Globals.sugar} \t${snapshot.data[index].suger}''',
-          style: TextStyle(
-              fontSize: 16,
-              fontFamily: 'HelveticaNeue',
-              fontWeight: FontWeight.w500,
-              color: Colors.black),
-        ),
-      ),
+    return DataTable(
+      dataRowHeight: 25,
+      headingRowHeight: 0,
+      
+      columnSpacing: 35,
+      columns: [
+        DataColumn(label: Text("")),
+        DataColumn(label: Text("")),
+        DataColumn(label: Text("")),
+        DataColumn(label: Text("")),
+      ],
+      rows: [
+        DataRow(cells: [
+          DataCell(Text("${Globals.serve}")),
+          DataCell(Text("${snapshot.data[index].serve}")),
+          DataCell(Text("${Globals.protein}")),
+          DataCell(Text("${snapshot.data[index].protin}")),
+        ]),
+        DataRow(cells: [
+          DataCell(Text("${Globals.weight}")),
+          DataCell(Text("${snapshot.data[index].weight}")),
+          DataCell(Text("${Globals.fat}")),
+          DataCell(Text("${snapshot.data[index].fat}")),
+        ]),
+        DataRow(cells: [
+          DataCell(Text("${Globals.calorie}")),
+          DataCell(Text("${snapshot.data[index].cal}")),
+           DataCell(Text("${Globals.fiber}")),
+          DataCell(Text("${snapshot.data[index].fiber}")),
+        ]),
+        DataRow(cells: [
+          DataCell(Text("${Globals.carbohydrates}")),
+          DataCell(Text("${snapshot.data[index].card}")),
+          DataCell(Text("${Globals.sugar}")),
+          DataCell(Text("${snapshot.data[index].suger}")),
+        ]),
+      ],
     );
   }
 
@@ -128,7 +150,7 @@ class _ImageDetailsState extends State<ImageDetails> {
   Widget sliderForServerCount(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20),
+      padding: const EdgeInsets.only(right: 15),
       child: Slider.adaptive(
         key: UniqueKey(),
         activeColor: Color.fromRGBO(69, 150, 80, 1),
@@ -159,7 +181,7 @@ class _ImageDetailsState extends State<ImageDetails> {
         }),
         child: Icon(
           Icons.edit,
-          color: Color.fromRGBO(189, 189, 221, 1),
+          color: Colors.black54,
           size: 20,
         ),
       ),
@@ -169,11 +191,11 @@ class _ImageDetailsState extends State<ImageDetails> {
   Widget cntForfoodName(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return Padding(
-      padding: const EdgeInsets.only(left: 35.0),
+      padding: const EdgeInsets.only(left: 10.0),
       child: Text(capitalizeName(snapshot.data[index].foodname),
           style: TextStyle(
-              fontSize: 20,
-              color: Color.fromRGBO(189, 189, 221, 1),
+              fontSize: 16,
+              color: Colors.black54,
               fontFamily: 'HelveticaNeue',
               fontWeight: FontWeight.w700)),
     );
@@ -181,24 +203,26 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   Widget rowForMetaNameAndSliderAndEditBtn(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
-    return Row(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            cntForfoodName(snapshot, index),
-            btnToAddChangeField()
-          ],
-        ),
-        // Expanded(child: ),
-        Expanded(child: sliderForServerCount(snapshot, index))
-      ],
+    return Container(
+      height: 98,
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(flex: 5, child: cntForfoodName(snapshot, index)),
+              Expanded(flex: 1, child: btnToAddChangeField()),
+            ],
+          ),
+          sliderForServerCount(snapshot, index),
+        ],
+      ),
     );
   }
 
   Widget rowForFoodMetaData(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return Padding(
-      padding: const EdgeInsets.only(left: 35),
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       child: Row(
         children: <Widget>[
           Expanded(flex: 0, child: cntForMetaDataFieldNames(snapshot, index)),
@@ -217,12 +241,12 @@ class _ImageDetailsState extends State<ImageDetails> {
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.only(
-                left: 24.0, right: 24.0, top: 0, bottom: 8),
+                left: 10.0, right: 10.0, top: 0, bottom: 8),
             child: Card(
               semanticContainer: true,
               clipBehavior: Clip.antiAliasWithSaveLayer,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25))),
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
               elevation: 5,
               margin: EdgeInsets.all(0),
               child: Padding(
@@ -282,14 +306,21 @@ class _ImageDetailsState extends State<ImageDetails> {
   }
 
   Widget imageUpdateWidget() {
-    return Image.memory(
-      base64Decode(imageUploadResponse.base64InfImage),
-      fit: BoxFit.cover,
+    return ClipRRect(
+      borderRadius: new BorderRadius.circular(10.0),
+      child: Image.memory(
+        base64Decode(imageUploadResponse.base64InfImage),
+        fit: BoxFit.cover,
+      ),
     );
   }
 
   Widget imageViewContainer() {
-    return Container(child: imageUpdateWidget());
+    return Container(
+        padding: EdgeInsets.all(10),
+        decoration: new BoxDecoration(
+            borderRadius: new BorderRadius.all(Radius.circular(24.0))),
+        child: imageUpdateWidget());
   }
 
   Widget backArrow() {
@@ -335,7 +366,7 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   Widget cntFabAddFoodItem() {
     return Container(
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(10),
       child: Align(
         alignment: Alignment.bottomRight,
         child: FloatingActionButton(
