@@ -309,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
         List<ImageUploadMetaItems> imageUploadResponseList) {
       return Card(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(5.0),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -340,8 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget cardForFat(List<ImageUploadMetaItems> imageUploadResponseList) {
       return Card(
         child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          padding: EdgeInsets.only(top: 10, bottom: 10),
+          padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -370,8 +369,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget cardForKCAL(List<ImageUploadMetaItems> imageUploadResponseList) {
       return Card(
         child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          padding: EdgeInsets.only(top: 10, bottom: 10),
+          padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -400,8 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget cardForProtein(List<ImageUploadMetaItems> imageUploadResponseList) {
       return Card(
         child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          padding: EdgeInsets.only(top: 10, bottom: 10),
+          padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -641,7 +638,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Expanded(flex: 0, child: cntForImage(snapshot, index)),
                     Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: rowForImageMetaDetails(snapshot, index)),
                     Expanded(flex: 1, child: cntForDisclosureIndicator())
                   ],
