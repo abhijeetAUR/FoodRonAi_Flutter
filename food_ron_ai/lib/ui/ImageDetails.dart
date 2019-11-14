@@ -176,7 +176,8 @@ class _ImageDetailsState extends State<ImageDetails> {
     );
   }
 
-  Widget btnToAddChangeField() {
+  Widget btnToAddChangeField(
+      AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return ButtonTheme(
       minWidth: 10.0,
       height: 20.0,
@@ -186,6 +187,24 @@ class _ImageDetailsState extends State<ImageDetails> {
         }),
         child: Icon(
           Icons.edit,
+          color: Colors.black54,
+          size: 20,
+        ),
+      ),
+    );
+  }
+
+  Widget btnToAddDeleteField(
+      AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
+    return ButtonTheme(
+      minWidth: 10.0,
+      height: 20.0,
+      child: FlatButton(
+        onPressed: (() {
+          print("deleted");
+        }),
+        child: Icon(
+          Icons.delete_forever,
           color: Colors.black54,
           size: 20,
         ),
@@ -206,6 +225,19 @@ class _ImageDetailsState extends State<ImageDetails> {
     );
   }
 
+  Widget btnPairEditDelete(
+      AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
+    return Row(
+      children: <Widget>[
+        btnToAddChangeField(snapshot, index),
+        SizedBox(
+          width: 0,
+        ),
+        btnToAddDeleteField(snapshot, index)
+      ],
+    );
+  }
+
   Widget rowForMetaNameAndSliderAndEditBtn(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return Container(
@@ -219,7 +251,12 @@ class _ImageDetailsState extends State<ImageDetails> {
                   child: Container(
                       padding: EdgeInsets.only(left: 30),
                       child: cntForfoodName(snapshot, index))),
-              Expanded(flex: 2, child: btnToAddChangeField()),
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                    child: btnPairEditDelete(snapshot, index),
+                  ))
+              //Expanded(flex: 3, child: btnToAddDeleteField()),
             ],
           ),
           sliderForServerCount(snapshot, index),
