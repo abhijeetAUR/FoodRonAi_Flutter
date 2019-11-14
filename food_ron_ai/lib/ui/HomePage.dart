@@ -766,7 +766,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: <Widget>[
           streamBuilderForImageAndMetaDetails(),
           cntFabCamera(),
-          cntFabGallery()
+          //cntFabGallery()
         ],
       );
     }
