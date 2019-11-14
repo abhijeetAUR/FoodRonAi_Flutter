@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future getImage(bool isCamera) async {
     File image;
-    if (isCamera  == true) {
+    if (isCamera == true) {
       image = await ImagePicker.pickImage(
           source: ImageSource.camera,
           imageQuality: 80,
@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (image != null) {
         uploadImage(image);
       }
-    }else{
+    } else {
       image = await ImagePicker.pickImage(
           source: ImageSource.gallery,
           imageQuality: 80,
@@ -231,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toStringAsFixed(2);
     }
-    return item.isNotEmpty ? "${item}g" : "0g";
+    return item != null ? "${item}g" : "0g";
   }
 
   getTotalFats(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -243,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toStringAsFixed(2);
     }
-    return item.isNotEmpty ? "${item}g" : "0g";
+    return item != null ? "${item}g" : "0g";
   }
 
   getTotalProtein(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -255,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toStringAsFixed(2);
     }
-    return item.isNotEmpty ? "${item}g" : "0g";
+    return item != null ? "${item}g" : "0g";
   }
 
   getTotalCalories(List<ImageUploadMetaItems> imageUploadResponseList) {
@@ -267,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .reduce((combine, next) => combine + next)
           .toStringAsFixed(2);
     }
-    return item.isNotEmpty ? item : "0";
+    return item != null ? item : "0";
   }
 
   void navigateTo(context, ImageUploadResponse response) {
@@ -797,7 +797,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return StreamBuilder<List<ImageUploadMetaItems>>(
           stream: _homeListBloc.todaysMetaStream,
           builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data.isNotEmpty) {
+            if (snapshot.hasData) {
               return statusWidgetContainer(snapshot.data);
             } else {
               return Container(
