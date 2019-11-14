@@ -18,7 +18,6 @@ import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/database/DataModelImageMeta.dart';
-import 'package:camera/camera.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -37,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<DataModelImageMeta> imageList;
   int count = 0;
   final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
-  CameraController controller;
   bool _fetchingResponse = false;
 
   uploadImage(File imageFile) async {
