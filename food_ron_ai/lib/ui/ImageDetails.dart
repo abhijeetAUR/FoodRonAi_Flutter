@@ -179,9 +179,10 @@ class _ImageDetailsState extends State<ImageDetails> {
   Widget btnToAddChangeField(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return ButtonTheme(
-      minWidth: 10.0,
+      minWidth: 2.0,
       height: 20.0,
       child: FlatButton(
+        padding: EdgeInsets.only(left: 2,right: 2,top: 10,bottom: 10),
         onPressed: (() {
           print("run");
         }),
@@ -197,9 +198,10 @@ class _ImageDetailsState extends State<ImageDetails> {
   Widget btnToAddDeleteField(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return ButtonTheme(
-      minWidth: 10.0,
+      minWidth: 2.0,
       height: 20.0,
       child: FlatButton(
+        padding: EdgeInsets.only(left: 2,right: 2,top: 10,bottom: 10),
         onPressed: (() {
           print("deleted");
         }),
@@ -230,9 +232,6 @@ class _ImageDetailsState extends State<ImageDetails> {
     return Row(
       children: <Widget>[
         btnToAddChangeField(snapshot, index),
-        SizedBox(
-          width: 0,
-        ),
         btnToAddDeleteField(snapshot, index)
       ],
     );
@@ -247,16 +246,14 @@ class _ImageDetailsState extends State<ImageDetails> {
           Row(
             children: <Widget>[
               Expanded(
-                  flex: 4,
+                flex: 2,
                   child: Container(
                       padding: EdgeInsets.only(left: 30),
                       child: cntForfoodName(snapshot, index))),
-              Expanded(
-                  flex: 2,
-                  child: Container(
+              Flexible( 
+                flex: 1,
                     child: btnPairEditDelete(snapshot, index),
-                  ))
-              //Expanded(flex: 3, child: btnToAddDeleteField()),
+                  )
             ],
           ),
           sliderForServerCount(snapshot, index),

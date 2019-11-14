@@ -658,20 +658,46 @@ class _HomeScreenState extends State<HomeScreen> {
       return ListView.builder(
           itemCount: snapshot.data.length,
           itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-              onTap: (() {
-                navigateTo(context, snapshot.data[index]);
-              }),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(flex: 0, child: cntForImage(snapshot, index)),
-                    Expanded(
-                        flex: 3,
-                        child: rowForImageMetaDetails(snapshot, index)),
-                    Expanded(flex: 1, child: cntForDisclosureIndicator())
-                  ],
+            final item = snapshot.data[index].toString();
+            return Dismissible(
+              key: Key(item),
+              //TODO: add delete item from database logic
+              onDismissed: (direction) {
+                //   setState(() {
+                //     snapshot.data.removeAt(index);
+                //   });
+
+                Scaffold.of(context)
+                    .showSnackBar(SnackBar(content: Text("${index+1} Row Deleted")));
+              },
+              // Show a red background as the item is swiped away.
+              background: Container(
+                color: Colors.redAccent,
+                child: Center(
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              child: GestureDetector(
+                onTap: (() {
+                  navigateTo(context, snapshot.data[index]);
+                }),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(flex: 0, child: cntForImage(snapshot, index)),
+                      Expanded(
+                          flex: 3,
+                          child: rowForImageMetaDetails(snapshot, index)),
+                      Expanded(flex: 1, child: cntForDisclosureIndicator())
+                    ],
+                  ),
                 ),
               ),
             );
@@ -891,7 +917,8 @@ class _HomeScreenState extends State<HomeScreen> {
       return Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: new Color.fromRGBO(241, 241, 241, 0.5)),
+        decoration:
+            BoxDecoration(color: new Color.fromRGBO(241, 241, 241, 0.5)),
         child: Center(
           child: Container(
             height: (MediaQuery.of(context).size.width / 6).roundToDouble(),
