@@ -153,7 +153,7 @@ class _ImageDetailsState extends State<ImageDetails> {
   Widget sliderForServerCount(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return Container(
-      padding: EdgeInsets.only(left: 20,right: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
       child: Center(
         child: Slider.adaptive(
           key: UniqueKey(),
@@ -214,7 +214,11 @@ class _ImageDetailsState extends State<ImageDetails> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Expanded(flex: 4, child: Container(padding: EdgeInsets.only(left: 30),child: cntForfoodName(snapshot, index))),
+              Expanded(
+                  flex: 4,
+                  child: Container(
+                      padding: EdgeInsets.only(left: 30),
+                      child: cntForfoodName(snapshot, index))),
               Expanded(flex: 2, child: btnToAddChangeField()),
             ],
           ),
@@ -255,7 +259,8 @@ class _ImageDetailsState extends State<ImageDetails> {
               elevation: 5,
               margin: EdgeInsets.all(0),
               child: Padding(
-                padding: const EdgeInsets.only(left: 15,right: 10,top: 10,bottom: 10),
+                padding: const EdgeInsets.only(
+                    left: 15, right: 10, top: 10, bottom: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -313,10 +318,9 @@ class _ImageDetailsState extends State<ImageDetails> {
   Widget imageViewContainer() {
     return Container(
       //width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.all(0),
       decoration: BoxDecoration(
-        
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(0)),
         image: DecorationImage(
           fit: BoxFit.fill,
           image: MemoryImage(
