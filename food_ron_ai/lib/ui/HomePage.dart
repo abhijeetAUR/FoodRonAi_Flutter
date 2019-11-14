@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/HomeListBloc.dart';
@@ -770,8 +771,6 @@ class _HomeScreenState extends State<HomeScreen> {
       return Stack(
         children: <Widget>[
           streamBuilderForImageAndMetaDetails(),
-          cntFabCamera(),
-          //cntFabGallery()
         ],
       );
     }
@@ -841,6 +840,42 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
+    Widget speedDial() {
+      return SpeedDial(
+        marginRight: 30,
+        marginBottom: 35,
+        animatedIcon: AnimatedIcons.menu_close,
+        animatedIconTheme: IconThemeData(size: 22.0),
+        closeManually: false,
+        curve: Curves.bounceIn,
+        overlayColor: Colors.black,
+        overlayOpacity: 0.5,
+        onOpen: () => print('OPENING DIAL'),
+        onClose: () => print('DIAL CLOSED'),
+        tooltip: 'Speed Dial',
+        heroTag: 'speed-dial-hero-tag',
+        backgroundColor: Color.fromRGBO(69, 150, 80, 1),
+        foregroundColor: Colors.white,
+        elevation: 8.0,
+        shape: CircleBorder(),
+        children: [
+          SpeedDialChild(
+              child: Icon(Icons.camera),
+              backgroundColor: Color.fromRGBO(69, 150, 80, 1),
+              label: 'Camera',
+              labelStyle: TextStyle(fontSize: 18.0),
+              onTap: () => getImage(true)),
+          SpeedDialChild(
+            child: Icon(Icons.wallpaper),
+            backgroundColor: Color.fromRGBO(69, 150, 80, 1),
+            label: 'Gallery',
+            labelStyle: TextStyle(fontSize: 18.0),
+            onTap: () => getImage(false),
+          ),
+        ],
+      );
+    }
+
     Widget scaffoldBody() {
       return SafeArea(
         child: Column(
@@ -859,6 +894,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(248, 249, 253, 1),
       body: scaffoldBody(),
+      floatingActionButton: speedDial(),
     );
   }
 }
