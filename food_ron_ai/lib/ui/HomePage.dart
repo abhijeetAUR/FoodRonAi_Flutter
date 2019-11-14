@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:camera/new/camera.dart' as prefix0;
+import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
@@ -137,8 +137,13 @@ class _HomeScreenState extends State<HomeScreen> {
           imageQuality: 80,
           maxHeight: 1024,
           maxWidth: 1024);
-      if (image != null) {
-        uploadImage(image);
+
+      if (image != null && image.path != null) {
+        image = await FlutterExifRotation.rotateImage(path: image.path);
+
+        if (image != null) {
+          uploadImage(image);
+        }
       }
     } else {
       image = await ImagePicker.pickImage(
