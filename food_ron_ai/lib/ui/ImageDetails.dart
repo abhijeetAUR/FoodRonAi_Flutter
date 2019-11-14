@@ -91,42 +91,46 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   Widget cntForMetaDataFieldNames(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
-    return DataTable(
-      dataRowHeight: 25,
-      headingRowHeight: 0,
-      columnSpacing: 25,
-      columns: [
-        DataColumn(label: Text("")),
-        DataColumn(label: Text("")),
-        DataColumn(label: Text("")),
-        DataColumn(label: Text("")),
-      ],
-      rows: [
-        DataRow(cells: [
-          DataCell(Text("${Globals.serve}")),
-          DataCell(Text("${snapshot.data[index].serve}")),
-          DataCell(Text("${Globals.protein}")),
-          DataCell(Text("${snapshot.data[index].protin}")),
-        ]),
-        DataRow(cells: [
-          DataCell(Text("${Globals.weight}")),
-          DataCell(Text("${snapshot.data[index].weight}")),
-          DataCell(Text("${Globals.fat}")),
-          DataCell(Text("${snapshot.data[index].fat}")),
-        ]),
-        DataRow(cells: [
-          DataCell(Text("${Globals.calorie}")),
-          DataCell(Text("${snapshot.data[index].cal}")),
-          DataCell(Text("${Globals.fiber}")),
-          DataCell(Text("${snapshot.data[index].fiber}")),
-        ]),
-        DataRow(cells: [
-          DataCell(Text("${Globals.carbohydrates}")),
-          DataCell(Text("${snapshot.data[index].card}")),
-          DataCell(Text("${Globals.sugar}")),
-          DataCell(Text("${snapshot.data[index].suger}")),
-        ]),
-      ],
+    return SizedBox(
+      child: Center(
+        child: DataTable(
+          dataRowHeight: 25,
+          headingRowHeight: 0,
+          columnSpacing: 25,
+          columns: [
+            DataColumn(label: Text("")),
+            DataColumn(label: Text("")),
+            DataColumn(label: Text("")),
+            DataColumn(label: Text("")),
+          ],
+          rows: [
+            DataRow(cells: [
+              DataCell(Text("${Globals.serve}")),
+              DataCell(Text("${snapshot.data[index].serve}")),
+              DataCell(Text("${Globals.protein}")),
+              DataCell(Text("${snapshot.data[index].protin}")),
+            ]),
+            DataRow(cells: [
+              DataCell(Text("${Globals.weight}")),
+              DataCell(Text("${snapshot.data[index].weight}")),
+              DataCell(Text("${Globals.fat}")),
+              DataCell(Text("${snapshot.data[index].fat}")),
+            ]),
+            DataRow(cells: [
+              DataCell(Text("${Globals.calorie}")),
+              DataCell(Text("${snapshot.data[index].cal}")),
+              DataCell(Text("${Globals.fiber}")),
+              DataCell(Text("${snapshot.data[index].fiber}")),
+            ]),
+            DataRow(cells: [
+              DataCell(Text("${Globals.carbohydrates}")),
+              DataCell(Text("${snapshot.data[index].card}")),
+              DataCell(Text("${Globals.sugar}")),
+              DataCell(Text("${snapshot.data[index].suger}")),
+            ]),
+          ],
+        ),
+      ),
     );
   }
 
@@ -148,24 +152,26 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   Widget sliderForServerCount(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 15),
-      child: Slider.adaptive(
-        key: UniqueKey(),
-        activeColor: Color.fromRGBO(69, 150, 80, 1),
-        inactiveColor: Color.fromRGBO(109, 190, 80, 1),
-        value: snapshot.data[index].serve.truncateToDouble(),
-        min: 1,
-        max: 10,
-        divisions: 9,
-        label: "$serve",
-        onChanged: (double newServe) {
-          setState(() {
-            serve = newServe;
-          });
-          Globals.servecount = serve;
-          _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
-        },
+    return Container(
+      //padding: EdgeInsets.only(left: 20,right: 20),
+      child: Center(
+        child: Slider.adaptive(
+          key: UniqueKey(),
+          activeColor: Color.fromRGBO(69, 150, 80, 1),
+          inactiveColor: Color.fromRGBO(109, 190, 80, 1),
+          value: snapshot.data[index].serve.truncateToDouble(),
+          min: 1,
+          max: 10,
+          divisions: 9,
+          label: "$serve",
+          onChanged: (double newServe) {
+            setState(() {
+              serve = newServe;
+            });
+            Globals.servecount = serve;
+            _imageDataBloc.imageServeIncrement.add(snapshot.data[index]);
+          },
+        ),
       ),
     );
   }
@@ -224,7 +230,7 @@ class _ImageDetailsState extends State<ImageDetails> {
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       child: Row(
         children: <Widget>[
-          Expanded(flex: 0, child: cntForMetaDataFieldNames(snapshot, index)),
+          Expanded(flex: 1, child: cntForMetaDataFieldNames(snapshot, index)),
           // Expanded(flex: 2, child: cntForMetaDataFieldValues(snapshot, index)),
         ],
       ),
@@ -249,7 +255,7 @@ class _ImageDetailsState extends State<ImageDetails> {
               elevation: 5,
               margin: EdgeInsets.all(0),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 15,right: 10,top: 10,bottom: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -393,7 +399,7 @@ class _ImageDetailsState extends State<ImageDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               titleHolder(),
               Expanded(
                 flex: 1,
