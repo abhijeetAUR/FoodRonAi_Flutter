@@ -153,7 +153,7 @@ class _ImageDetailsState extends State<ImageDetails> {
   Widget sliderForServerCount(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return Container(
-      //padding: EdgeInsets.only(left: 20,right: 20),
+      padding: EdgeInsets.only(left: 20,right: 20),
       child: Center(
         child: Slider.adaptive(
           key: UniqueKey(),
@@ -214,8 +214,8 @@ class _ImageDetailsState extends State<ImageDetails> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Expanded(flex: 5, child: cntForfoodName(snapshot, index)),
-              Expanded(flex: 1, child: btnToAddChangeField()),
+              Expanded(flex: 4, child: Container(padding: EdgeInsets.only(left: 30),child: cntForfoodName(snapshot, index))),
+              Expanded(flex: 2, child: btnToAddChangeField()),
             ],
           ),
           sliderForServerCount(snapshot, index),
@@ -246,7 +246,7 @@ class _ImageDetailsState extends State<ImageDetails> {
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.only(
-                left: 10.0, right: 10.0, top: 0, bottom: 8),
+                left: 24.0, right: 24.0, top: 0, bottom: 8),
             child: Card(
               semanticContainer: true,
               clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -318,7 +318,7 @@ class _ImageDetailsState extends State<ImageDetails> {
         
         borderRadius: BorderRadius.all(Radius.circular(10)),
         image: DecorationImage(
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
           image: MemoryImage(
             base64Decode(imageUploadResponse.base64InfImage),
           ),

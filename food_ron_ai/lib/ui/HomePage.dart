@@ -495,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontFamily: 'HelveticaNeue',
                   fontWeight: FontWeight.w700)),
           SizedBox(
-            width: 10,
+            width: 9,
           ),
           Text(
             snapshot.data[index].items
@@ -888,9 +888,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     Widget indicator() {
-      return SpinKitWanderingCubes(
-        color: Colors.green,
-        size: 50,
+      return Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(color: new Color.fromRGBO(241, 241, 241, 0.5)),
+        child: Center(
+          child: Container(
+            height: (MediaQuery.of(context).size.width / 6).roundToDouble(),
+            width: (MediaQuery.of(context).size.width / 6).roundToDouble(),
+            color: Colors.green,
+            child: SpinKitWave(
+              color: Colors.white,
+              size: 15,
+            ),
+          ),
+        ),
       );
     }
 
