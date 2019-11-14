@@ -131,9 +131,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future getImage(bool isCamera) async {
     File image;
-    if (isCamera) {
+    if (isCamera  == true) {
       image = await ImagePicker.pickImage(
           source: ImageSource.camera,
+          imageQuality: 80,
+          maxHeight: 1024,
+          maxWidth: 1024);
+      if (image != null) {
+        uploadImage(image);
+      }
+    }else{
+      image = await ImagePicker.pickImage(
+          source: ImageSource.gallery,
           imageQuality: 80,
           maxHeight: 1024,
           maxWidth: 1024);
@@ -721,11 +730,43 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
+    Widget cntFabGallery() {
+      return Container(
+        padding: EdgeInsets.all(15),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: FloatingActionButton(
+            backgroundColor: Color.fromRGBO(69, 150, 80, 1),
+            splashColor: Colors.green,
+            child: FlatButton(
+              child: Icon(
+                Icons.photo_album,
+                color: Colors.white,
+                size: 25,
+              ),
+              onPressed: () async {
+                try {
+                  final result = await InternetAddress.lookup('www.google.com');
+                  if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+                    getImage(false);
+                  }
+                } on SocketException catch (_) {
+                  dialog();
+                }
+              },
+            ),
+            onPressed: () {},
+          ),
+        ),
+      );
+    }
+
     Widget lstHolderForImageAndMetaDetails() {
       return Stack(
         children: <Widget>[
           streamBuilderForImageAndMetaDetails(),
-          cntFabCamera()
+          cntFabCamera(),
+          cntFabGallery()
         ],
       );
     }
@@ -799,9 +840,8 @@ class _HomeScreenState extends State<HomeScreen> {
       return SafeArea(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 30),
+            SizedBox(height: 20),
             title(),
-            SizedBox(height: 10),
             todayHealthMetaDataHolder(),
             Expanded(
               child: cardHolderForImageAndMetaDetails(),

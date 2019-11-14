@@ -94,7 +94,6 @@ class _ImageDetailsState extends State<ImageDetails> {
     return DataTable(
       dataRowHeight: 25,
       headingRowHeight: 0,
-      
       columnSpacing: 25,
       columns: [
         DataColumn(label: Text("")),
@@ -118,7 +117,7 @@ class _ImageDetailsState extends State<ImageDetails> {
         DataRow(cells: [
           DataCell(Text("${Globals.calorie}")),
           DataCell(Text("${snapshot.data[index].cal}")),
-           DataCell(Text("${Globals.fiber}")),
+          DataCell(Text("${Globals.fiber}")),
           DataCell(Text("${snapshot.data[index].fiber}")),
         ]),
         DataRow(cells: [
@@ -237,7 +236,7 @@ class _ImageDetailsState extends State<ImageDetails> {
     return ListView.builder(
         shrinkWrap: true,
         itemCount: snapshot.data.length,
-        physics: NeverScrollableScrollPhysics(),
+        //physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.only(
@@ -305,22 +304,21 @@ class _ImageDetailsState extends State<ImageDetails> {
     }
   }
 
-  Widget imageUpdateWidget() {
-    return ClipRRect(
-      borderRadius: new BorderRadius.circular(10.0),
-      child: Image.memory(
-        base64Decode(imageUploadResponse.base64InfImage),
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
   Widget imageViewContainer() {
     return Container(
-        padding: EdgeInsets.all(10),
-        decoration: new BoxDecoration(
-            borderRadius: new BorderRadius.all(Radius.circular(24.0))),
-        child: imageUpdateWidget());
+      //width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: MemoryImage(
+            base64Decode(imageUploadResponse.base64InfImage),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget backArrow() {
@@ -385,6 +383,7 @@ class _ImageDetailsState extends State<ImageDetails> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -394,19 +393,15 @@ class _ImageDetailsState extends State<ImageDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              SizedBox(height: 30),
+              SizedBox(height: 20),
               titleHolder(),
               Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    imageViewContainer(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    imageDetailStreamBuilder(),
-                  ],
-                ),
+                flex: 1,
+                child: imageViewContainer(),
+              ),
+              Expanded(
+                flex: 2,
+                child: imageDetailStreamBuilder(),
               ),
             ],
           ),
