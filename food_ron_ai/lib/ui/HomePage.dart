@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/bloc/HomeListBloc.dart';
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int count = 0;
   final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
   CameraController controller;
+  bool _fetchingResponse = false;
 
   uploadImage(File imageFile) async {
     var returnCounterValue = ReturnCounterValue();
@@ -57,6 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
     var response = await request.send();
     print(response.statusCode);
     response.stream.transform(utf8.decoder).listen((value) {
+      setState(() {
+        _fetchingResponse = false;
+      });
       parseResponse(value, itemMetaId, itemId);
     });
   }
@@ -143,6 +148,9 @@ class _HomeScreenState extends State<HomeScreen> {
         image = await FlutterExifRotation.rotateImage(path: image.path);
 
         if (image != null) {
+          setState(() {
+            _fetchingResponse = true;
+          });
           uploadImage(image);
         }
       }
@@ -153,6 +161,9 @@ class _HomeScreenState extends State<HomeScreen> {
           maxHeight: 1024,
           maxWidth: 1024);
       if (image != null) {
+        setState(() {
+          _fetchingResponse = true;
+        });
         uploadImage(image);
       }
     }
@@ -876,6 +887,13 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
+    Widget indicator() {
+      return SpinKitWanderingCubes(
+        color: Colors.green,
+        size: 50,
+      );
+    }
+
     Widget scaffoldBody() {
       return SafeArea(
         child: Column(
@@ -885,7 +903,7 @@ class _HomeScreenState extends State<HomeScreen> {
             todayHealthMetaDataHolder(),
             Expanded(
               child: cardHolderForImageAndMetaDetails(),
-            )
+            ),
           ],
         ),
       );
@@ -893,7 +911,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(248, 249, 253, 1),
-      body: scaffoldBody(),
+      body: Stack(
+        children: <Widget>[
+          scaffoldBody(),
+          Center(
+            child: _fetchingResponse ? indicator() : Container(),
+          ),
+        ],
+      ),
       floatingActionButton: speedDial(),
     );
   }
