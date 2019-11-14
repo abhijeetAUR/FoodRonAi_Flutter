@@ -95,7 +95,7 @@ class _ImageDetailsState extends State<ImageDetails> {
       dataRowHeight: 25,
       headingRowHeight: 0,
       
-      columnSpacing: 35,
+      columnSpacing: 25,
       columns: [
         DataColumn(label: Text("")),
         DataColumn(label: Text("")),
@@ -385,7 +385,6 @@ class _ImageDetailsState extends State<ImageDetails> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
