@@ -51,6 +51,17 @@ class _ImageDetailsState extends State<ImageDetails> {
     _imageDataBloc.passDataToImageList(updatedListOfImageMetaData);
   }
 
+  deleteMetaRecordFromDb(
+      AsyncSnapshot<List<ImageMetaData>> snapshot, int index) async {
+    final result = snapshot.data[index];
+    print(result);
+    var queryResult =
+        await databaseHelper.deleteMetaFromImageMetaTable(result.id);
+    print(queryResult);
+    snapshot.data.removeAt(index);
+    _imageDataBloc.passDataToImageList(snapshot.data);
+  }
+
   capitalizeName(String name) {
     return name[0].toUpperCase() + name.substring(1);
   }
@@ -182,7 +193,7 @@ class _ImageDetailsState extends State<ImageDetails> {
       minWidth: 2.0,
       height: 20.0,
       child: FlatButton(
-        padding: EdgeInsets.only(left: 2,right: 2,top: 10,bottom: 10),
+        padding: EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
         onPressed: (() {
           print("run");
         }),
@@ -201,9 +212,9 @@ class _ImageDetailsState extends State<ImageDetails> {
       minWidth: 2.0,
       height: 20.0,
       child: FlatButton(
-        padding: EdgeInsets.only(left: 2,right: 2,top: 10,bottom: 10),
+        padding: EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
         onPressed: (() {
-          print("deleted");
+          deleteMetaRecordFromDb(snapshot, index);
         }),
         child: Icon(
           Icons.delete_forever,
@@ -246,14 +257,14 @@ class _ImageDetailsState extends State<ImageDetails> {
           Row(
             children: <Widget>[
               Expanded(
-                flex: 2,
+                  flex: 2,
                   child: Container(
                       padding: EdgeInsets.only(left: 30),
                       child: cntForfoodName(snapshot, index))),
-              Flexible( 
+              Flexible(
                 flex: 1,
-                    child: btnPairEditDelete(snapshot, index),
-                  )
+                child: btnPairEditDelete(snapshot, index),
+              )
             ],
           ),
           sliderForServerCount(snapshot, index),

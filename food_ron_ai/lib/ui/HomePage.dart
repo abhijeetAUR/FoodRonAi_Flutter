@@ -132,6 +132,14 @@ class _HomeScreenState extends State<HomeScreen> {
 //   final firstCamera = cameras.first;
 
 // }
+  deleteImageAndMetaFromImageTable(
+      AsyncSnapshot<List<ImageUploadResponse>> snapshot, int index) {
+    final id = snapshot.data[index].id;
+    final result = databaseHelper.deleteImageDataFromImageTable(id);
+    print(result);
+    snapshot.data.removeAt(index);
+    _homeListBloc.updateHomeList(snapshot.data);
+  }
 
   Future getImage(bool isCamera) async {
     File image;
@@ -496,11 +504,13 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 9,
           ),
           Text(
-            snapshot.data[index].items
-                .map((oneItem) => oneItem.calorie)
-                .toList()
-                .reduce((first, next) => first + next)
-                .toString(),
+            snapshot.data[index].items.isNotEmpty
+                ? snapshot.data[index].items
+                    .map((oneItem) => oneItem.calorie)
+                    .toList()
+                    .reduce((first, next) => first + next)
+                    .toString()
+                : 0.toString(),
             style: TextStyle(
                 fontSize: 14,
                 color: Color.fromRGBO(69, 150, 80, 1),
@@ -525,11 +535,13 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 15,
           ),
           Text(
-            snapshot.data[index].items
-                .map((oneItem) => oneItem.protein)
-                .toList()
-                .reduce((first, next) => first + next)
-                .toString(),
+            snapshot.data[index].items.isNotEmpty
+                ? snapshot.data[index].items
+                    .map((oneItem) => oneItem.protein)
+                    .toList()
+                    .reduce((first, next) => first + next)
+                    .toString()
+                : 0.toString(),
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
@@ -554,11 +566,13 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 20,
           ),
           Text(
-            snapshot.data[index].items
-                .map((oneItem) => oneItem.carbohydrates)
-                .toList()
-                .reduce((first, next) => first + next)
-                .toString(),
+            snapshot.data[index].items.isNotEmpty
+                ? snapshot.data[index].items
+                    .map((oneItem) => oneItem.carbohydrates)
+                    .toList()
+                    .reduce((first, next) => first + next)
+                    .toString()
+                : 0.toString(),
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
@@ -583,11 +597,13 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 40,
           ),
           Text(
-            snapshot.data[index].items
-                .map((oneItem) => oneItem.fat)
-                .toList()
-                .reduce((first, next) => first + next)
-                .toString(),
+            snapshot.data[index].items.isNotEmpty
+                ? snapshot.data[index].items
+                    .map((oneItem) => oneItem.fat)
+                    .toList()
+                    .reduce((first, next) => first + next)
+                    .toString()
+                : 0.toString(),
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
@@ -656,17 +672,13 @@ class _HomeScreenState extends State<HomeScreen> {
       return ListView.builder(
           itemCount: snapshot.data.length,
           itemBuilder: (BuildContext context, int index) {
-            final item = snapshot.data[index].toString();
+            final item = snapshot.data[index];
             return Dismissible(
-              key: Key(item),
-              //TODO: add delete item from database logic
+              key: Key(item.id.toString()),
               onDismissed: (direction) {
-                //   setState(() {
-                //     snapshot.data.removeAt(index);
-                //   });
-
-                Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text("${index+1} Row Deleted")));
+                deleteImageAndMetaFromImageTable(snapshot, index);
+                Scaffold.of(context).showSnackBar(
+                    SnackBar(content: Text("$index Row Deleted")));
               },
               // Show a red background as the item is swiped away.
               background: Container(

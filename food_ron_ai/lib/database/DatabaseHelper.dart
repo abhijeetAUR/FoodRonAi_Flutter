@@ -104,6 +104,12 @@ class DatabaseHelper {
     return result;
   }
 
+  Future<int> deleteImageDataFromImageTable(int id) async {
+    Database db = await this.database;
+    var result = db.delete(imageTable, where: "id = ?", whereArgs: [id]);
+    return result;
+  }
+
   Future<int> insertImageMeta(ImageUploadResponse dataModelImageMeta) async {
     Database db = await this.database;
     var result = await db.insert(imageTable, dataModelImageMeta.toMap());
