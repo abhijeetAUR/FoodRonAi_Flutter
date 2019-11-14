@@ -134,6 +134,14 @@ class _HomeScreenState extends State<HomeScreen> {
 //   final firstCamera = cameras.first;
 
 // }
+  deleteImageAndMetaFromImageTable(
+      AsyncSnapshot<List<ImageUploadResponse>> snapshot, int index) {
+    final id = snapshot.data[index].id;
+    final result = databaseHelper.deleteImageDataFromImageTable(id);
+    print(result);
+    snapshot.data.removeAt(index);
+    _homeListBloc.updateHomeList(snapshot.data);
+  }
 
   Future getImage(bool isCamera) async {
     File image;
@@ -669,14 +677,10 @@ class _HomeScreenState extends State<HomeScreen> {
             final item = snapshot.data[index];
             return Dismissible(
               key: Key(item.id.toString()),
-              //TODO: add delete item from database logic
               onDismissed: (direction) {
-                //   setState(() {
-                //     snapshot.data.removeAt(index);
-                //   });
-
+                deleteImageAndMetaFromImageTable(snapshot, index);
                 Scaffold.of(context).showSnackBar(
-                    SnackBar(content: Text("${index + 1} Row Deleted")));
+                    SnackBar(content: Text("$index Row Deleted")));
               },
               // Show a red background as the item is swiped away.
               background: Container(
