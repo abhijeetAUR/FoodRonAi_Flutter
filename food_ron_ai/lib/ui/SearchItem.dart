@@ -9,10 +9,14 @@ class SearchItem extends StatefulWidget {
 
 class SearchItemState extends State<SearchItem> {
   Widget listTileBuilder(index) {
-    return ListTile(
-      leading: Text(index.toString()),
-    //TODO: navigate bacck to image detail page after searching and clicking on specific item logic
-    // onTap: () => navigateToImageDetails(context),
+    return GridTile(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 50,
+        padding: EdgeInsets.only(left:24,right: 24,top: 15),
+        child: Text(index.toString()+"\t Item")),
+      //TODO: navigate bacck to image detail page after searching and clicking on specific item logic
+      // onTap: () => navigateToImageDetails(context),
     );
   }
 
