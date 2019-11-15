@@ -6,6 +6,7 @@ import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
+import 'package:food_ron_ai/ui/SearchItem.dart';
 
 class ImageDetails extends StatefulWidget {
   final ImageUploadResponse imageUploadResponse;
@@ -187,6 +188,15 @@ class _ImageDetailsState extends State<ImageDetails> {
     );
   }
 
+  void navigateToSearchItem(context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => SearchItem(),
+      ),
+    );
+  }
+
   Widget btnToAddChangeField(
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return ButtonTheme(
@@ -325,7 +335,9 @@ class _ImageDetailsState extends State<ImageDetails> {
       child: Row(
         children: <Widget>[
           FlatButton(
-              onPressed: (() {}),
+              onPressed: (() {
+                navigateToSearchItem(context);
+              }),
               child: Icon(Icons.add, color: Color.fromRGBO(69, 150, 80, 1))),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -431,7 +443,9 @@ class _ImageDetailsState extends State<ImageDetails> {
               color: Colors.white,
               size: 25,
             ),
-            onPressed: () {},
+            onPressed: () {
+              navigateToSearchItem(context);
+            },
           ),
           onPressed: () {},
         ),
