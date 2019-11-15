@@ -1,6 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:floating_search_bar/floating_search_bar.dart';
+import 'package:food_ron_ai/model_class/SearchItemModelClass.dart';
 import 'package:food_ron_ai/ui/ImageDetails.dart';
+import 'package:food_ron_ai/Global.dart' as Globals;
+import 'package:http/http.dart' as http;
+
 
 class SearchItem extends StatefulWidget {
   @override
@@ -8,13 +13,16 @@ class SearchItem extends StatefulWidget {
 }
 
 class SearchItemState extends State<SearchItem> {
+  final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
+  SearchItemResponse searchItemResponse;
+
   Widget listTileBuilder(index) {
     return GridTile(
       child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 50,
-        padding: EdgeInsets.only(left:24,right: 24,top: 15),
-        child: Text(index.toString()+"\t Item")),
+          width: MediaQuery.of(context).size.width,
+          height: 50,
+          padding: EdgeInsets.only(left: 24, right: 24, top: 15),
+          child: Text(index.toString() + "\t Item")),
       //TODO: navigate bacck to image detail page after searching and clicking on specific item logic
       // onTap: () => navigateToImageDetails(context),
     );
@@ -29,6 +37,21 @@ class SearchItemState extends State<SearchItem> {
             color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
       ),
     );
+  }
+
+  callSearchItemApi() async {
+    var uri = Uri.parse(Globals.searchitem);
+    Map<String, String> headers = {"authorization": authorizationToken};
+    var request = http.get(uri, headers: headers);
+    final response = await request;
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      var value = SearchItemResponse.fromJson(json.decode(response.body));
+print(value);
+    } else {
+      throw Exception('Failed to load post');
+    }
   }
 
   Widget floatingSerchBar() {
@@ -57,6 +80,12 @@ class SearchItemState extends State<SearchItem> {
   //     ),
   //   );
   // }
+
+  @override
+  void initState() {
+    super.initState();
+    callSearchItemApi();
+  }
 
   @override
   Widget build(BuildContext context) {

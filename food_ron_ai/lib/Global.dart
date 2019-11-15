@@ -15,6 +15,7 @@ final fat = "Fat";
 final protein = "Protein";
 final sugar = "Suger";
 final imguploadurl = "http://api.foodron.ai/v1.0/uploadimg";
+final searchitem = "http://api.foodron.ai/v1.0/get-db";
 final cameraTxt = "camera";
 List<ImageMetaData> changedImageMetaData = [];
 var apiResponse;
