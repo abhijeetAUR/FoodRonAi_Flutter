@@ -30,14 +30,30 @@ class SearchItemState extends State<SearchItem> {
 
   Widget traileAvatar() {
     return CircleAvatar(
-      backgroundColor: Colors.orange,
+      backgroundColor: Colors.green,
       child: Text(
-        "F",
+        "S",
         style: TextStyle(
             color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
       ),
     );
   }
+
+  Widget title() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            "SEARCH",
+            style: TextStyle(
+                color: Color.fromRGBO(45, 46, 51, 1),
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
+      );
+    }
 
   callSearchItemApi() async {
     var uri = Uri.parse(Globals.searchitem);
@@ -64,7 +80,7 @@ print(value);
       onChanged: (String value) {},
       onTap: () {},
       decoration: InputDecoration.collapsed(
-        focusColor: Colors.black,
+        focusColor: Colors.green,
         hintText: "Search...",
       ),
     );
@@ -100,7 +116,14 @@ print(value);
         padding: EdgeInsets.all(24),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: floatingSerchBar(),
+        child: Column(
+          children: <Widget>[
+            
+            title(),
+            SizedBox(height: 10),
+            Expanded(child: floatingSerchBar()),
+          ],
+        ),
       ),
     ));
   }
