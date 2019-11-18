@@ -62,8 +62,8 @@ class SearchItemState extends State<SearchItem> {
     print(response.statusCode);
 
     if (response.statusCode == 200) {
-      var value = SearchItemResponse.fromJson(json.decode(response.body));
-      print(value);
+      var valueSearch = SearchItemResponse.fromJson(json.decode(response.body));
+      print(valueSearch);
     } else {
       throw Exception('Failed to load post');
     }

@@ -17,7 +17,6 @@ class SearchItemResponse {
       items: (json['items'] as List)
           .map((oneItem) => ArraySearchItems.fromJson(oneItem))
           .toList(),
-      //items: SearchItemResponse.fromJson('json'),
     );
   }
 }
@@ -45,14 +44,14 @@ class ArraySearchItems {
 
 class SerchedItemMetaData {
   String food;
-  double calorievalue;
-  double protain;
-  double fat;
-  double carbs;
-  double fiber;
-  double weight;
-  double servingsize;
-  double serveunit;
+  String calorievalue;
+  String protain;
+  String fat;
+  String carbs;
+  String fiber;
+  String weight;
+  String servingsize;
+  String serveunit;
 
   SerchedItemMetaData(
       {this.food,
