@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
+
 class SearchItemResponse {
   List<ArraySearchItems> items;
 
@@ -23,7 +25,7 @@ class SearchItemResponse {
 
 class ArraySearchItems {
   String foodname;
-  SerchedItemMetaData metadata;
+  ImageUploadMetaItems metadata;
 
   ArraySearchItems({this.foodname, this.metadata});
 
@@ -37,58 +39,58 @@ class ArraySearchItems {
   factory ArraySearchItems.fromJson(Map<String, dynamic> json) {
     return ArraySearchItems(
       foodname: json['foodname'],
-      metadata: SerchedItemMetaData.fromJson(json['metadata']),
+      metadata: ImageUploadMetaItems.fromJson(json['metadata']),
     );
   }
 }
 
 class SerchedItemMetaData {
   String food;
-  String calorievalue;
+  String calorieValue;
   String protain;
   String fat;
   String carbs;
   String fiber;
   String weight;
-  String servingsize;
-  String serveunit;
+  String servingSize;
+  String serveUnit;
 
   SerchedItemMetaData(
       {this.food,
-      this.calorievalue,
+      this.calorieValue,
       this.protain,
       this.fat,
       this.carbs,
       this.fiber,
       this.weight,
-      this.servingsize,
-      this.serveunit});
+      this.servingSize,
+      this.serveUnit});
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
     map['food'] = food;
-    map['calorievalue'] = calorievalue;
+    map['calorieValue'] = calorieValue;
     map['protain'] = protain;
     map['fat'] = fat;
     map['carbs'] = carbs;
     map['fiber'] = fiber;
     map['weight'] = weight;
-    map['servingsize'] = servingsize;
-    map['serveunit'] = serveunit;
+    map['servingSize'] = servingSize;
+    map['serveUnit'] = serveUnit;
     return map;
   }
 
   factory SerchedItemMetaData.fromJson(Map<String, dynamic> json) {
     return SerchedItemMetaData(
       food: json['food'],
-      calorievalue: json['Calorievalue'],
+      calorieValue: json['Calorievalue'],
       protain: json['Protein'],
       fat: json['Fat'],
       carbs: json['Carbs'],
       fiber: json['Fiber'],
       weight: json['Weight'],
-      servingsize: json['ServingSize'],
-      serveunit: json['ServeUnit'],
+      servingSize: json['ServingSize'],
+      serveUnit: json['ServeUnit'],
     );
   }
 }
