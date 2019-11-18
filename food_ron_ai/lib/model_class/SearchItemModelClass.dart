@@ -14,13 +14,15 @@ class SearchItemResponse {
 
   factory SearchItemResponse.fromJson(Map<String, dynamic> json) {
     return SearchItemResponse(
-     items: json['items'],
-      //items: SearchItemResponse.fromJson('json'), 
+      items: (json['items'] as List)
+          .map((oneItem) => ArraySearchItems.fromJson(oneItem))
+          .toList(),
+      //items: SearchItemResponse.fromJson('json'),
     );
   }
 }
 
-class ArraySearchItems{
+class ArraySearchItems {
   String foodname;
   SerchedItemMetaData metadata;
 
@@ -36,11 +38,10 @@ class ArraySearchItems{
   factory ArraySearchItems.fromJson(Map<String, dynamic> json) {
     return ArraySearchItems(
       foodname: json['foodname'],
-      metadata: json['metadata'],      
+      metadata: SerchedItemMetaData.fromJson(json['metadata']),
     );
   }
 }
-
 
 class SerchedItemMetaData {
   String food;

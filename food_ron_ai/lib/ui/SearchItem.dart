@@ -6,7 +6,6 @@ import 'package:food_ron_ai/ui/ImageDetails.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:http/http.dart' as http;
 
-
 class SearchItem extends StatefulWidget {
   @override
   SearchItemState createState() => SearchItemState();
@@ -40,20 +39,20 @@ class SearchItemState extends State<SearchItem> {
   }
 
   Widget title() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "SEARCH",
-            style: TextStyle(
-                color: Color.fromRGBO(45, 46, 51, 1),
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
-          ),
-        ],
-      );
-    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          "SEARCH",
+          style: TextStyle(
+              color: Color.fromRGBO(45, 46, 51, 1),
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
 
   callSearchItemApi() async {
     var uri = Uri.parse(Globals.searchitem);
@@ -64,7 +63,7 @@ class SearchItemState extends State<SearchItem> {
 
     if (response.statusCode == 200) {
       var value = SearchItemResponse.fromJson(json.decode(response.body));
-print(value);
+      print(value);
     } else {
       throw Exception('Failed to load post');
     }
@@ -118,7 +117,6 @@ print(value);
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: <Widget>[
-            
             title(),
             SizedBox(height: 10),
             Expanded(child: floatingSerchBar()),
