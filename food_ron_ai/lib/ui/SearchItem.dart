@@ -8,6 +8,7 @@ import 'package:food_ron_ai/ui/ImageDetails.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class SearchItem extends StatefulWidget {
   final ImageUploadResponse imageUploadResponse;
@@ -73,15 +74,14 @@ class SearchItemState extends State<SearchItem> {
     if (response.statusCode == 200) {
       var valueSearch = SearchItemResponse.fromJson(json.decode(response.body));
       print(valueSearch);
-      final count = getAdditionalItemCountFromSharedPref();
+      final count = getAdditionalItemCountFromSharedPref(valueSearch);
       count.then((itemCountForAdditionalItems) {
-        if (itemCountForAdditionalItems > valueSearch.itemCount) {
-          final result = storeItemCountInSharedPred(valueSearch);
-          result.then((status) {
-            if (status) {
-              saveToAdditionalMetaDB(valueSearch);
-            }
-          });
+        if (itemCountForAdditionalItems == null) {
+          saveToAdditionalMetaDB(valueSearch);
+          storeItemCountInSharedPred(valueSearch);
+        }
+        if (itemCountForAdditionalItems < valueSearch.itemCount) {
+          //Save additional data to db
         } else {
           getAllRecordsFromDb();
         }
@@ -91,7 +91,8 @@ class SearchItemState extends State<SearchItem> {
     }
   }
 
-  Future<int> getAdditionalItemCountFromSharedPref() async {
+  Future<int> getAdditionalItemCountFromSharedPref(
+      SearchItemResponse valueSearch) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final itemCount = prefs.getInt('itemCountForAdditionalItem');
     return itemCount;
@@ -128,9 +129,8 @@ class SearchItemState extends State<SearchItem> {
   }
 
   saveToAdditionalMetaDB(SearchItemResponse valueSearch) async {
-    var result = -1;
     if (valueSearch.items.isNotEmpty) {
-      result = await databaseHelper.insertItemInAdditionalMetaData(
+      await databaseHelper.insertItemInAdditionalMetaData(
           valueSearch.items[savedItemCount].metadata);
       if (savedItemCount != (valueSearch.itemCount - 1)) {
         savedItemCount += 1;
