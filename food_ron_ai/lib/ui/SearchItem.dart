@@ -29,7 +29,7 @@ class SearchItemState extends State<SearchItem> {
   List foodname;
   final SearchItemBloc _searchItemBloc = SearchItemBloc();
   List<ImageUploadMetaItems> _listSearchItemMetaData =
-        List<ImageUploadMetaItems>();
+      List<ImageUploadMetaItems>();
 
   Widget listTileBuilder(
       AsyncSnapshot<List<ImageUploadMetaItems>> snapshot, index) {
@@ -166,9 +166,10 @@ class SearchItemState extends State<SearchItem> {
         return listTileBuilder(snapshot, index);
       },
       onChanged: (String value) {
-        var result = snapshot.data.where((f) => f.name.startsWith('$value'))
-              .toList();
-        _searchItemBloc.changeListOnBlocFromDB(result.isEmpty ? _listSearchItemMetaData : result);
+        var result =
+            snapshot.data.where((f) => f.name.startsWith('$value')).toList();
+        _searchItemBloc.changeListOnBlocFromDB(
+            result.isEmpty ? _listSearchItemMetaData : result);
         print(foodname);
         //TODO: Update List ON ui
         print(value);
