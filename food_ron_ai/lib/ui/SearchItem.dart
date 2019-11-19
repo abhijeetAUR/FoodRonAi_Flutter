@@ -34,15 +34,30 @@ class SearchItemState extends State<SearchItem> {
   Widget listTileBuilder(
       AsyncSnapshot<List<ImageUploadMetaItems>> snapshot, index) {
     return GridTile(
-      child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 50,
-          padding: EdgeInsets.only(left: 24, right: 24, top: 15),
-          child: Text("${snapshot.data[index].name}")),
+      child: GestureDetector(
+        onTap: () => navigateToBackToImageDetails(context,imageUploadResponse,snapshot.data[index]),
+              child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            padding: EdgeInsets.only(left: 24, right: 24, top: 15),
+            child: Text("${snapshot.data[index].name}")),
+      ),
       //TODO: navigate back to image detail page after searching and clicking on specific item logic
-      // onTap: () => navigateToImageDetails(context),
     );
   }
+
+  void navigateToBackToImageDetails(context, ImageUploadResponse imageUploadResponse,ImageUploadMetaItems imageUploadMetaItems) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => ImageDetails(
+          imageUploadResponse: imageUploadResponse,imageUploadMetaItems: imageUploadMetaItems,
+        ),
+      ),
+    );
+  }
+
+
 
   Widget traileAvatar() {
     return CircleAvatar(

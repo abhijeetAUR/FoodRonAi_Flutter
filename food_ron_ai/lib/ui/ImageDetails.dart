@@ -10,10 +10,11 @@ import 'package:food_ron_ai/ui/SearchItem.dart';
 
 class ImageDetails extends StatefulWidget {
   final ImageUploadResponse imageUploadResponse;
-  ImageDetails({@required this.imageUploadResponse});
+  final ImageUploadMetaItems imageUploadMetaItems;
+  ImageDetails({@required this.imageUploadResponse,this.imageUploadMetaItems});
   @override
   _ImageDetailsState createState() =>
-      _ImageDetailsState(imageUploadResponse: imageUploadResponse);
+      _ImageDetailsState(imageUploadResponse: imageUploadResponse,imageUploadMetaItems: imageUploadMetaItems);
 }
 
 class _ImageDetailsState extends State<ImageDetails> {
@@ -21,7 +22,8 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   final ImageUploadResponse imageUploadResponse;
-  _ImageDetailsState({@required this.imageUploadResponse});
+  final ImageUploadMetaItems imageUploadMetaItems;
+  _ImageDetailsState({@required this.imageUploadResponse, this.imageUploadMetaItems});
   double serve;
   int counterToCheckMetaDataUpdate = 0;
 
