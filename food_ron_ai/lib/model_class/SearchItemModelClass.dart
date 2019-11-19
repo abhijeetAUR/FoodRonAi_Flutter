@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:core';
 
 class SearchItemResponse {
   List<ArraySearchItems> items;
-
-  SearchItemResponse({this.items});
+  int itemCount;
+  SearchItemResponse({this.itemCount, this.items});
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -14,6 +13,7 @@ class SearchItemResponse {
 
   factory SearchItemResponse.fromJson(Map<String, dynamic> json) {
     return SearchItemResponse(
+      itemCount: json['count'],
       items: (json['items'] as List)
           .map((oneItem) => ArraySearchItems.fromJson(oneItem))
           .toList(),
@@ -44,51 +44,58 @@ class ArraySearchItems {
 
 class SerchedItemMetaData {
   String food;
-  String calorievalue;
-  String protain;
+  String calorieValue;
+  String protein;
   String fat;
   String carbs;
   String fiber;
   String weight;
-  String servingsize;
-  String serveunit;
+  String servingSize;
+  String serveUnit;
+  String sugar;
+  int itemMetaId;
 
   SerchedItemMetaData(
       {this.food,
-      this.calorievalue,
-      this.protain,
+      this.calorieValue,
+      this.protein,
       this.fat,
       this.carbs,
       this.fiber,
       this.weight,
-      this.servingsize,
-      this.serveunit});
+      this.servingSize,
+      this.serveUnit,
+      this.itemMetaId,
+      this.sugar});
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
-    map['food'] = food;
-    map['calorievalue'] = calorievalue;
-    map['protain'] = protain;
+    map['name'] = food;
+    map['calorie'] = calorieValue;
+    map['protein'] = protein;
     map['fat'] = fat;
-    map['carbs'] = carbs;
+    map['carbohydrates'] = carbs;
     map['fiber'] = fiber;
     map['weight'] = weight;
-    map['servingsize'] = servingsize;
-    map['serveunit'] = serveunit;
+    map['serveSize'] = servingSize;
+    map['serveUnit'] = serveUnit;
+    map['itemMetaId'] = itemMetaId;
+    map['sugar'] = sugar;
     return map;
   }
 
   factory SerchedItemMetaData.fromJson(Map<String, dynamic> json) {
     return SerchedItemMetaData(
       food: json['food'],
-      calorievalue: json['Calorievalue'],
-      protain: json['Protein'],
+      calorieValue: json['Calorievalue'],
+      protein: json['Protein'],
       fat: json['Fat'],
       carbs: json['Carbs'],
       fiber: json['Fiber'],
       weight: json['Weight'],
-      servingsize: json['ServingSize'],
-      serveunit: json['ServeUnit'],
+      servingSize: json['ServingSize'],
+      serveUnit: json['ServeUnit'],
+      sugar: json['Sugar'],
     );
   }
 }

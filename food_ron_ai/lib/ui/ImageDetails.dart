@@ -188,11 +188,13 @@ class _ImageDetailsState extends State<ImageDetails> {
     );
   }
 
-  void navigateToSearchItem(context) {
+  void navigateToSearchItem(context, ImageUploadResponse imageUploadResponse) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => SearchItem(),
+        builder: (BuildContext context) => SearchItem(
+          imageUploadResponse: imageUploadResponse,
+        ),
       ),
     );
   }
@@ -336,7 +338,7 @@ class _ImageDetailsState extends State<ImageDetails> {
         children: <Widget>[
           FlatButton(
               onPressed: (() {
-                navigateToSearchItem(context);
+                navigateToSearchItem(context, imageUploadResponse);
               }),
               child: Icon(Icons.add, color: Color.fromRGBO(69, 150, 80, 1))),
           Padding(
@@ -444,7 +446,7 @@ class _ImageDetailsState extends State<ImageDetails> {
               size: 25,
             ),
             onPressed: () {
-              navigateToSearchItem(context);
+              navigateToSearchItem(context, imageUploadResponse);
             },
           ),
           onPressed: () {},

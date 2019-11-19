@@ -1,4 +1,5 @@
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
+import 'package:food_ron_ai/model_class/SearchItemModelClass.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
@@ -12,6 +13,7 @@ class DatabaseHelper {
 
   String imageTable = 'imagetable';
   String imageTableMetaData = 'imagetableMetaData';
+  String additionalMetaData = 'additionalMetaData';
 
   String colMetaId = 'id';
   String colItemMetaId = 'itemMetaId';
@@ -31,6 +33,10 @@ class DatabaseHelper {
   String colId = 'id';
   String colImgUrl = 'img_url';
   String colInfImgUrl = 'inf_img_url';
+
+  //For Additional items
+  String colServeSize = 'serveSize';
+  String colServeUnit = 'serveUnit';
 
   List<String> colItemClass;
   List<ImgItemDataMapper> colItems;
@@ -94,6 +100,22 @@ class DatabaseHelper {
         $colBase64Image TEXT,
         $colBase64InfImage TEXT        
       )''');
+
+    batch.execute(''' CREATE TABLE $additionalMetaData
+      (
+        $colId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $colItemMetaId INTEGER,
+        $colName TEXT,
+        $colServeSize REAL,
+        $colServeUnit REAL,
+        $colWeight REAL,
+        $colCalorie REAL,
+        $colCarbohydrates REAL,
+        $colFiber REAL,
+        $colFat REAL,
+        $colProtein REAL,
+        $colSugar REAL
+      )''');
     await batch.commit();
   }
 
@@ -116,6 +138,14 @@ class DatabaseHelper {
     return result;
   }
 
+  Future<int> insertItemInAdditionalMetaData(
+      SerchedItemMetaData dataModelImageMeta) async {
+    Database db = await this.database;
+    var result =
+        await db.insert(additionalMetaData, dataModelImageMeta.toMap());
+    return result;
+  }
+
   Future<List> getTodaysRecords() async {
     Database db = await this.database;
     var result = await db.rawQuery("SELECT * FROM $imageTableMetaData");
@@ -133,6 +163,12 @@ class DatabaseHelper {
   Future<List> getAllRecords() async {
     var dbClient = await this.database;
     var result = await dbClient.rawQuery("SELECT * FROM $imageTable");
+    return result.toList();
+  }
+
+  Future<List> getAllAdditionalRecords() async {
+    var dbClient = await this.database;
+    var result = await dbClient.rawQuery("SELECT * FROM $additionalMetaData");
     return result.toList();
   }
 

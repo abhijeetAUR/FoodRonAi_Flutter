@@ -40,6 +40,8 @@ class ImageUploadMetaItems {
   double fiber;
   double sugar;
   String datetime;
+  double servingSize;
+  String serveUnit;
 
   ImageUploadMetaItems(
       {this.itemMetaId,
@@ -52,7 +54,9 @@ class ImageUploadMetaItems {
       this.protein,
       this.fiber,
       this.sugar,
-      this.datetime});
+      this.datetime,
+      this.serveUnit,
+      this.servingSize});
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -83,6 +87,8 @@ class ImageUploadMetaItems {
         protein: json['protein'],
         fiber: json['fiber'],
         sugar: json['sugar'],
-        datetime: json['datetime']);
+        datetime: json['datetime'],
+        serveUnit: json['serveUnit'],
+        servingSize: json['serveSize']);
   }
 }
