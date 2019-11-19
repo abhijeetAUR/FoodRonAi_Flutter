@@ -26,6 +26,7 @@ class SearchItemState extends State<SearchItem> {
   SearchItemResponse searchItemResponse;
   DatabaseHelper databaseHelper = DatabaseHelper();
   int savedItemCount = 0;
+  List foodname;
   final SearchItemBloc _searchItemBloc = SearchItemBloc();
 
   Widget listTileBuilder(AsyncSnapshot<List<ImageUploadMetaItems>> snapshot,index) {
@@ -164,10 +165,12 @@ class SearchItemState extends State<SearchItem> {
         return listTileBuilder(snapshot,index);
       },
       onChanged: (String value) {
-        List foodname = (snapshot.data).map((snapshot) => (snapshot.name)).where((f) => f.startsWith('$value')).toList();
+        setState(() {
+          foodname = (snapshot.data).map((snapshot) => (snapshot.name)).where((f) => f.startsWith('$value')).toList();
+        });
         print(foodname);
+        //TODO: Update List ON ui
         print(value);
-        //TODO: Write logic here to filter and show searched data
       },
       onTap: () {
         print("search");
