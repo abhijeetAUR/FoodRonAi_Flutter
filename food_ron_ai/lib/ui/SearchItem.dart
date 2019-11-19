@@ -166,13 +166,15 @@ class SearchItemState extends State<SearchItem> {
         return listTileBuilder(snapshot, index);
       },
       onChanged: (String value) {
-        var result =
-            snapshot.data.where((f) => f.name.startsWith('$value')).toList();
-        _searchItemBloc.changeListOnBlocFromDB(
-            result.isEmpty ? _listSearchItemMetaData : result);
-        print(foodname);
-        //TODO: Update List ON ui
-        print(value);
+        if (value.isNotEmpty) {
+          var result = _listSearchItemMetaData
+              .where((f) => f.name.trim().startsWith('$value'))
+              .toList();
+          _searchItemBloc.changeListOnBlocFromDB(
+              result.isEmpty ? _listSearchItemMetaData : result);
+        } else {
+          _searchItemBloc.changeListOnBlocFromDB(_listSearchItemMetaData);
+        }
       },
       onTap: () {
         print("search");
