@@ -28,8 +28,11 @@ class SearchItemState extends State<SearchItem> {
   int savedItemCount = 0;
   List foodname;
   final SearchItemBloc _searchItemBloc = SearchItemBloc();
+  List<ImageUploadMetaItems> _listSearchItemMetaData =
+        List<ImageUploadMetaItems>();
 
-  Widget listTileBuilder(AsyncSnapshot<List<ImageUploadMetaItems>> snapshot,index) {
+  Widget listTileBuilder(
+      AsyncSnapshot<List<ImageUploadMetaItems>> snapshot, index) {
     return GridTile(
       child: Container(
           width: MediaQuery.of(context).size.width,
@@ -109,18 +112,16 @@ class SearchItemState extends State<SearchItem> {
   }
 
   appendItemMetaIdToEachRecord(List<dynamic> result) {
-    List<ImageUploadMetaItems> lstSerchedItemMetaData =
-        List<ImageUploadMetaItems>();
     for (var item in result) {
       ImageUploadMetaItems imageUploadMetaItems =
           ImageUploadMetaItems.fromJson(item);
       imageUploadMetaItems.itemMetaId = imageUploadResponse.itemMetaId;
       imageUploadMetaItems.datetime = imageUploadResponse.datetime;
       imageUploadMetaItems.serve = item['serveSize'];
-      lstSerchedItemMetaData.add(imageUploadMetaItems);
+      _listSearchItemMetaData.add(imageUploadMetaItems);
     }
-    print(lstSerchedItemMetaData);
-    _searchItemBloc.changeListOnBlocFromDB(lstSerchedItemMetaData);
+    print(_listSearchItemMetaData);
+    _searchItemBloc.changeListOnBlocFromDB(_listSearchItemMetaData);
     //Passed data to bloc from db
   }
 
@@ -151,9 +152,9 @@ class SearchItemState extends State<SearchItem> {
         stream: _searchItemBloc.searchItemStream,
         builder: (BuildContext context,
             AsyncSnapshot<List<ImageUploadMetaItems>> snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              }
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
           return floatingSerchBar(snapshot);
         });
   }
@@ -162,12 +163,12 @@ class SearchItemState extends State<SearchItem> {
     return FloatingSearchBar.builder(
       itemCount: snapshot.data.length,
       itemBuilder: (BuildContext context, int index) {
-        return listTileBuilder(snapshot,index);
+        return listTileBuilder(snapshot, index);
       },
       onChanged: (String value) {
-        setState(() {
-          foodname = (snapshot.data).map((snapshot) => (snapshot.name)).where((f) => f.startsWith('$value')).toList();
-        });
+        var result = snapshot.data.where((f) => f.name.startsWith('$value'))
+              .toList();
+        _searchItemBloc.changeListOnBlocFromDB(result.isEmpty ? _listSearchItemMetaData : result);
         print(foodname);
         //TODO: Update List ON ui
         print(value);
