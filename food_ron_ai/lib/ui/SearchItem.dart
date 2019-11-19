@@ -9,6 +9,7 @@ import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:food_ron_ai/bloc/SearchItemBloc.dart';
 
 class SearchItem extends StatefulWidget {
   final ImageUploadResponse imageUploadResponse;
@@ -25,14 +26,16 @@ class SearchItemState extends State<SearchItem> {
   SearchItemResponse searchItemResponse;
   DatabaseHelper databaseHelper = DatabaseHelper();
   int savedItemCount = 0;
-  Widget listTileBuilder(index) {
+  final SearchItemBloc _searchItemBloc = SearchItemBloc();
+
+  Widget listTileBuilder(AsyncSnapshot<List<ImageUploadMetaItems>> snapshot,index) {
     return GridTile(
       child: Container(
           width: MediaQuery.of(context).size.width,
           height: 50,
           padding: EdgeInsets.only(left: 24, right: 24, top: 15),
-          child: Text(index.toString() + "\t Item")),
-      //TODO: navigate bacck to image detail page after searching and clicking on specific item logic
+          child: Text("${snapshot.data[index].name}")),
+      //TODO: navigate back to image detail page after searching and clicking on specific item logic
       // onTap: () => navigateToImageDetails(context),
     );
   }
@@ -116,7 +119,8 @@ class SearchItemState extends State<SearchItem> {
       lstSerchedItemMetaData.add(imageUploadMetaItems);
     }
     print(lstSerchedItemMetaData);
-    //TODO: Create bloc and append this list to ui
+    _searchItemBloc.changeListOnBlocFromDB(lstSerchedItemMetaData);
+    //Passed data to bloc from db
   }
 
   Future<bool> storeItemCountInSharedPred(
@@ -141,13 +145,24 @@ class SearchItemState extends State<SearchItem> {
     }
   }
 
-  Widget floatingSerchBar() {
+  Widget searchitemStreamBuilder() {
+    return StreamBuilder<List<ImageUploadMetaItems>>(
+        stream: _searchItemBloc.searchItemStream,
+        builder: (BuildContext context,
+            AsyncSnapshot<List<ImageUploadMetaItems>> snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+          return floatingSerchBar(snapshot);
+        });
+  }
+
+  Widget floatingSerchBar(AsyncSnapshot<List<ImageUploadMetaItems>> snapshot) {
     return FloatingSearchBar.builder(
-      itemCount: 100,
+      itemCount: snapshot.data.length,
       itemBuilder: (BuildContext context, int index) {
-        return listTileBuilder(index);
+        return listTileBuilder(snapshot,index);
       },
-      trailing: traileAvatar(),
       onChanged: (String value) {
         print(value);
         //TODO: Write logic here to filter and show searched data
@@ -170,6 +185,12 @@ class SearchItemState extends State<SearchItem> {
   }
 
   @override
+  void dispose() {
+    _searchItemBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
@@ -186,7 +207,7 @@ class SearchItemState extends State<SearchItem> {
           children: <Widget>[
             title(),
             SizedBox(height: 10),
-            Expanded(child: floatingSerchBar()),
+            Expanded(child: searchitemStreamBuilder()),
           ],
         ),
       ),
