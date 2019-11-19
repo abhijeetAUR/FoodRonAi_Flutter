@@ -115,7 +115,7 @@ class SearchItemState extends State<SearchItem> {
       lstSerchedItemMetaData.add(imageUploadMetaItems);
     }
     print(lstSerchedItemMetaData);
-    //Create bloc and append this list to ui
+    //TODO: Create bloc and append this list to ui
   }
 
   Future<bool> storeItemCountInSharedPred(
@@ -150,6 +150,7 @@ class SearchItemState extends State<SearchItem> {
       trailing: traileAvatar(),
       onChanged: (String value) {
         print(value);
+        //TODO: Write logic here to filter and show searched data
       },
       onTap: () {
         print("search");
@@ -165,6 +166,7 @@ class SearchItemState extends State<SearchItem> {
   void initState() {
     super.initState();
     callSearchItemApi();
+    //TODO: get data from db and dont call api each time
   }
 
   @override
