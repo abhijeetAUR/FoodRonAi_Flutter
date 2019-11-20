@@ -85,7 +85,7 @@ class DatabaseHelper {
       )''');
     batch.execute(''' CREATE TABLE $imageTableMetaData
       (
-        $colMetaId INTEGER PRIMARY KEY,
+        $colMetaId INTEGER PRIMARY KEY AUTOINCREMENT,
         $colItemMetaId INTEGER, 
         $colName TEXT,
         $colServe REAL,

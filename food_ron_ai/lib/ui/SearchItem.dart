@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:floating_search_bar/floating_search_bar.dart';
+import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import 'package:food_ron_ai/model_class/SearchItemModelClass.dart';
@@ -35,29 +36,39 @@ class SearchItemState extends State<SearchItem> {
       AsyncSnapshot<List<ImageUploadMetaItems>> snapshot, index) {
     return GridTile(
       child: GestureDetector(
-        onTap: () => navigateToBackToImageDetails(context,imageUploadResponse,snapshot.data[index]),
-              child: Container(
+        onTap: () {
+          insertMetaDataInDB(snapshot.data[index]);
+          navigateToBackToImageDetails(
+              context, imageUploadResponse, snapshot.data[index]);
+        },
+        child: Container(
             width: MediaQuery.of(context).size.width,
             height: 50,
             padding: EdgeInsets.only(left: 24, right: 24, top: 15),
             child: Text("${snapshot.data[index].name}")),
       ),
-      //TODO: navigate back to image detail page after searching and clicking on specific item logic
     );
   }
 
-  void navigateToBackToImageDetails(context, ImageUploadResponse imageUploadResponse,ImageUploadMetaItems imageUploadMetaItems) {
-    Navigator.push(
+  void insertMetaDataInDB(ImageUploadMetaItems imageUploadMetaItems) async {
+    var result = await databaseHelper.insertImageMetaData(imageUploadMetaItems);
+    print(result);
+  }
+
+  void navigateToBackToImageDetails(
+      context,
+      ImageUploadResponse imageUploadResponse,
+      ImageUploadMetaItems imageUploadMetaItems) {
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => ImageDetails(
-          imageUploadResponse: imageUploadResponse,imageUploadMetaItems: imageUploadMetaItems,
+          imageUploadResponse: imageUploadResponse,
+          imageUploadMetaItems: imageUploadMetaItems,
         ),
       ),
     );
   }
-
-
 
   Widget traileAvatar() {
     return CircleAvatar(
@@ -103,7 +114,7 @@ class SearchItemState extends State<SearchItem> {
           storeItemCountInSharedPred(valueSearch);
         }
         if (itemCountForAdditionalItems < valueSearch.itemCount) {
-          //Save additional data to db
+          //TODO: Save additional data to db
         } else {
           getAllRecordsFromDb();
         }
@@ -137,7 +148,6 @@ class SearchItemState extends State<SearchItem> {
     }
     print(_listSearchItemMetaData);
     _searchItemBloc.changeListOnBlocFromDB(_listSearchItemMetaData);
-    //Passed data to bloc from db
   }
 
   Future<bool> storeItemCountInSharedPred(
@@ -216,7 +226,6 @@ class SearchItemState extends State<SearchItem> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         body: SafeArea(
       top: true,
