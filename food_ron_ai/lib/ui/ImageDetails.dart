@@ -482,6 +482,7 @@ class _ImageDetailsState extends State<ImageDetails>
 
   @override
   Widget build(BuildContext context) {
+    getMetaDetails();
     return WillPopScope(
         onWillPop: () => _willPopCallback(),
         child: Scaffold(

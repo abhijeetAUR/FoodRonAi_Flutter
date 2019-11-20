@@ -40,10 +40,21 @@ class SearchItemState extends State<SearchItem> {
           insertMetaDataInDB(snapshot.data[index]);
         },
         child: Container(
+            decoration: BoxDecoration(
+                border: Border(
+              bottom: BorderSide(width: 1, color: Color(0xFFFFe2e2e2)),
+            )),
             width: MediaQuery.of(context).size.width,
             height: 50,
-            padding: EdgeInsets.only(left: 24, right: 24, top: 15),
-            child: Text("${snapshot.data[index].name}")),
+            margin: EdgeInsets.only(right: 15, left: 15),
+            padding: EdgeInsets.only(left: 14, right: 10, top: 15),
+            child: Text(
+              "\u{1F35B}  " + (capitalizeName(snapshot.data[index].name)),
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black87,
+                  ),
+            )),
       ),
     );
   }
@@ -63,6 +74,10 @@ class SearchItemState extends State<SearchItem> {
         ),
       ),
     );
+  }
+
+  capitalizeName(String name) {
+    return (name[0].toUpperCase() + name.substring(1)).replaceAll('-', ' ');
   }
 
   Widget traileAvatar() {
@@ -200,8 +215,8 @@ class SearchItemState extends State<SearchItem> {
         print("search");
       },
       decoration: InputDecoration.collapsed(
-        focusColor: Colors.green,
         hintText: "Search...",
+        hintStyle: TextStyle(fontSize: 14.0, color: Colors.grey,fontFamily: 'HelveticaNeue'),
       ),
     );
   }
