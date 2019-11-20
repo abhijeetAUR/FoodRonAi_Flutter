@@ -42,6 +42,8 @@ class ImageUploadMetaItems {
   String datetime;
   double servingSize;
   String serveUnit;
+  List<int> bbox;
+  List<ImageUploadMetaSugg> sugg;
 
   ImageUploadMetaItems(
       {this.itemMetaId,
@@ -56,7 +58,83 @@ class ImageUploadMetaItems {
       this.sugar,
       this.datetime,
       this.serveUnit,
-      this.servingSize});
+      this.servingSize,
+      this.bbox,
+      this.sugg
+      });
+
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    map['id'] = id;
+    map['itemMetaId'] = itemMetaId;
+    map['name'] = name;
+    map['weight'] = weight;
+    map['serve'] = serve;
+    map['calorie'] = calorie;
+    map['carbohydrates'] = carbohydrates;
+    map['fat'] = fat;
+    map['protein'] = protein;
+    map['fiber'] = fiber;
+    map['sugar'] = sugar;
+    map['datetime'] = datetime;
+    map['bbox'] = bbox;
+    map['sugg'] = sugg;
+    return map;
+  }
+
+  factory ImageUploadMetaItems.fromJson(Map<String, dynamic> json) {
+    return ImageUploadMetaItems(
+        itemMetaId: json['itemMetaId'],
+        name: json['name'].toString(),
+        weight: json['weight'],
+        serve: json['serve'],
+        calorie: json['calorie'],
+        carbohydrates: json['carbohydrates'],
+        fat: json['fat'],
+        protein: json['protein'],
+        fiber: json['fiber'],
+        sugar: json['sugar'],
+        datetime: json['datetime'],
+        serveUnit: json['serveUnit'],
+        servingSize: json['serveSize'],
+        bbox: List<int>.from(json['bbox']),
+        sugg: (json['sugg'] as List)
+          .map((oneItem) => ImageUploadMetaSugg.fromJson(oneItem))
+          .toList());
+  }
+}
+
+
+class ImageUploadMetaSugg {
+  int id;
+  int itemMetaId;
+  String name;
+  double serve;
+  double weight;
+  double calorie;
+  double carbohydrates;
+  double fat;
+  double protein;
+  double fiber;
+  double sugar;
+  String datetime;
+  double servingSize;
+  String serveUnit;
+
+  ImageUploadMetaSugg(
+      {this.itemMetaId,
+      this.name,
+      this.weight,
+      this.serve,
+      this.calorie,
+      this.carbohydrates,
+      this.fat,
+      this.protein,
+      this.fiber,
+      this.sugar,
+      this.datetime,
+      this.serveUnit,
+      this.servingSize,});
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -75,8 +153,8 @@ class ImageUploadMetaItems {
     return map;
   }
 
-  factory ImageUploadMetaItems.fromJson(Map<String, dynamic> json) {
-    return ImageUploadMetaItems(
+  factory ImageUploadMetaSugg.fromJson(Map<String, dynamic> json) {
+    return ImageUploadMetaSugg(
         itemMetaId: json['itemMetaId'],
         name: json['name'].toString(),
         weight: json['weight'],
@@ -89,6 +167,7 @@ class ImageUploadMetaItems {
         sugar: json['sugar'],
         datetime: json['datetime'],
         serveUnit: json['serveUnit'],
-        servingSize: json['serveSize']);
+        servingSize: json['serveSize'],
+        );
   }
 }
