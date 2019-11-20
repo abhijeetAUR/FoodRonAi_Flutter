@@ -294,12 +294,12 @@ class _ImageDetailsState extends State<ImageDetails>
           Row(
             children: <Widget>[
               Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(
-                      padding: EdgeInsets.only(left: 30),
+                      padding: EdgeInsets.only(left: 25),
                       child: cntForfoodName(snapshot, index))),
               Flexible(
-                flex: 1,
+                flex: 2,
                 child: btnPairEditDelete(snapshot, index),
               )
             ],
