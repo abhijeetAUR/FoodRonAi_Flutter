@@ -30,23 +30,14 @@ class SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     // full screen image for splash screen.
     return Scaffold(
-      body: SafeArea(
-          top: true,
-          bottom: false,
-          left: false,
-          right: false,
-          child: Container(
-            color: Color(0xFF434343),
-            padding: EdgeInsets.all(70),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: new SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: Center(child: new Image.asset('images/foodronlogo.png')),
-            ),
-          )),
-    );
-    // child: new Image.asset('images/splashscreen.png', fit: BoxFit.fill));
+        body: SafeArea(
+      top: true,
+      bottom: false,
+      left: false,
+      right: false,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: new Image.asset('images/splashgraphic.png', fit: BoxFit.cover))
+    ));
   }
 }
