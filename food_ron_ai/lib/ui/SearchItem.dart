@@ -38,8 +38,6 @@ class SearchItemState extends State<SearchItem> {
       child: GestureDetector(
         onTap: () {
           insertMetaDataInDB(snapshot.data[index]);
-          navigateToBackToImageDetails(
-              context, imageUploadResponse, snapshot.data[index]);
         },
         child: Container(
             width: MediaQuery.of(context).size.width,
@@ -53,18 +51,15 @@ class SearchItemState extends State<SearchItem> {
   void insertMetaDataInDB(ImageUploadMetaItems imageUploadMetaItems) async {
     var result = await databaseHelper.insertImageMetaData(imageUploadMetaItems);
     print(result);
+    navigateToBackToImageDetails(imageUploadResponse);
   }
 
-  void navigateToBackToImageDetails(
-      context,
-      ImageUploadResponse imageUploadResponse,
-      ImageUploadMetaItems imageUploadMetaItems) {
-    Navigator.pushReplacement(
+  void navigateToBackToImageDetails(ImageUploadResponse imageUploadResponse) {
+    Navigator.pop(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => ImageDetails(
           imageUploadResponse: imageUploadResponse,
-          imageUploadMetaItems: imageUploadMetaItems,
         ),
       ),
     );

@@ -30,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   File cimage;
   int counterForLengthCheck;
   int counterForLengthCheckOfSaveReponse = 0;
+  int counterForLengthCheckOfSaveImageSuggestions = 0;
+
   DataModelImageMeta dataModelImageMeta;
   ImageUploadResponse imageUploadResponse;
   DatabaseHelper databaseHelper = DatabaseHelper();

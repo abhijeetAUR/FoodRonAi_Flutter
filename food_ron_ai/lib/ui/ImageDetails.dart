@@ -10,28 +10,51 @@ import 'package:food_ron_ai/ui/SearchItem.dart';
 
 class ImageDetails extends StatefulWidget {
   final ImageUploadResponse imageUploadResponse;
-  final ImageUploadMetaItems imageUploadMetaItems;
-  ImageDetails({@required this.imageUploadResponse,this.imageUploadMetaItems});
+  ImageDetails({@required this.imageUploadResponse});
   @override
   _ImageDetailsState createState() =>
-      _ImageDetailsState(imageUploadResponse: imageUploadResponse,imageUploadMetaItems: imageUploadMetaItems);
+      _ImageDetailsState(imageUploadResponse: imageUploadResponse);
 }
 
-class _ImageDetailsState extends State<ImageDetails> {
+class _ImageDetailsState extends State<ImageDetails>
+    with WidgetsBindingObserver {
   DatabaseHelper databaseHelper = DatabaseHelper();
 
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   final ImageUploadResponse imageUploadResponse;
   final ImageUploadMetaItems imageUploadMetaItems;
-  _ImageDetailsState({@required this.imageUploadResponse, this.imageUploadMetaItems});
+  _ImageDetailsState(
+      {@required this.imageUploadResponse, this.imageUploadMetaItems});
   double serve;
   int counterToCheckMetaDataUpdate = 0;
+  AppLifecycleState _notification;
 
   @override
   void initState() {
     super.initState();
     getMetaDetails();
     serve = 1;
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setState(() {
+      _notification = state;
+      switch (state) {
+        case AppLifecycleState.resumed:
+          print("// Handle this case");
+          break;
+        case AppLifecycleState.inactive:
+          // Handle this case
+          break;
+        case AppLifecycleState.paused:
+          // Handle this case
+          break;
+        case AppLifecycleState.suspending:
+          // Handle this case
+          break;
+      }
+    });
   }
 
   @override

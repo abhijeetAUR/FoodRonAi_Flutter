@@ -29,6 +29,8 @@ class DatabaseHelper {
   String colMetaDatetime = 'datetime';
   String colBase64Image = "base64Image";
   String colBase64InfImage = "base64InfImage";
+  String colBBox = "bbox";
+  String colSuggestions = "sugg";
   String colDatetime = "datetime";
   String colId = 'id';
   String colImgUrl = 'img_url';
@@ -98,7 +100,9 @@ class DatabaseHelper {
         $colSugar REAL,
         $colMetaDatetime TEXT,
         $colBase64Image TEXT,
-        $colBase64InfImage TEXT        
+        $colBase64InfImage TEXT,        
+        $colBBox BLOB,
+        $colSuggestions BLOB
       )''');
 
     batch.execute(''' CREATE TABLE $additionalMetaData

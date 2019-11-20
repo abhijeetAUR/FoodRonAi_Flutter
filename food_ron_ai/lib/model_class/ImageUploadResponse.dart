@@ -60,8 +60,7 @@ class ImageUploadMetaItems {
       this.serveUnit,
       this.servingSize,
       this.bbox,
-      this.sugg
-      });
+      this.sugg});
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -78,7 +77,7 @@ class ImageUploadMetaItems {
     map['sugar'] = sugar;
     map['datetime'] = datetime;
     map['bbox'] = bbox;
-    map['sugg'] = sugg;
+    // map['sugg'] = sugg;
     return map;
   }
 
@@ -97,13 +96,14 @@ class ImageUploadMetaItems {
         datetime: json['datetime'],
         serveUnit: json['serveUnit'],
         servingSize: json['serveSize'],
-        bbox: List<int>.from(json['bbox']),
-        sugg: (json['sugg'] as List)
-          .map((oneItem) => ImageUploadMetaSugg.fromJson(oneItem))
-          .toList());
+        bbox: json['bbox'] == null ? null : List<int>.from(json['bbox']),
+        sugg: json['sugg'] == null
+            ? List<ImageUploadMetaSugg>()
+            : (json['sugg'] as List)
+                .map((oneItem) => ImageUploadMetaSugg.fromJson(oneItem))
+                .toList());
   }
 }
-
 
 class ImageUploadMetaSugg {
   int id;
@@ -121,20 +121,21 @@ class ImageUploadMetaSugg {
   double servingSize;
   String serveUnit;
 
-  ImageUploadMetaSugg(
-      {this.itemMetaId,
-      this.name,
-      this.weight,
-      this.serve,
-      this.calorie,
-      this.carbohydrates,
-      this.fat,
-      this.protein,
-      this.fiber,
-      this.sugar,
-      this.datetime,
-      this.serveUnit,
-      this.servingSize,});
+  ImageUploadMetaSugg({
+    this.itemMetaId,
+    this.name,
+    this.weight,
+    this.serve,
+    this.calorie,
+    this.carbohydrates,
+    this.fat,
+    this.protein,
+    this.fiber,
+    this.sugar,
+    this.datetime,
+    this.serveUnit,
+    this.servingSize,
+  });
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -155,19 +156,19 @@ class ImageUploadMetaSugg {
 
   factory ImageUploadMetaSugg.fromJson(Map<String, dynamic> json) {
     return ImageUploadMetaSugg(
-        itemMetaId: json['itemMetaId'],
-        name: json['name'].toString(),
-        weight: json['weight'],
-        serve: json['serve'],
-        calorie: json['calorie'],
-        carbohydrates: json['carbohydrates'],
-        fat: json['fat'],
-        protein: json['protein'],
-        fiber: json['fiber'],
-        sugar: json['sugar'],
-        datetime: json['datetime'],
-        serveUnit: json['serveUnit'],
-        servingSize: json['serveSize'],
-        );
+      itemMetaId: json['itemMetaId'],
+      name: json['name'].toString(),
+      weight: json['weight'],
+      serve: json['serve'],
+      calorie: json['calorie'],
+      carbohydrates: json['carbohydrates'],
+      fat: json['fat'],
+      protein: json['protein'],
+      fiber: json['fiber'],
+      sugar: json['sugar'],
+      datetime: json['datetime'],
+      serveUnit: json['serveUnit'],
+      servingSize: json['serveSize'],
+    );
   }
 }
