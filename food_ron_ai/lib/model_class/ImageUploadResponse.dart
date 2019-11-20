@@ -108,6 +108,7 @@ class ImageUploadMetaItems {
 class ImageUploadMetaSugg {
   int id;
   int itemMetaId;
+  int itemMetaSuggId;
   String name;
   double serve;
   double weight;
@@ -121,21 +122,21 @@ class ImageUploadMetaSugg {
   double servingSize;
   String serveUnit;
 
-  ImageUploadMetaSugg({
-    this.itemMetaId,
-    this.name,
-    this.weight,
-    this.serve,
-    this.calorie,
-    this.carbohydrates,
-    this.fat,
-    this.protein,
-    this.fiber,
-    this.sugar,
-    this.datetime,
-    this.serveUnit,
-    this.servingSize,
-  });
+  ImageUploadMetaSugg(
+      {this.itemMetaId,
+      this.name,
+      this.weight,
+      this.serve,
+      this.calorie,
+      this.carbohydrates,
+      this.fat,
+      this.protein,
+      this.fiber,
+      this.sugar,
+      this.datetime,
+      this.serveUnit,
+      this.servingSize,
+      this.itemMetaSuggId});
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -151,24 +152,25 @@ class ImageUploadMetaSugg {
     map['fiber'] = fiber;
     map['sugar'] = sugar;
     map['datetime'] = datetime;
+    map['itemMetaSuggId'] = itemMetaSuggId;
     return map;
   }
 
   factory ImageUploadMetaSugg.fromJson(Map<String, dynamic> json) {
     return ImageUploadMetaSugg(
-      itemMetaId: json['itemMetaId'],
-      name: json['name'].toString(),
-      weight: json['weight'],
-      serve: json['serve'],
-      calorie: json['calorie'],
-      carbohydrates: json['carbohydrates'],
-      fat: json['fat'],
-      protein: json['protein'],
-      fiber: json['fiber'],
-      sugar: json['sugar'],
-      datetime: json['datetime'],
-      serveUnit: json['serveUnit'],
-      servingSize: json['serveSize'],
-    );
+        itemMetaId: json['itemMetaId'],
+        name: json['name'].toString(),
+        weight: json['weight'],
+        serve: json['serve'],
+        calorie: json['calorie'],
+        carbohydrates: json['carbohydrates'],
+        fat: json['fat'],
+        protein: json['protein'],
+        fiber: json['fiber'],
+        sugar: json['sugar'],
+        datetime: json['datetime'],
+        serveUnit: json['serveUnit'],
+        servingSize: json['serveSize'],
+        itemMetaSuggId: json['itemMetaSuggId']);
   }
 }

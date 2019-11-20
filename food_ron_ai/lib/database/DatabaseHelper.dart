@@ -14,6 +14,7 @@ class DatabaseHelper {
   String imageTable = 'imagetable';
   String imageTableMetaData = 'imagetableMetaData';
   String additionalMetaData = 'additionalMetaData';
+  String suggestionMetaData = 'suggestionMetaData';
 
   String colMetaId = 'id';
   String colItemMetaId = 'itemMetaId';
@@ -35,7 +36,7 @@ class DatabaseHelper {
   String colId = 'id';
   String colImgUrl = 'img_url';
   String colInfImgUrl = 'inf_img_url';
-
+  String colItemMetaSuggId = 'itemMetaSuggId';
   //For Additional items
   String colServeSize = 'serveSize';
   String colServeUnit = 'serveUnit';
@@ -120,7 +121,33 @@ class DatabaseHelper {
         $colProtein REAL,
         $colSugar REAL
       )''');
+
+    batch.execute(''' CREATE TABLE $suggestionMetaData
+      (
+        $colId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $colItemMetaId INTEGER,
+        $colItemMetaSuggId INTEGER,
+        $colName TEXT,
+        $colServe REAL,
+        $colServeSize REAL,
+        $colServeUnit REAL,
+        $colWeight REAL,
+        $colCalorie REAL,
+        $colCarbohydrates REAL,
+        $colFiber REAL,
+        $colFat REAL,
+        $colProtein REAL,
+        $colSugar REAL,
+        $colDatetime TEXT
+      )''');
+
     await batch.commit();
+  }
+
+  Future<int> insertDataInSuggestionDb(ImageUploadMetaSugg data) async {
+    Database db = await this.database;
+    var result = await db.insert(suggestionMetaData, data.toMap());
+    return result;
   }
 
   Future<int> deleteMetaFromImageMetaTable(int id) async {
@@ -167,6 +194,12 @@ class DatabaseHelper {
   Future<List> getAllRecords() async {
     var dbClient = await this.database;
     var result = await dbClient.rawQuery("SELECT * FROM $imageTable");
+    return result.toList();
+  }
+
+  Future<List> getAllSuggestionRecords() async {
+    var dbClient = await this.database;
+    var result = await dbClient.rawQuery("SELECT * FROM $suggestionMetaData");
     return result.toList();
   }
 

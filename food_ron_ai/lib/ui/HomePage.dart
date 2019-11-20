@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int counterForLengthCheck;
   int counterForLengthCheckOfSaveReponse = 0;
   int counterForLengthCheckOfSaveImageSuggestions = 0;
-
+  int counterForLengthCheckOfSaveImageSuggestionsAndItem = 0;
   DataModelImageMeta dataModelImageMeta;
   ImageUploadResponse imageUploadResponse;
   DatabaseHelper databaseHelper = DatabaseHelper();
@@ -89,6 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
         item["itemMetaId"] = itemMetaId;
         item["datetime"] = DateTime.now().toString().substring(0, 10);
         var value = ImageUploadMetaItems.fromJson(item);
+        value.sugg.forEach((oneItem) {
+          oneItem.itemMetaId = value.itemMetaId;
+          oneItem.itemMetaSuggId = value.id;
+        });
         imageUploadResponse.items.add(value);
       }
       if (imageUploadResponse.items.length > 0) {
@@ -112,6 +116,12 @@ class _HomeScreenState extends State<HomeScreen> {
   _saveMetaDataOfImage() async {
     int result;
     if (imageUploadResponse.items.isNotEmpty) {
+      //first check if response suggestion object is present,
+      //if present then save to db
+      if (imageUploadResponse
+          .items[counterForLengthCheckOfSaveReponse].sugg.isNotEmpty) {
+        saveSuggestionsToDb();
+      }
       result = await databaseHelper.insertImageMetaData(
           imageUploadResponse.items[counterForLengthCheckOfSaveReponse]);
       print(result);
@@ -124,6 +134,24 @@ class _HomeScreenState extends State<HomeScreen> {
         getTodaysRecordsFromDb();
       }
     }
+  }
+
+  saveSuggestionsToDb() {
+    var result;
+    result = databaseHelper.insertDataInSuggestionDb(imageUploadResponse
+        .items[counterForLengthCheckOfSaveImageSuggestionsAndItem]
+        .sugg[counterForLengthCheckOfSaveImageSuggestions]);
+    if (counterForLengthCheckOfSaveImageSuggestions !=
+        (imageUploadResponse
+                .items[counterForLengthCheckOfSaveImageSuggestionsAndItem]
+                .sugg
+                .length -
+            1)) {
+      counterForLengthCheckOfSaveImageSuggestions += 1;
+      // counterForLengthCheckOfSaveImageSuggestionsAndItem += 1;
+      saveSuggestionsToDb();
+    }
+    print(result);
   }
 
 //  Future<void> squareImageCapture() async {
@@ -317,6 +345,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     getRecords();
     getTodaysRecordsFromDb();
+    getAllSuggestionRecords();
+  }
+
+  getAllSuggestionRecords() async {
+    var result = await databaseHelper.getAllSuggestionRecords();
+    print(result);
   }
 
   @override
