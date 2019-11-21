@@ -218,7 +218,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   getRecords() async {
-    var result = await databaseHelper.getAllRecords();
+    var result = await databaseHelper.getAllMetaDataListFilterByDate(
+        selectedDate.toString().substring(0, 10));
     print(result);
     if (result != null) {
       final list = getListOfImageUploadResponse(result);
