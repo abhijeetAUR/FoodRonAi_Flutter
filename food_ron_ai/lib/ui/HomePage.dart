@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
@@ -130,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       }
       result = await databaseHelper.insertImageMetaData(
           imageUploadResponse.items[counterForLengthCheckOfSaveReponse]);
-      print(result);
+      
       if (counterForLengthCheckOfSaveReponse !=
           (imageUploadResponse.items.length - 1)) {
         counterForLengthCheckOfSaveReponse += 1;
@@ -157,14 +156,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       // counterForLengthCheckOfSaveImageSuggestionsAndItem += 1;
       saveSuggestionsToDb();
     }
-    print(result);
+    
   }
 
   deleteImageAndMetaFromImageTable(
       AsyncSnapshot<List<ImageUploadResponse>> snapshot, int index) {
     final id = snapshot.data[index].id;
     final result = databaseHelper.deleteImageDataFromImageTable(id);
-    print(result);
+    
     snapshot.data.removeAt(index);
     _homeListBloc.updateHomeList(snapshot.data);
   }
@@ -220,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   getRecords() async {
     var result = await databaseHelper.getAllMetaDataListFilterByDate(
         selectedDate.toString().substring(0, 10));
-    print(result);
+ 
     if (result != null) {
       final list = getListOfImageUploadResponse(result);
       getMetaRecordsFromDb(list);
@@ -352,7 +351,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   getAllSuggestionRecords() async {
     var result = await databaseHelper.getAllSuggestionRecords();
-    print(result);
+    
   }
 
   getSelectedDateMetaRecordsFromDb() async {
@@ -383,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         setState(() {
           selectedDate = picked;
           dateSelected = picked.toString().substring(0, 10);
-          print(dateSelected);
+         
           getAllRecordBySelectedDate(dateSelected);
         });
     }
@@ -401,26 +400,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   child: FlatButton(
                       onPressed: () {
                         _selectDate(context);
-                        // showDatePicker(
-                        //   context: context,
-                        //   initialDate: DateTime.now(),
-                        //   firstDate: DateTime(2018),
-                        //   lastDate: DateTime(2030),
-                        //   builder: (BuildContext context, Widget child) {
-                        //     return Theme(
-                        //       data: ThemeData(
-                        //         primarySwatch: Colors.green,
-                        //         accentColor: Colors.green,
-                        //         hintColor: Colors.white,
-                        //         inputDecorationTheme: new InputDecorationTheme(
-                        //           labelStyle:
-                        //               new TextStyle(color: Colors.black),
-                        //         ),
-                        //       ),
-                        //       child: child,
-                        //     );
-                        //   },
-                        // );
                       },
                       child: Text(
                         '${selectedDate.toString().substring(0, 10)}',
@@ -430,14 +409,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             fontFamily: 'HelveticaNeue',
                             fontWeight: FontWeight.w700),
                       ))
-                  // Text(
-                  //   "Today",
-                  //   style: TextStyle(
-                  //       color: Color.fromRGBO(189, 189, 221, 1),
-                  //       fontSize: 18,
-                  //       fontFamily: 'HelveticaNeue',
-                  //       fontWeight: FontWeight.w700),
-                  // ),
                   ),
             ),
           ],
@@ -1055,41 +1026,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       );
     }
 
-    Widget speedDial() {
-      return SpeedDial(
-        marginRight: 30,
-        marginBottom: 35,
-        animatedIcon: AnimatedIcons.close_menu,
-        animatedIconTheme: IconThemeData(size: 22.0),
-        closeManually: false,
-        curve: Curves.bounceIn,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.5,
-        onOpen: () => print('OPENING DIAL'),
-        onClose: () => print('DIAL CLOSED'),
-        tooltip: 'Speed Dial',
-        heroTag: 'speed-dial-hero-tag',
-        backgroundColor: Color.fromRGBO(69, 150, 80, 1),
-        foregroundColor: Colors.white,
-        elevation: 8.0,
-        shape: CircleBorder(),
-        children: [
-          SpeedDialChild(
-              child: Icon(Icons.camera),
-              backgroundColor: Color.fromRGBO(69, 150, 80, 1),
-              label: 'Camera',
-              labelStyle: TextStyle(fontSize: 18.0),
-              onTap: () => getImage(true)),
-          SpeedDialChild(
-            child: Icon(Icons.wallpaper),
-            backgroundColor: Color.fromRGBO(69, 150, 80, 1),
-            label: 'Gallery',
-            labelStyle: TextStyle(fontSize: 18.0),
-            onTap: () => getImage(false),
-          ),
-        ],
-      );
-    }
+    
 
     Widget indicator() {
       return Container(

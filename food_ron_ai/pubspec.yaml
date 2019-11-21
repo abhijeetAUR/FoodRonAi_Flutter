@@ -36,7 +36,6 @@ dependencies:
   flutter_spinkit: "^4.0.0"
   camera: ^0.5.6+3
   flutter_exif_rotation: ^0.2.6
-  flutter_speed_dial: ^1.2.4
   floating_search_bar: ^0.2.0
   
 dev_dependencies:
