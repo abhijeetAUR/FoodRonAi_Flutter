@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
@@ -29,7 +30,7 @@ class _ImageDetailsState extends State<ImageDetails>
   double serve;
   int counterToCheckMetaDataUpdate = 0;
   AppLifecycleState _notification;
-
+  int touchedIndex;
   @override
   void initState() {
     super.initState();
@@ -503,6 +504,148 @@ class _ImageDetailsState extends State<ImageDetails>
     );
   }
 
+  List<PieChartSectionData> showingSections() {
+    return List.generate(4, (i) {
+      final isTouched = i == touchedIndex;
+      final double fontSize = isTouched ? 25 : 16;
+      final double radius = isTouched ? 60 : 50;
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: const Color(0xff0293ee),
+            value: 40,
+            title: '40%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 1:
+          return PieChartSectionData(
+            color: const Color(0xfff8b250),
+            value: 30,
+            title: '30%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 2:
+          return PieChartSectionData(
+            color: const Color(0xff845bef),
+            value: 15,
+            title: '15%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 3:
+          return PieChartSectionData(
+            color: const Color(0xff13d38e),
+            value: 15,
+            title: '15%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        default:
+          return null;
+      }
+    });
+  }
+
+  Widget pieChartBuilder() {
+    return Center(
+      child: AspectRatio(
+        aspectRatio: 2,
+        child: Card(
+          color: Colors.white,
+          child: Row(
+            children: <Widget>[
+              const SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                child: AspectRatio(
+                  aspectRatio: 1.1,
+                  child: PieChart(
+                    PieChartData(
+                        pieTouchData:
+                            PieTouchData(touchCallback: (pieTouchResponse) {
+                          setState(() {
+                            if (pieTouchResponse.touchInput is FlLongPressEnd ||
+                                pieTouchResponse.touchInput is FlPanEnd) {
+                              touchedIndex = -1;
+                            } else {
+                              touchedIndex =
+                                  pieTouchResponse.touchedSectionIndex;
+                            }
+                          });
+                        }),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        sectionsSpace: 0,
+                        centerSpaceRadius: 20,
+                        sections: showingSections()),
+                  ),
+                ),
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const <Widget>[
+                  // Indicator(
+                  //   color: Color(0xff0293ee),
+                  //   text: 'First',
+                  //   isSquare: true,
+                  // ),
+                  // SizedBox(
+                  //   height: 4,
+                  // ),
+                  // Indicator(
+                  //   color: Color(0xfff8b250),
+                  //   text: 'Second',
+                  //   isSquare: true,
+                  // ),
+                  // SizedBox(
+                  //   height: 4,
+                  // ),
+                  // Indicator(
+                  //   color: Color(0xff845bef),
+                  //   text: 'Third',
+                  //   isSquare: true,
+                  // ),
+                  // SizedBox(
+                  //   height: 4,
+                  // ),
+                  // Indicator(
+                  //   color: Color(0xff13d38e),
+                  //   text: 'Fourth',
+                  //   isSquare: true,
+                  // ),
+                  // SizedBox(
+                  //   height: 18,
+                  // ),
+                ],
+              ),
+              const SizedBox(
+                width: 28,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -516,7 +659,7 @@ class _ImageDetailsState extends State<ImageDetails>
               titleHolder(),
               Expanded(
                 flex: 1,
-                child: imageViewContainer(),
+                child: pieChartBuilder(),
               ),
               Expanded(
                 flex: 2,
