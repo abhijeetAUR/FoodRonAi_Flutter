@@ -18,13 +18,14 @@ import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/database/DataModelImageMeta.dart';
+import 'dart:math' as math;
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final ImageDataBloc _imageDataBloc = ImageDataBloc();
   final HomeListBloc _homeListBloc = HomeListBloc();
   File cimage;
@@ -39,6 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
   int count = 0;
   final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
   bool _fetchingResponse = false;
+  AnimationController _controller;
+  static const List<IconData> icons = const [ Icons.wallpaper, Icons.camera];
+  static const List<String> iconlabels = const [ "Gallery","Camera"];
 
   uploadImage(File imageFile) async {
     var returnCounterValue = ReturnCounterValue();
@@ -338,6 +342,10 @@ class _HomeScreenState extends State<HomeScreen> {
     getRecords();
     getTodaysRecordsFromDb();
     getAllSuggestionRecords();
+    _controller = new AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
   }
 
   getAllSuggestionRecords() async {
@@ -915,11 +923,77 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
+
+    floatingSpeedDial(){
+      return  Padding(
+        padding: EdgeInsets.only(bottom: 15, right: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: new List.generate(icons.length, (int index) {
+            Widget child = new Container(
+              height: 70.0,
+              //width: 56.0,
+              alignment: FractionalOffset.topRight,
+              child: new ScaleTransition(
+                scale: new CurvedAnimation(
+                  parent: _controller,
+                  curve: new Interval(
+                    0.0,
+                    1.0 - index / icons.length / 2.0,
+                    curve: Curves.easeOut
+                  ),
+                ),
+                child: new FloatingActionButton.extended(
+                  heroTag: null,
+                  backgroundColor: Colors.green,
+                  label: Text("${iconlabels[index]}"),
+                  icon: Icon(icons[index], color: Colors.white,size: 20),
+                  onPressed: () {
+
+                    if(index==0){
+                      getImage(false);
+                      _controller.reverse();
+                    }else{
+                      getImage(true);
+                      _controller.reverse();
+                    }
+                  },
+                ),
+              ),
+            );
+            return child;
+          }).toList()..add(
+            FloatingActionButton(
+              heroTag: null,
+              child: new AnimatedBuilder(
+                animation: _controller,
+                builder: (BuildContext context, Widget child) {
+                  return new Transform(
+                    transform: new Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
+                    alignment: FractionalOffset.center,
+                    child: new Icon(_controller.isDismissed ? Icons.add : Icons.close,size: 30,),
+                  );
+                },
+              ),
+              onPressed: () {
+                if (_controller.isDismissed) {
+                  _controller.forward();
+                } else {
+                  _controller.reverse();
+                }
+              },
+            ),
+          ),
+        ),
+      );
+    }
+
     Widget speedDial() {
       return SpeedDial(
         marginRight: 30,
         marginBottom: 35,
-        animatedIcon: AnimatedIcons.menu_close,
+        animatedIcon: AnimatedIcons.close_menu,
         animatedIconTheme: IconThemeData(size: 22.0),
         closeManually: false,
         curve: Curves.bounceIn,
@@ -996,7 +1070,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      floatingActionButton: speedDial(),
+      floatingActionButton: floatingSpeedDial(),
+      //floatingActionButton: speedDial(),
     );
   }
 }
