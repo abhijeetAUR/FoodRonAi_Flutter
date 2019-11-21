@@ -6,10 +6,20 @@ class ImageDataBloc {
   List<ImageMetaData> _metaData = [];
 
   final _imageListStreamController = StreamController<List<ImageMetaData>>();
+
   final _imageServeIncrementStreamController =
       StreamController<ImageMetaData>();
+
   final _imageListUpdateStreamController =
       StreamController<List<ImageMetaData>>();
+
+  final _pieChartStreamController = StreamController<List<ImageMetaData>>();
+
+  Stream<List<ImageMetaData>> get pieChartDataStream =>
+      _pieChartStreamController.stream;
+
+  StreamSink<List<ImageMetaData>> get pieChartDataSink =>
+      _pieChartStreamController.sink;
 
   Stream<List<ImageMetaData>> get imageListStream =>
       _imageListStreamController.stream;
@@ -23,10 +33,14 @@ class ImageDataBloc {
       _imageListUpdateStreamController.sink;
 
   ImageDataBloc() {
-    _imageListStreamController.add(_metaData);
+    // _imageListStreamController.add(_metaData);
 
     _imageServeIncrementStreamController.stream.listen(_incrementServe);
     _imageListUpdateStreamController.stream.listen(passDataToImageList);
+  }
+
+  passDataToPieChartStream(List<ImageMetaData> updateImageList) {
+    _pieChartStreamController.sink.add(updateImageList);
   }
 
   _incrementServe(ImageMetaData imageMetaData) {
@@ -65,6 +79,7 @@ class ImageDataBloc {
   }
 
   void dispose() {
+    _pieChartStreamController.close();
     _imageListStreamController.close();
     _imageListUpdateStreamController.close();
     _imageServeIncrementStreamController.close();

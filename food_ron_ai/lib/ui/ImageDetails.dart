@@ -76,6 +76,7 @@ class _ImageDetailsState extends State<ImageDetails>
       imageMetaData = ImageMetaData.fromJson(item);
       updatedListOfImageMetaData.add(imageMetaData);
     }
+    _imageDataBloc.passDataToPieChartStream(updatedListOfImageMetaData);
     _imageDataBloc.passDataToImageList(updatedListOfImageMetaData);
   }
 
@@ -504,7 +505,8 @@ class _ImageDetailsState extends State<ImageDetails>
     );
   }
 
-  List<PieChartSectionData> showingSections() {
+  List<PieChartSectionData> showingSections(
+      AsyncSnapshot<List<ImageMetaData>> snapshot) {
     return List.generate(4, (i) {
       final isTouched = i == touchedIndex;
       final double fontSize = isTouched ? 25 : 16;
@@ -514,7 +516,7 @@ class _ImageDetailsState extends State<ImageDetails>
           return PieChartSectionData(
             color: const Color(0xff0293ee),
             value: 40,
-            title: '40%',
+            title: getTotalCalories(snapshot.data),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -525,7 +527,7 @@ class _ImageDetailsState extends State<ImageDetails>
           return PieChartSectionData(
             color: const Color(0xfff8b250),
             value: 30,
-            title: '30%',
+            title: getTotalCarbohydrates(snapshot.data),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -536,7 +538,7 @@ class _ImageDetailsState extends State<ImageDetails>
           return PieChartSectionData(
             color: const Color(0xff845bef),
             value: 15,
-            title: '15%',
+            title: getTotalFats(snapshot.data),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -547,7 +549,7 @@ class _ImageDetailsState extends State<ImageDetails>
           return PieChartSectionData(
             color: const Color(0xff13d38e),
             value: 15,
-            title: '15%',
+            title: getTotalProtein(snapshot.data),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -560,90 +562,144 @@ class _ImageDetailsState extends State<ImageDetails>
     });
   }
 
+  getTotalCarbohydrates(List<ImageMetaData> imageUploadResponseList) {
+    var item;
+    if (imageUploadResponseList != null && imageUploadResponseList.isNotEmpty) {
+      item = imageUploadResponseList
+          .map((item) => item.card)
+          .toList()
+          .reduce((combine, next) => combine + next)
+          .toStringAsFixed(2);
+    }
+    return item != null ? "${item}g" : "0g";
+  }
+
+  getTotalFats(List<ImageMetaData> imageUploadResponseList) {
+    var item;
+    if (imageUploadResponseList != null && imageUploadResponseList.isNotEmpty) {
+      item = imageUploadResponseList
+          .map((item) => item.fat)
+          .toList()
+          .reduce((combine, next) => combine + next)
+          .toStringAsFixed(2);
+    }
+    return item != null ? "${item}g" : "0g";
+  }
+
+  getTotalProtein(List<ImageMetaData> imageUploadResponseList) {
+    var item;
+    if (imageUploadResponseList != null && imageUploadResponseList.isNotEmpty) {
+      item = imageUploadResponseList
+          .map((item) => item.protin)
+          .toList()
+          .reduce((combine, next) => combine + next)
+          .toStringAsFixed(2);
+    }
+    return item != null ? "${item}g" : "0g";
+  }
+
+  getTotalCalories(List<ImageMetaData> imageUploadResponseList) {
+    var item;
+    if (imageUploadResponseList != null && imageUploadResponseList.isNotEmpty) {
+      item = imageUploadResponseList
+          .map((item) => item.card)
+          .toList()
+          .reduce((combine, next) => combine + next)
+          .toStringAsFixed(2);
+    }
+    return item != null ? item : "0";
+  }
+
   Widget pieChartBuilder() {
-    return Center(
-      child: AspectRatio(
-        aspectRatio: 2,
-        child: Card(
-          color: Colors.white,
-          child: Row(
-            children: <Widget>[
-              const SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1.1,
-                  child: PieChart(
-                    PieChartData(
-                        pieTouchData:
-                            PieTouchData(touchCallback: (pieTouchResponse) {
-                          setState(() {
-                            if (pieTouchResponse.touchInput is FlLongPressEnd ||
-                                pieTouchResponse.touchInput is FlPanEnd) {
-                              touchedIndex = -1;
-                            } else {
-                              touchedIndex =
-                                  pieTouchResponse.touchedSectionIndex;
-                            }
-                          });
-                        }),
-                        borderData: FlBorderData(
-                          show: false,
+    return StreamBuilder<List<ImageMetaData>>(
+        stream: _imageDataBloc.pieChartDataStream,
+        builder: (BuildContext context,
+            AsyncSnapshot<List<ImageMetaData>> snapshot) {
+          return Center(
+            child: AspectRatio(
+              aspectRatio: 2,
+              child: Card(
+                color: Colors.white,
+                child: Row(
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: AspectRatio(
+                        aspectRatio: 1.1,
+                        child: PieChart(
+                          PieChartData(
+                              pieTouchData: PieTouchData(
+                                  touchCallback: (pieTouchResponse) {
+                                setState(() {
+                                  if (pieTouchResponse.touchInput
+                                          is FlLongPressEnd ||
+                                      pieTouchResponse.touchInput is FlPanEnd) {
+                                    touchedIndex = -1;
+                                  } else {
+                                    touchedIndex =
+                                        pieTouchResponse.touchedSectionIndex;
+                                  }
+                                });
+                              }),
+                              borderData: FlBorderData(
+                                show: false,
+                              ),
+                              sectionsSpace: 0,
+                              centerSpaceRadius: 20,
+                              sections: showingSections(snapshot)),
                         ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 20,
-                        sections: showingSections()),
-                  ),
+                      ),
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const <Widget>[
+                        // Indicator(
+                        //   color: Color(0xff0293ee),
+                        //   text: 'First',
+                        //   isSquare: true,
+                        // ),
+                        // SizedBox(
+                        //   height: 4,
+                        // ),
+                        // Indicator(
+                        //   color: Color(0xfff8b250),
+                        //   text: 'Second',
+                        //   isSquare: true,
+                        // ),
+                        // SizedBox(
+                        //   height: 4,
+                        // ),
+                        // Indicator(
+                        //   color: Color(0xff845bef),
+                        //   text: 'Third',
+                        //   isSquare: true,
+                        // ),
+                        // SizedBox(
+                        //   height: 4,
+                        // ),
+                        // Indicator(
+                        //   color: Color(0xff13d38e),
+                        //   text: 'Fourth',
+                        //   isSquare: true,
+                        // ),
+                        // SizedBox(
+                        //   height: 18,
+                        // ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 28,
+                    ),
+                  ],
                 ),
               ),
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
-                  // Indicator(
-                  //   color: Color(0xff0293ee),
-                  //   text: 'First',
-                  //   isSquare: true,
-                  // ),
-                  // SizedBox(
-                  //   height: 4,
-                  // ),
-                  // Indicator(
-                  //   color: Color(0xfff8b250),
-                  //   text: 'Second',
-                  //   isSquare: true,
-                  // ),
-                  // SizedBox(
-                  //   height: 4,
-                  // ),
-                  // Indicator(
-                  //   color: Color(0xff845bef),
-                  //   text: 'Third',
-                  //   isSquare: true,
-                  // ),
-                  // SizedBox(
-                  //   height: 4,
-                  // ),
-                  // Indicator(
-                  //   color: Color(0xff13d38e),
-                  //   text: 'Fourth',
-                  //   isSquare: true,
-                  // ),
-                  // SizedBox(
-                  //   height: 18,
-                  // ),
-                ],
-              ),
-              const SizedBox(
-                width: 28,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 
   @override
