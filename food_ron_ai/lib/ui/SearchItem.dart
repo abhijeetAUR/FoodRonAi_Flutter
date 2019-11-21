@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:floating_search_bar/floating_search_bar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_ron_ai/CounterClass.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
@@ -21,6 +22,7 @@ class SearchItem extends StatefulWidget {
 }
 
 class SearchItemState extends State<SearchItem> {
+  bool _fetchingResponse = false;
   ImageUploadResponse imageUploadResponse;
   SearchItemState({@required this.imageUploadResponse});
   final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
@@ -31,33 +33,6 @@ class SearchItemState extends State<SearchItem> {
   final SearchItemBloc _searchItemBloc = SearchItemBloc();
   List<ImageUploadMetaItems> _listSearchItemMetaData =
       List<ImageUploadMetaItems>();
-
-  Widget listTileBuilder(
-      AsyncSnapshot<List<ImageUploadMetaItems>> snapshot, index) {
-    return GridTile(
-      child: GestureDetector(
-        onTap: () {
-          insertMetaDataInDB(snapshot.data[index]);
-        },
-        child: Container(
-            decoration: BoxDecoration(
-                border: Border(
-              bottom: BorderSide(width: 1, color: Color(0xFFFFe2e2e2)),
-            )),
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            margin: EdgeInsets.only(right: 15, left: 15),
-            padding: EdgeInsets.only(left: 14, right: 10, top: 15),
-            child: Text(
-              "\u{1F35B}  " + (capitalizeName(snapshot.data[index].name)),
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                  ),
-            )),
-      ),
-    );
-  }
 
   void insertMetaDataInDB(ImageUploadMetaItems imageUploadMetaItems) async {
     var result = await databaseHelper.insertImageMetaData(imageUploadMetaItems);
@@ -80,34 +55,8 @@ class SearchItemState extends State<SearchItem> {
     return (name[0].toUpperCase() + name.substring(1)).replaceAll('-', ' ');
   }
 
-  Widget traileAvatar() {
-    return CircleAvatar(
-      backgroundColor: Colors.green,
-      child: Text(
-        "S",
-        style: TextStyle(
-            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget title() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          "SEARCH",
-          style: TextStyle(
-              color: Color.fromRGBO(45, 46, 51, 1),
-              fontSize: 20,
-              fontWeight: FontWeight.bold),
-        ),
-      ],
-    );
-  }
-
   callSearchItemApi() async {
+    _fetchingResponse = true;
     var uri = Uri.parse(Globals.searchitem);
     Map<String, String> headers = {"authorization": authorizationToken};
     var request = http.get(uri, headers: headers);
@@ -128,6 +77,9 @@ class SearchItemState extends State<SearchItem> {
         } else {
           getAllRecordsFromDb();
         }
+        setState(() {
+          _fetchingResponse = false;
+        });
       });
     } else {
       throw Exception('Failed to load post');
@@ -182,6 +134,73 @@ class SearchItemState extends State<SearchItem> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    callSearchItemApi();
+    //TODO: get data from db and dont call api each time
+  }
+
+  @override
+  void dispose() {
+    _searchItemBloc.dispose();
+    super.dispose();
+  }
+
+  Widget listTileBuilder(
+      AsyncSnapshot<List<ImageUploadMetaItems>> snapshot, index) {
+    return GridTile(
+      child: GestureDetector(
+        onTap: () {
+          insertMetaDataInDB(snapshot.data[index]);
+        },
+        child: Container(
+            decoration: BoxDecoration(
+                border: Border(
+              bottom: BorderSide(width: 1, color: Color(0xFFFFe2e2e2)),
+            )),
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            margin: EdgeInsets.only(right: 15, left: 15),
+            padding: EdgeInsets.only(left: 14, right: 10, top: 15),
+            child: Text(
+              "\u{1F35B}  " + (capitalizeName(snapshot.data[index].name)),
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+              ),
+            )),
+      ),
+    );
+  }
+
+  Widget traileAvatar() {
+    return CircleAvatar(
+      backgroundColor: Colors.green,
+      child: Text(
+        "S",
+        style: TextStyle(
+            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget title() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          "SEARCH",
+          style: TextStyle(
+              color: Color.fromRGBO(45, 46, 51, 1),
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
   Widget searchitemStreamBuilder() {
     return StreamBuilder<List<ImageUploadMetaItems>>(
         stream: _searchItemBloc.searchItemStream,
@@ -216,28 +235,14 @@ class SearchItemState extends State<SearchItem> {
       },
       decoration: InputDecoration.collapsed(
         hintText: "Search...",
-        hintStyle: TextStyle(fontSize: 14.0, color: Colors.grey,fontFamily: 'HelveticaNeue'),
+        hintStyle: TextStyle(
+            fontSize: 14.0, color: Colors.grey, fontFamily: 'HelveticaNeue'),
       ),
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    callSearchItemApi();
-    //TODO: get data from db and dont call api each time
-  }
-
-  @override
-  void dispose() {
-    _searchItemBloc.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
+  scaffoldBody() {
+    return SafeArea(
       top: true,
       bottom: false,
       left: false,
@@ -254,6 +259,30 @@ class SearchItemState extends State<SearchItem> {
           ],
         ),
       ),
-    ));
+    );
+  }
+
+  indicator() {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(color: new Color.fromRGBO(241, 241, 241, 0.5)),
+      child: Center(
+        child: Container(
+          height: (MediaQuery.of(context).size.width / 6).roundToDouble(),
+          width: (MediaQuery.of(context).size.width / 6).roundToDouble(),
+          color: Colors.green,
+          child: SpinKitWave(
+            color: Colors.white,
+            size: 15,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: _fetchingResponse ? indicator() : scaffoldBody());
   }
 }

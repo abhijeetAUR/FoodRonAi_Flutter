@@ -356,15 +356,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   getAllRecordBySelectedDate(String selectedDate) async {
-    var result = await databaseHelper.getAllMetaDataListFilterByDate(selectedDate);
-    print(result);
-    return result;
+    var result =
+        await databaseHelper.getAllMetaDataListFilterByDate(selectedDate);
+    final list = getListOfImageUploadResponse(result);
+    getMetaRecordsFromDb(list);
   }
 
   @override
   Widget build(BuildContext context) {
-    
-
     Future<Null> _selectDate(BuildContext context) async {
       final DateTime picked = await showDatePicker(
           context: context,
@@ -374,7 +373,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       if (picked != null && picked != selectedDate)
         setState(() {
           selectedDate = picked;
-          dateSelected = picked.toString().substring(0,10);
+          dateSelected = picked.toString().substring(0, 10);
           print(dateSelected);
           getAllRecordBySelectedDate(dateSelected);
         });
@@ -392,7 +391,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   padding: EdgeInsets.only(left: 12),
                   child: FlatButton(
                       onPressed: () {
-
                         _selectDate(context);
                         // showDatePicker(
                         //   context: context,
