@@ -415,9 +415,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         // );
                       },
                       child: Text(
-                        'Today',
+                        '${selectedDate.toString().substring(0, 10)}',
                         style: TextStyle(
-                            color: Color.fromRGBO(189, 189, 221, 1),
+                            color: Color.fromRGBO(69, 150, 80, 1),
                             fontSize: 18,
                             fontFamily: 'HelveticaNeue',
                             fontWeight: FontWeight.w700),
