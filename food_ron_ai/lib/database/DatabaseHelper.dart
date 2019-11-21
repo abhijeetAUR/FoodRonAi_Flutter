@@ -215,6 +215,13 @@ class DatabaseHelper {
     return result.toList();
   }
 
+  Future<List> getAllMetaDataListFilterByDate(String selectedDate) async {
+    var dbClient = await this.database;
+    //var result = await dbClient.rawQuery("SELECT * FROM $imageTable WHERE datetime = $selectedDate");
+    var result = await dbClient.query(imageTable,where: '$colDatetime = ?' , whereArgs: [selectedDate]);
+    return result.toList();
+  }
+
   Future<List> getAllMetaRecords(int id) async {
     var dbClient = await this.database;
     var result = await dbClient.rawQuery(

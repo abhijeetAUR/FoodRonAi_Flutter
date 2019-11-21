@@ -41,8 +41,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final authorizationToken = "96331CA0-7959-402E-8016-B7ABB3287A16";
   bool _fetchingResponse = false;
   AnimationController _controller;
-  static const List<IconData> icons = const [ Icons.wallpaper, Icons.camera];
-  static const List<String> iconlabels = const [ "Gallery","Camera"];
+  static const List<IconData> icons = const [Icons.wallpaper, Icons.camera];
+  static const List<String> iconlabels = const ["Gallery", "Camera"];
+  DateTime selectedDate = DateTime.now();
+  var dateSelected;
 
   uploadImage(File imageFile) async {
     var returnCounterValue = ReturnCounterValue();
@@ -353,8 +355,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     print(result);
   }
 
+  getAllRecordBySelectedDate(String selectedDate) async {
+    var result = await databaseHelper.getAllMetaDataListFilterByDate(selectedDate);
+    print(result);
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
+    
+
+    Future<Null> _selectDate(BuildContext context) async {
+      final DateTime picked = await showDatePicker(
+          context: context,
+          initialDate: selectedDate,
+          firstDate: DateTime(2015, 8),
+          lastDate: DateTime(2101));
+      if (picked != null && picked != selectedDate)
+        setState(() {
+          selectedDate = picked;
+          dateSelected = picked.toString().substring(0,10);
+          print(dateSelected);
+          getAllRecordBySelectedDate(dateSelected);
+        });
+    }
+
     Widget dateChangeBtnContainer() {
       return Container(
         height: 50,
@@ -363,17 +388,50 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           children: <Widget>[
             Expanded(
               child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.only(left: 12),
-                child: Text(
-                  "Today",
-                  style: TextStyle(
-                      color: Color.fromRGBO(189, 189, 221, 1),
-                      fontSize: 18,
-                      fontFamily: 'HelveticaNeue',
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 12),
+                  child: FlatButton(
+                      onPressed: () {
+
+                        _selectDate(context);
+                        // showDatePicker(
+                        //   context: context,
+                        //   initialDate: DateTime.now(),
+                        //   firstDate: DateTime(2018),
+                        //   lastDate: DateTime(2030),
+                        //   builder: (BuildContext context, Widget child) {
+                        //     return Theme(
+                        //       data: ThemeData(
+                        //         primarySwatch: Colors.green,
+                        //         accentColor: Colors.green,
+                        //         hintColor: Colors.white,
+                        //         inputDecorationTheme: new InputDecorationTheme(
+                        //           labelStyle:
+                        //               new TextStyle(color: Colors.black),
+                        //         ),
+                        //       ),
+                        //       child: child,
+                        //     );
+                        //   },
+                        // );
+                      },
+                      child: Text(
+                        'Today',
+                        style: TextStyle(
+                            color: Color.fromRGBO(189, 189, 221, 1),
+                            fontSize: 18,
+                            fontFamily: 'HelveticaNeue',
+                            fontWeight: FontWeight.w700),
+                      ))
+                  // Text(
+                  //   "Today",
+                  //   style: TextStyle(
+                  //       color: Color.fromRGBO(189, 189, 221, 1),
+                  //       fontSize: 18,
+                  //       fontFamily: 'HelveticaNeue',
+                  //       fontWeight: FontWeight.w700),
+                  // ),
+                  ),
             ),
           ],
         ),
@@ -923,12 +981,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       );
     }
 
-
-    floatingSpeedDial(){
-      return  Padding(
+    floatingSpeedDial() {
+      return Padding(
         padding: EdgeInsets.only(bottom: 15, right: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: new List.generate(icons.length, (int index) {
             Widget child = new Container(
@@ -938,23 +995,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               child: new ScaleTransition(
                 scale: new CurvedAnimation(
                   parent: _controller,
-                  curve: new Interval(
-                    0.0,
-                    1.0 - index / icons.length / 2.0,
-                    curve: Curves.easeOut
-                  ),
+                  curve: new Interval(0.0, 1.0 - index / icons.length / 2.0,
+                      curve: Curves.easeOut),
                 ),
                 child: new FloatingActionButton.extended(
                   heroTag: null,
                   backgroundColor: Colors.green,
                   label: Text("${iconlabels[index]}"),
-                  icon: Icon(icons[index], color: Colors.white,size: 20),
+                  icon: Icon(icons[index], color: Colors.white, size: 20),
                   onPressed: () {
-
-                    if(index==0){
+                    if (index == 0) {
                       getImage(false);
                       _controller.reverse();
-                    }else{
+                    } else {
                       getImage(true);
                       _controller.reverse();
                     }
@@ -963,28 +1016,33 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             );
             return child;
-          }).toList()..add(
-            FloatingActionButton(
-              heroTag: null,
-              child: new AnimatedBuilder(
-                animation: _controller,
-                builder: (BuildContext context, Widget child) {
-                  return new Transform(
-                    transform: new Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
-                    alignment: FractionalOffset.center,
-                    child: new Icon(_controller.isDismissed ? Icons.add : Icons.close,size: 30,),
-                  );
+          }).toList()
+            ..add(
+              FloatingActionButton(
+                heroTag: null,
+                child: new AnimatedBuilder(
+                  animation: _controller,
+                  builder: (BuildContext context, Widget child) {
+                    return new Transform(
+                      transform: new Matrix4.rotationZ(
+                          _controller.value * 0.5 * math.pi),
+                      alignment: FractionalOffset.center,
+                      child: new Icon(
+                        _controller.isDismissed ? Icons.add : Icons.close,
+                        size: 30,
+                      ),
+                    );
+                  },
+                ),
+                onPressed: () {
+                  if (_controller.isDismissed) {
+                    _controller.forward();
+                  } else {
+                    _controller.reverse();
+                  }
                 },
               ),
-              onPressed: () {
-                if (_controller.isDismissed) {
-                  _controller.forward();
-                } else {
-                  _controller.reverse();
-                }
-              },
             ),
-          ),
         ),
       );
     }
