@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/database/DatabaseHelper.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
@@ -230,7 +231,6 @@ class _ImageDetailsState extends State<ImageDetails>
       minWidth: 2.0,
       height: 20.0,
       child: FlatButton(
-        
         padding: EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
         onPressed: (() {
           print("run");
@@ -280,7 +280,7 @@ class _ImageDetailsState extends State<ImageDetails>
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return Row(
       children: <Widget>[
-       // btnToAddChangeField(snapshot, index),
+        // btnToAddChangeField(snapshot, index),
         btnToAddDeleteField(snapshot, index)
       ],
     );
@@ -380,12 +380,34 @@ class _ImageDetailsState extends State<ImageDetails>
     );
   }
 
+  Widget indicator() {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(color: new Color.fromRGBO(241, 241, 241, 0.5)),
+      child: Center(
+        child: Container(
+          height: (MediaQuery.of(context).size.width / 6).roundToDouble(),
+          width: (MediaQuery.of(context).size.width / 6).roundToDouble(),
+          color: Colors.green,
+          child: SpinKitWave(
+            color: Colors.white,
+            size: 15,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget imageDetailStreamBuilder() {
     return StreamBuilder<List<ImageMetaData>>(
         stream: _imageDataBloc.imageListStream,
         builder: (BuildContext context,
             AsyncSnapshot<List<ImageMetaData>> snapshot) {
-          return lstBuilderForImageMetaItems(snapshot);
+          if (snapshot.hasData && snapshot.data != null) {
+            return lstBuilderForImageMetaItems(snapshot);
+          }
+          return indicator();
         });
   }
 

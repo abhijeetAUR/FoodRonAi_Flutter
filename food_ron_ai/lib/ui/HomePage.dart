@@ -252,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
     final todaysMetaDataList = lstImageUploadMetaItems
         .where((item) =>
-            item.datetime.contains(DateTime.now().toString().substring(0, 10)))
+            item.datetime.contains(selectedDate.toString().substring(0, 10)))
         .toList();
     _homeListBloc.sinkTodaysMeta(todaysMetaDataList);
   }
@@ -342,9 +342,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    getRecords();
+    getAllRecordBySelectedDate(selectedDate.toString().substring(0, 10));
     getTodaysRecordsFromDb();
-    getAllSuggestionRecords();
     _controller = new AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -356,11 +355,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     print(result);
   }
 
+  getSelectedDateMetaRecordsFromDb() async {
+    var result = await databaseHelper
+        .getSelectedDateRecords(selectedDate.toString().substring(0, 10));
+    if (result != null) {
+      sendDataToBlockForMetaData(result);
+    }
+  }
+
   getAllRecordBySelectedDate(String selectedDate) async {
     var result =
         await databaseHelper.getAllMetaDataListFilterByDate(selectedDate);
     final list = getListOfImageUploadResponse(result);
     getMetaRecordsFromDb(list);
+    getSelectedDateMetaRecordsFromDb();
   }
 
   @override
@@ -370,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           context: context,
           initialDate: selectedDate,
           firstDate: DateTime(2015, 8),
-          lastDate: DateTime(2101));
+          lastDate: DateTime.now());
       if (picked != null && picked != selectedDate)
         setState(() {
           selectedDate = picked;
@@ -602,6 +610,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     .map((oneItem) => oneItem.calorie)
                     .toList()
                     .reduce((first, next) => first + next)
+                    .toStringAsFixed(2)
                     .toString()
                 : 0.toString(),
             style: TextStyle(

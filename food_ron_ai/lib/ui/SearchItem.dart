@@ -95,8 +95,11 @@ class SearchItemState extends State<SearchItem> {
 
   getAllRecordsFromDb() async {
     var result = await databaseHelper.getAllAdditionalRecords();
-    print(result);
-    appendItemMetaIdToEachRecord(result);
+    if (result.isEmpty) {
+      callSearchItemApi();
+    } else {
+      appendItemMetaIdToEachRecord(result);
+    }
   }
 
   appendItemMetaIdToEachRecord(List<dynamic> result) {
@@ -137,7 +140,7 @@ class SearchItemState extends State<SearchItem> {
   @override
   void initState() {
     super.initState();
-    callSearchItemApi();
+    getAllRecordsFromDb();
     //TODO: get data from db and dont call api each time
   }
 
