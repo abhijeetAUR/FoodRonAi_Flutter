@@ -230,13 +230,14 @@ class _ImageDetailsState extends State<ImageDetails>
       minWidth: 2.0,
       height: 20.0,
       child: FlatButton(
+        
         padding: EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
         onPressed: (() {
           print("run");
         }),
         child: Icon(
           Icons.edit,
-          color: Colors.black54,
+          color: Colors.white,
           size: 20,
         ),
       ),
@@ -279,7 +280,7 @@ class _ImageDetailsState extends State<ImageDetails>
       AsyncSnapshot<List<ImageMetaData>> snapshot, int index) {
     return Row(
       children: <Widget>[
-        btnToAddChangeField(snapshot, index),
+       // btnToAddChangeField(snapshot, index),
         btnToAddDeleteField(snapshot, index)
       ],
     );
@@ -294,7 +295,7 @@ class _ImageDetailsState extends State<ImageDetails>
           Row(
             children: <Widget>[
               Expanded(
-                  flex: 3,
+                  flex: 5,
                   child: Container(
                       padding: EdgeInsets.only(left: 25),
                       child: cntForfoodName(snapshot, index))),
