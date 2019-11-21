@@ -60,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     var multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(imageFile.path));
     request.files.add(multipartFile);
-
     var response = await request.send();
     print(response.statusCode);
     response.stream.transform(utf8.decoder).listen((value) {
@@ -87,7 +86,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       var base64InfImage = base64Encode(resposneOfInfImage.bodyBytes);
       imageUploadResponse.base64InfImage = base64InfImage;
       imageUploadResponse.base64Image = base64Image;
-
       imageUploadResponse.datetime = DateTime.now().toString().substring(0, 10);
       List<dynamic> items = mappingData['items'];
       for (var item in items) {
@@ -129,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       }
       result = await databaseHelper.insertImageMetaData(
           imageUploadResponse.items[counterForLengthCheckOfSaveReponse]);
-      
+
       if (counterForLengthCheckOfSaveReponse !=
           (imageUploadResponse.items.length - 1)) {
         counterForLengthCheckOfSaveReponse += 1;
@@ -156,14 +154,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       // counterForLengthCheckOfSaveImageSuggestionsAndItem += 1;
       saveSuggestionsToDb();
     }
-    
   }
 
   deleteImageAndMetaFromImageTable(
       AsyncSnapshot<List<ImageUploadResponse>> snapshot, int index) {
     final id = snapshot.data[index].id;
     final result = databaseHelper.deleteImageDataFromImageTable(id);
-    
+
     snapshot.data.removeAt(index);
     _homeListBloc.updateHomeList(snapshot.data);
   }
@@ -219,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   getRecords() async {
     var result = await databaseHelper.getAllMetaDataListFilterByDate(
         selectedDate.toString().substring(0, 10));
- 
+
     if (result != null) {
       final list = getListOfImageUploadResponse(result);
       getMetaRecordsFromDb(list);
@@ -351,7 +348,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   getAllSuggestionRecords() async {
     var result = await databaseHelper.getAllSuggestionRecords();
-    
   }
 
   getSelectedDateMetaRecordsFromDb() async {
@@ -382,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         setState(() {
           selectedDate = picked;
           dateSelected = picked.toString().substring(0, 10);
-         
+
           getAllRecordBySelectedDate(dateSelected);
         });
     }
@@ -395,21 +391,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           children: <Widget>[
             Expanded(
               child: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.only(left: 12),
-                  child: FlatButton(
-                      onPressed: () {
-                        _selectDate(context);
-                      },
-                      child: Text(
-                        '${selectedDate.toString().substring(0, 10)}',
-                        style: TextStyle(
-                            color: Color.fromRGBO(69, 150, 80, 1),
-                            fontSize: 18,
-                            fontFamily: 'HelveticaNeue',
-                            fontWeight: FontWeight.w700),
-                      ))
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(left: 12),
+                child: FlatButton(
+                  onPressed: () {
+                    _selectDate(context);
+                  },
+                  child: Text(
+                    '${selectedDate.toString().substring(0, 10)}',
+                    style: TextStyle(
+                        color: Color.fromRGBO(69, 150, 80, 1),
+                        fontSize: 18,
+                        fontFamily: 'HelveticaNeue',
+                        fontWeight: FontWeight.w700),
                   ),
+                ),
+              ),
             ),
           ],
         ),
@@ -537,7 +534,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     Widget metaDataHolder(List<ImageUploadMetaItems> imageUploadResponseList) {
       return Container(
-        // padding: EdgeInsets.only(top: 10),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -1025,8 +1021,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       );
     }
-
-    
 
     Widget indicator() {
       return Container(
