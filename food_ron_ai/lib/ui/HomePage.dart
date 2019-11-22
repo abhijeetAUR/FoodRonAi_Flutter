@@ -811,12 +811,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           context: context,
           builder: (_) => NetworkGiffyDialog(
                 image: Image.asset('images/greenbg.gif', fit: BoxFit.cover),
-                title: Text('No Internet Connection',
+                title: Text('No Internet Connection!',
                     textAlign: TextAlign.center,
                     style:
                         TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
                 description: Text(
-                  'Please connect your device to internet',
+                  'Please connect your device to internet.',
                   textAlign: TextAlign.center,
                 ),
                 entryAnimation: EntryAnimation.DEFAULT,
@@ -935,6 +935,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         }
                       }
                     } on SocketException catch (_) {
+                      _controller.reverse();
                       dialog();
                     }
                   },

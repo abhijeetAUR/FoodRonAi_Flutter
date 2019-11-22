@@ -451,7 +451,10 @@ class _ImageDetailsState extends State<ImageDetails>
         onPressed: (() {
           navigateToHomePage();
         }),
-        child: Icon(Icons.arrow_left));
+        child: Icon(
+          Icons.arrow_left,
+          color: Colors.white,
+        ));
   }
 
   Widget mainTitle() {
@@ -461,7 +464,7 @@ class _ImageDetailsState extends State<ImageDetails>
         child: Text(
           "Nutritonal values",
           style: TextStyle(
-              color: Color.fromRGBO(45, 46, 51, 1),
+              color: Colors.white, //Color.fromRGBO(45, 46, 51, 1),
               fontSize: 20,
               fontWeight: FontWeight.bold),
         ),
@@ -517,7 +520,7 @@ class _ImageDetailsState extends State<ImageDetails>
                     return BarTooltipItem(
                       rod.y.round().toString(),
                       TextStyle(
-                        color: Colors.green,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     );
@@ -529,7 +532,7 @@ class _ImageDetailsState extends State<ImageDetails>
                 bottomTitles: SideTitles(
                   showTitles: true,
                   textStyle: TextStyle(
-                      color: const Color(0xff7589a2),
+                      color: Colors.white, //const Color(0xff7589a2),
                       fontWeight: FontWeight.bold,
                       fontSize: 14),
                   margin: 20,
@@ -556,29 +559,26 @@ class _ImageDetailsState extends State<ImageDetails>
               barGroups: [
                 BarChartGroupData(x: 0, barRods: [
                   BarChartRodData(
-                      y: getTotalCalories(snapshot.data),
-                      color: Colors.lightBlueAccent)
+                      y: getTotalCalories(snapshot.data), color: Colors.white)
                 ], showingTooltipIndicators: [
                   0
                 ]),
                 BarChartGroupData(x: 1, barRods: [
                   BarChartRodData(
                       y: getTotalCarbohydrates(snapshot.data),
-                      color: Colors.lightBlueAccent)
+                      color: Colors.white)
                 ], showingTooltipIndicators: [
                   0
                 ]),
                 BarChartGroupData(x: 2, barRods: [
                   BarChartRodData(
-                      y: getTotalFats(snapshot.data),
-                      color: Colors.lightBlueAccent)
+                      y: getTotalFats(snapshot.data), color: Colors.white)
                 ], showingTooltipIndicators: [
                   0
                 ]),
                 BarChartGroupData(x: 3, barRods: [
                   BarChartRodData(
-                      y: getTotalProtein(snapshot.data),
-                      color: Colors.lightBlueAccent)
+                      y: getTotalProtein(snapshot.data), color: Colors.white)
                 ], showingTooltipIndicators: [
                   0
                 ]),
@@ -762,19 +762,20 @@ class _ImageDetailsState extends State<ImageDetails>
         context: context,
         builder: (context) {
           return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Container(
-              height: MediaQuery.of(context).size.height/1.5,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: MemoryImage(
-                  base64Decode(imageUploadResponse.base64InfImage),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                height: MediaQuery.of(context).size.height / 1.5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: MemoryImage(
+                      base64Decode(imageUploadResponse.base64InfImage),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ));
+              ));
         });
   }
 
@@ -785,10 +786,10 @@ class _ImageDetailsState extends State<ImageDetails>
         child: Scaffold(
           body: Stack(
             children: <Widget>[
-              // Container(
-              // child: new Image.asset('images/screen.png',
-              //     fit: BoxFit.cover)),
-
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  child:
+                      new Image.asset('images/screen2.png', fit: BoxFit.cover)),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
