@@ -38,7 +38,8 @@ dependencies:
   flutter_exif_rotation: ^0.2.6
   floating_search_bar: ^0.2.0
   fl_chart: ^0.4.2
-
+  giffy_dialog:
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

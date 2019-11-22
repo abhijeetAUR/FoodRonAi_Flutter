@@ -10,6 +10,7 @@ import 'package:food_ron_ai/bloc/HomeListBloc.dart';
 import 'package:food_ron_ai/bloc/ImageDataBloc.dart';
 import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import 'package:food_ron_ai/ui/ImageDetails.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -86,11 +87,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       var base64InfImage = base64Encode(resposneOfInfImage.bodyBytes);
       imageUploadResponse.base64InfImage = base64InfImage;
       imageUploadResponse.base64Image = base64Image;
-      imageUploadResponse.datetime = DateTime.now().toString().substring(0, 10);
+      imageUploadResponse.datetime = selectedDate
+          .toString()
+          .substring(0, 10); //DateTime.now().toString().substring(0, 10);
       List<dynamic> items = mappingData['items'];
       for (var item in items) {
         item["itemMetaId"] = itemMetaId;
-        item["datetime"] = DateTime.now().toString().substring(0, 10);
+        item["datetime"] = selectedDate
+            .toString()
+            .substring(0, 10); //DateTime.now().toString().substring(0, 10);
         var value = ImageUploadMetaItems.fromJson(item);
         value.sugg.forEach((oneItem) {
           oneItem.itemMetaId = value.itemMetaId;
@@ -123,7 +128,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       //if present then save to db
       if (imageUploadResponse
           .items[counterForLengthCheckOfSaveReponse].sugg.isNotEmpty) {
-        saveSuggestionsToDb();
+        // saveSuggestionsToDb();
+        //Check there is some error while saving sugar
       }
       result = await databaseHelper.insertImageMetaData(
           imageUploadResponse.items[counterForLengthCheckOfSaveReponse]);
@@ -802,85 +808,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     dialog() {
       showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: new Text("No internet"),
-            content: new Text("Device is not connected to internet"),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              new FlatButton(
-                child: new Text("Close"),
-                onPressed: () {
-                  Navigator.of(context).pop();
+          context: context,
+          builder: (_) => NetworkGiffyDialog(
+                image:
+                    Image.asset('images/splashgraphic.png', fit: BoxFit.cover),
+                title: Text('No Internet Connection',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
+                description: Text(
+                  'Please connect your device to internet',
+                  textAlign: TextAlign.center,
+                ),
+                entryAnimation: EntryAnimation.DEFAULT,
+                onlyOkButton: true,
+                onOkButtonPressed: () {
+                  Navigator.pop(context);
                 },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Widget cntFabCamera() {
-      return Container(
-        padding: EdgeInsets.all(15),
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: FloatingActionButton(
-            backgroundColor: Color.fromRGBO(69, 150, 80, 1),
-            splashColor: Colors.green,
-            child: FlatButton(
-              child: Icon(
-                Icons.camera,
-                color: Colors.white,
-                size: 25,
-              ),
-              onPressed: () async {
-                try {
-                  final result = await InternetAddress.lookup('www.google.com');
-                  if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-                    getImage(true);
-                  }
-                } on SocketException catch (_) {
-                  dialog();
-                }
-              },
-            ),
-            onPressed: () {},
-          ),
-        ),
-      );
-    }
-
-    Widget cntFabGallery() {
-      return Container(
-        padding: EdgeInsets.all(15),
-        child: Align(
-          alignment: Alignment.bottomLeft,
-          child: FloatingActionButton(
-            backgroundColor: Color.fromRGBO(69, 150, 80, 1),
-            splashColor: Colors.green,
-            child: FlatButton(
-              child: Icon(
-                Icons.photo_album,
-                color: Colors.white,
-                size: 25,
-              ),
-              onPressed: () async {
-                try {
-                  final result = await InternetAddress.lookup('www.google.com');
-                  if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-                    getImage(false);
-                  }
-                } on SocketException catch (_) {
-                  dialog();
-                }
-              },
-            ),
-            onPressed: () {},
-          ),
-        ),
-      );
+              ));
     }
 
     Widget lstHolderForImageAndMetaDetails() {
@@ -978,13 +923,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   backgroundColor: Colors.green,
                   label: Text("${iconlabels[index]}"),
                   icon: Icon(icons[index], color: Colors.white, size: 20),
-                  onPressed: () {
-                    if (index == 0) {
-                      getImage(false);
-                      _controller.reverse();
-                    } else {
-                      getImage(true);
-                      _controller.reverse();
+                  onPressed: () async {
+                    try {
+                      final result =
+                          await InternetAddress.lookup('www.google.com');
+                      if (result.isNotEmpty &&
+                          result[0].rawAddress.isNotEmpty) {
+                        if (index == 0) {
+                          getImage(false);
+                          _controller.reverse();
+                        } else {
+                          getImage(true);
+                          _controller.reverse();
+                        }
+                      }
+                    } on SocketException catch (_) {
+                      dialog();
                     }
                   },
                 ),
