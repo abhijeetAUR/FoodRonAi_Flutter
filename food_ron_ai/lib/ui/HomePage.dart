@@ -811,7 +811,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           context: context,
           builder: (_) => NetworkGiffyDialog(
                 image:
-                    Image.asset('images/splashgraphic.png', fit: BoxFit.cover),
+                    Image.asset('images/greenbg.gif', fit: BoxFit.cover),
                 title: Text('No Internet Connection',
                     textAlign: TextAlign.center,
                     style:
@@ -893,7 +893,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           Text(
             "HOME",
             style: TextStyle(
-                color: Color.fromRGBO(45, 46, 51, 1),
+                color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold),
           ),
@@ -1015,6 +1015,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       backgroundColor: Color.fromRGBO(248, 249, 253, 1),
       body: Stack(
         children: <Widget>[
+          Container(
+              child: new Image.asset('images/screen.png',
+                  fit: BoxFit.cover)),
           scaffoldBody(),
           Center(
             child: _fetchingResponse ? indicator() : Container(),
@@ -1022,7 +1025,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ],
       ),
       floatingActionButton: floatingSpeedDial(),
-      //floatingActionButton: speedDial(),
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:food_ron_ai/model_class/ImageUploadResponse.dart';
 import 'package:food_ron_ai/stracture/ImageMetaData.dart';
 import 'package:food_ron_ai/Global.dart' as Globals;
 import 'package:food_ron_ai/ui/SearchItem.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 
 class ImageDetails extends StatefulWidget {
   final ImageUploadResponse imageUploadResponse;
@@ -425,15 +426,20 @@ class _ImageDetailsState extends State<ImageDetails>
   }
 
   Widget imageViewContainer() {
-    return Container(
-      //width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.all(0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(0)),
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: MemoryImage(
-            base64Decode(imageUploadResponse.base64InfImage),
+    return GestureDetector(
+      onTap: () {
+        dialog();
+        //TODO: Popupto View image
+      },
+      child: Container(
+        margin: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: MemoryImage(
+              base64Decode(imageUploadResponse.base64InfImage),
+            ),
           ),
         ),
       ),
@@ -481,6 +487,107 @@ class _ImageDetailsState extends State<ImageDetails>
     );
   }
 
+  Widget barChartBuilder(AsyncSnapshot<List<ImageMetaData>> snapshot) {
+    return AspectRatio(
+      aspectRatio: 1.1,
+      child: Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        color: Colors.transparent,
+        child: BarChart(
+          BarChartData(
+              alignment: BarChartAlignment.spaceAround,
+              maxY: getTotalCarbohydrates(snapshot.data) +
+                  getTotalCalories(snapshot.data) +
+                  getTotalFats(snapshot.data) +
+                  getTotalProtein(snapshot.data) +
+                  100,
+              barTouchData: BarTouchData(
+                enabled: false,
+                touchTooltipData: BarTouchTooltipData(
+                  tooltipBgColor: Colors.transparent,
+                  tooltipPadding: const EdgeInsets.all(0),
+                  tooltipBottomMargin: 8,
+                  getTooltipItem: (
+                    BarChartGroupData group,
+                    int groupIndex,
+                    BarChartRodData rod,
+                    int rodIndex,
+                  ) {
+                    return BarTooltipItem(
+                      rod.y.round().toString(),
+                      TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              titlesData: FlTitlesData(
+                show: true,
+                bottomTitles: SideTitles(
+                  showTitles: true,
+                  textStyle: TextStyle(
+                      color: const Color(0xff7589a2),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14),
+                  margin: 20,
+                  getTitles: (double value) {
+                    switch (value.toInt()) {
+                      case 0:
+                        return 'Cal';
+                      case 1:
+                        return 'Carb';
+                      case 2:
+                        return 'Fat';
+                      case 3:
+                        return 'Pro';
+                      default:
+                        return '';
+                    }
+                  },
+                ),
+                leftTitles: const SideTitles(showTitles: false),
+              ),
+              borderData: FlBorderData(
+                show: false,
+              ),
+              barGroups: [
+                BarChartGroupData(x: 0, barRods: [
+                  BarChartRodData(
+                      y: getTotalCalories(snapshot.data),
+                      color: Colors.lightBlueAccent)
+                ], showingTooltipIndicators: [
+                  0
+                ]),
+                BarChartGroupData(x: 1, barRods: [
+                  BarChartRodData(
+                      y: getTotalCarbohydrates(snapshot.data),
+                      color: Colors.lightBlueAccent)
+                ], showingTooltipIndicators: [
+                  0
+                ]),
+                BarChartGroupData(x: 2, barRods: [
+                  BarChartRodData(
+                      y: getTotalFats(snapshot.data),
+                      color: Colors.lightBlueAccent)
+                ], showingTooltipIndicators: [
+                  0
+                ]),
+                BarChartGroupData(x: 3, barRods: [
+                  BarChartRodData(
+                      y: getTotalProtein(snapshot.data),
+                      color: Colors.lightBlueAccent)
+                ], showingTooltipIndicators: [
+                  0
+                ]),
+              ]),
+        ),
+      ),
+    );
+  }
+
   Widget cntFabAddFoodItem() {
     return Container(
       padding: EdgeInsets.all(10),
@@ -515,22 +622,22 @@ class _ImageDetailsState extends State<ImageDetails>
         case 0:
           return PieChartSectionData(
             color: const Color(0xff0293ee),
-            value: 40,
-            title: getTotalCalories(snapshot.data),
+            value: 30,
+            title: getTotalCarbohydrates(snapshot.data),
             radius: radius,
             titleStyle: TextStyle(
-                fontSize: fontSize,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xffffffff)),
           );
         case 1:
           return PieChartSectionData(
             color: const Color(0xfff8b250),
-            value: 30,
-            title: getTotalCarbohydrates(snapshot.data),
+            value: 35,
+            title: getTotalCalories(snapshot.data),
             radius: radius,
             titleStyle: TextStyle(
-                fontSize: fontSize,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xffffffff)),
           );
@@ -541,18 +648,18 @@ class _ImageDetailsState extends State<ImageDetails>
             title: getTotalFats(snapshot.data),
             radius: radius,
             titleStyle: TextStyle(
-                fontSize: fontSize,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xffffffff)),
           );
         case 3:
           return PieChartSectionData(
             color: const Color(0xff13d38e),
-            value: 15,
+            value: 20,
             title: getTotalProtein(snapshot.data),
             radius: radius,
             titleStyle: TextStyle(
-                fontSize: fontSize,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xffffffff)),
           );
@@ -566,12 +673,12 @@ class _ImageDetailsState extends State<ImageDetails>
     var item;
     if (imageUploadResponseList != null && imageUploadResponseList.isNotEmpty) {
       item = imageUploadResponseList
-          .map((item) => item.card)
+          .map((item) => item.cal)
           .toList()
           .reduce((combine, next) => combine + next)
-          .toStringAsFixed(2);
+          .truncateToDouble();
     }
-    return item != null ? "${item}g" : "0g";
+    return item != null ? item : "0";
   }
 
   getTotalFats(List<ImageMetaData> imageUploadResponseList) {
@@ -581,9 +688,22 @@ class _ImageDetailsState extends State<ImageDetails>
           .map((item) => item.fat)
           .toList()
           .reduce((combine, next) => combine + next)
-          .toStringAsFixed(2);
+          .truncateToDouble();
     }
-    return item != null ? "${item}g" : "0g";
+    return item != null ? item : "0";
+  }
+
+  Widget textIndicator(var colorcode, String pieChartDataType) {
+    return Row(
+      children: <Widget>[
+        Container(
+          height: 15,
+          width: 15,
+          color: Color(colorcode),
+        ),
+        Text("\t\t$pieChartDataType"),
+      ],
+    );
   }
 
   getTotalProtein(List<ImageMetaData> imageUploadResponseList) {
@@ -593,9 +713,9 @@ class _ImageDetailsState extends State<ImageDetails>
           .map((item) => item.protin)
           .toList()
           .reduce((combine, next) => combine + next)
-          .toStringAsFixed(2);
+          .truncateToDouble();
     }
-    return item != null ? "${item}g" : "0g";
+    return item != null ? item : "0";
   }
 
   getTotalCalories(List<ImageMetaData> imageUploadResponseList) {
@@ -605,100 +725,56 @@ class _ImageDetailsState extends State<ImageDetails>
           .map((item) => item.card)
           .toList()
           .reduce((combine, next) => combine + next)
-          .toStringAsFixed(2);
+          .truncateToDouble();
     }
     return item != null ? item : "0";
   }
 
-  Widget pieChartBuilder() {
+  Widget barChartWidget() {
     return StreamBuilder<List<ImageMetaData>>(
         stream: _imageDataBloc.pieChartDataStream,
         builder: (BuildContext context,
             AsyncSnapshot<List<ImageMetaData>> snapshot) {
-          return Center(
-            child: AspectRatio(
-              aspectRatio: 2,
-              child: Card(
-                color: Colors.white,
-                child: Row(
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                      child: AspectRatio(
-                        aspectRatio: 1.1,
-                        child: PieChart(
-                          PieChartData(
-                              pieTouchData: PieTouchData(
-                                  touchCallback: (pieTouchResponse) {
-                                setState(() {
-                                  if (pieTouchResponse.touchInput
-                                          is FlLongPressEnd ||
-                                      pieTouchResponse.touchInput is FlPanEnd) {
-                                    touchedIndex = -1;
-                                  } else {
-                                    touchedIndex =
-                                        pieTouchResponse.touchedSectionIndex;
-                                  }
-                                });
-                              }),
-                              borderData: FlBorderData(
-                                show: false,
-                              ),
-                              sectionsSpace: 0,
-                              centerSpaceRadius: 20,
-                              sections: showingSections(snapshot)),
-                        ),
-                      ),
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const <Widget>[
-                        // Indicator(
-                        //   color: Color(0xff0293ee),
-                        //   text: 'First',
-                        //   isSquare: true,
-                        // ),
-                        // SizedBox(
-                        //   height: 4,
-                        // ),
-                        // Indicator(
-                        //   color: Color(0xfff8b250),
-                        //   text: 'Second',
-                        //   isSquare: true,
-                        // ),
-                        // SizedBox(
-                        //   height: 4,
-                        // ),
-                        // Indicator(
-                        //   color: Color(0xff845bef),
-                        //   text: 'Third',
-                        //   isSquare: true,
-                        // ),
-                        // SizedBox(
-                        //   height: 4,
-                        // ),
-                        // Indicator(
-                        //   color: Color(0xff13d38e),
-                        //   text: 'Fourth',
-                        //   isSquare: true,
-                        // ),
-                        // SizedBox(
-                        //   height: 18,
-                        // ),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 28,
-                    ),
-                  ],
+          return Card(
+            margin: EdgeInsets.all(10),
+            elevation: 0,
+            color: Colors.transparent,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: imageViewContainer(),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    child: barChartBuilder(snapshot),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  dialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Container(
+              height: MediaQuery.of(context).size.height/1.5,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: MemoryImage(
+                  base64Decode(imageUploadResponse.base64InfImage),
                 ),
               ),
             ),
-          );
+          ));
         });
   }
 
@@ -707,19 +783,27 @@ class _ImageDetailsState extends State<ImageDetails>
     return WillPopScope(
         onWillPop: () => _willPopCallback(),
         child: Scaffold(
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
+          body: Stack(
             children: <Widget>[
-              SizedBox(height: 30),
-              titleHolder(),
-              Expanded(
-                flex: 1,
-                child: pieChartBuilder(),
-              ),
-              Expanded(
-                flex: 2,
-                child: imageDetailStreamBuilder(),
+              // Container(
+              // child: new Image.asset('images/screen.png',
+              //     fit: BoxFit.cover)),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  SizedBox(height: 30),
+                  titleHolder(),
+                  Expanded(
+                    flex: 1,
+                    child: barChartWidget(),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: imageDetailStreamBuilder(),
+                  ),
+                ],
               ),
             ],
           ),
