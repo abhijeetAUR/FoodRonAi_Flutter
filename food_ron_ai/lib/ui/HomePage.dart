@@ -64,15 +64,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     var response = await request.send();
     print(response.statusCode);
     response.stream.transform(utf8.decoder).listen((value) {
-      setState(() {
-        _fetchingResponse = false;
-      });
       parseResponse(value, itemMetaId, itemId);
     });
   }
 
   void parseResponse(value, itemMetaId, itemId) async {
+    print(value);
     Map<String, dynamic> mappingData = json.decode(value);
+    print("mappingData");
+    print(mappingData);
     if (mappingData != null && mappingData.isNotEmpty) {
       imageUploadResponse = ImageUploadResponse();
       imageUploadResponse.id = itemId;
@@ -141,6 +141,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       } else {
         getRecords();
         getTodaysRecordsFromDb();
+        setState(() {
+          _fetchingResponse = false;
+        });
       }
     }
   }
@@ -162,11 +165,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
+  deleteMetaFromMetaTable(
+      AsyncSnapshot<List<ImageUploadResponse>> snapshot, int index) async {
+    final id = snapshot.data[index].itemMetaId;
+    final result = await databaseHelper.deleteMetaDataFromTable(id);
+    print(result);
+    getAllRecordBySelectedDate(selectedDate.toString().substring(0, 10));
+
+    // snapshot.data.removeAt(index);
+    // _homeListBloc.updateHomeList(snapshot.data);
+  }
+
   deleteImageAndMetaFromImageTable(
       AsyncSnapshot<List<ImageUploadResponse>> snapshot, int index) {
     final id = snapshot.data[index].id;
     final result = databaseHelper.deleteImageDataFromImageTable(id);
-
     snapshot.data.removeAt(index);
     _homeListBloc.updateHomeList(snapshot.data);
   }
@@ -384,10 +397,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         setState(() {
           selectedDate = picked;
           dateSelected = picked.toString().substring(0, 10);
-
           getAllRecordBySelectedDate(dateSelected);
         });
     }
+
+    getAllRecordBySelectedDate(selectedDate.toString().substring(0, 10));
 
     Widget dateChangeBtnContainer() {
       return Container(
@@ -750,8 +764,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             final item = snapshot.data[index];
             return Dismissible(
               key: Key(item.id.toString()),
-              onDismissed: (direction) {
+              onDismissed: (direction) async {
+                deleteMetaFromMetaTable(snapshot, index);
                 deleteImageAndMetaFromImageTable(snapshot, index);
+
+                //TODO: Update todays meta data builder delete data from imagemetatable
+
                 Scaffold.of(context).showSnackBar(
                     SnackBar(content: Text("$index Row Deleted")));
               },

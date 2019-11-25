@@ -557,16 +557,16 @@ class _ImageDetailsState extends State<ImageDetails>
                 show: false,
               ),
               barGroups: [
-                BarChartGroupData(x: 0, barRods: [
-                  BarChartRodData(
-                      y: getTotalCalories(snapshot.data), color: Colors.white)
-                ], showingTooltipIndicators: [
-                  0
-                ]),
                 BarChartGroupData(x: 1, barRods: [
                   BarChartRodData(
                       y: getTotalCarbohydrates(snapshot.data),
                       color: Colors.white)
+                ], showingTooltipIndicators: [
+                  0
+                ]),
+                BarChartGroupData(x: 0, barRods: [
+                  BarChartRodData(
+                      y: getTotalCalories(snapshot.data), color: Colors.white)
                 ], showingTooltipIndicators: [
                   0
                 ]),

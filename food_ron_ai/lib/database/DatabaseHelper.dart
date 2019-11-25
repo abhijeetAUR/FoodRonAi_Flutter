@@ -163,6 +163,13 @@ class DatabaseHelper {
     return result;
   }
 
+  Future<int> deleteMetaDataFromTable(int metaId) async {
+    Database db = await this.database;
+    var result = db.delete(imageTableMetaData,
+        where: "$colItemMetaId = ?", whereArgs: [metaId]);
+    return result;
+  }
+
   Future<int> insertImageMeta(ImageUploadResponse dataModelImageMeta) async {
     Database db = await this.database;
     var result = await db.insert(imageTable, dataModelImageMeta.toMap());
